@@ -2,6 +2,12 @@ package DealOrNoDealGUI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.service.ServiceRegistry;
 
 /**
  *
@@ -9,6 +15,47 @@ import java.sql.SQLException;
  */
 public class Database 
 {
+    protected SessionFactory sessionFactory;
+    protected Configuration configuration;
+    protected ServiceRegistry serviceRegistry;
+    
+    public Database()
+    {
+        configuration = new Configuration();
+        configuration.configure();
+        serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+        sessionFactory = configuration.buildSessionFactory(serviceRegistry); 
+    }
+    
+    public void addToDB(Player player)
+    {   
+        try
+        {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(player);
+            session.getTransaction().commit();
+            session.close();
+        }
+        catch (ConstraintViolationException e)
+        {
+            System.out.println("Username already exists!");
+        }
+    }
+    
+    public void updateScore(Player player, int score)
+    {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+//            Player player = (Player)session.get(Player.class, "Leo"); //null pointer except if player dont exist
+            Player updatingPlayer = (Player)session.get(Player.class, player.getUsername());
+            updatingPlayer.setScore(score);
+            session.update(updatingPlayer);
+            session.getTransaction().commit();
+            session.close();
+    }
+    
+//Initial JDBC
 //    private static final String USERNAME = "pdc";
 //    private static final String PASSWORD = "pdc";
 //    private static final String URL = "jdbc:derby://localhost:1527/UserDB;create=true";

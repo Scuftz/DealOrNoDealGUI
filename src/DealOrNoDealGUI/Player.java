@@ -20,6 +20,17 @@ public class Player
     private String password;
     private int score;
     
+    public Player()
+    {
+        
+    }
+    public Player(String username, String password)
+    {
+        this.username = username;
+        this.password = password;
+        this.score = 0;
+    }
+    
     public String getUsername()
     {
         return this.username;
