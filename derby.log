@@ -1,0 +1,37 @@
+Sat Jun 13 00:04:08 NZST 2020 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Sat Jun 13 00:04:08 NZST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0172-a86a-7322-ffffbe5c1b12 
+on database directory C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI\DealOrNoDealDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Users/shivn/Desktop/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_241-b07
+user.dir=C:\Users\shivn\Desktop\db-derby-10.14.2.0-bin
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Sat Jun 13 00:04:09 NZST 2020:
+Shutting down instance a816c00e-0172-a86a-7322-ffffbe5c1b12 on database directory C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI\DealOrNoDealDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Sat Jun 13 00:04:09 NZST 2020 Thread[DRDAConnThread_2,5,main] (DATABASE = DealOrNoDealDB), (DRDAID = {2}), Database 'DealOrNoDealDB' shutdown.
+----------------------------------------------------------------
+Sat Jun 13 00:04:17 NZST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 6ede40af-0172-a86a-7322-ffffbe5c1b12 
+on database directory C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI\DealOrNoDealDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Users/shivn/Desktop/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_241-b07
+user.dir=C:\Users\shivn\Desktop\db-derby-10.14.2.0-bin
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Sat Jun 13 01:39:43 NZST 2020: Shutting down Derby engine
+----------------------------------------------------------------
+Sat Jun 13 01:39:44 NZST 2020:
+Shutting down instance 6ede40af-0172-a86a-7322-ffffbe5c1b12 on database directory C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI\DealOrNoDealDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+----------------------------------------------------------------
