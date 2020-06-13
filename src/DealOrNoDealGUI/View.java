@@ -33,12 +33,13 @@ public class View extends JFrame implements Observer
      * Variables
      */
     private TestPanel backgroundPanel;
+    private CurvedJPanel loginPanel;
 //    private JPanel backgroundPanel;
-    private JPanel loginPanel, newAccountPanel, mainGamePanel; //main panels
+    private JPanel newAccountPanel, mainGamePanel; //main panels
     private JPanel casePanel, leftMoneyPanel, rightMoneyPanel, caseRemainingPanel; //panels inside main game panel
-    private JLabel caseRemainingLbl, caseRemainingNumberLbl, dond, usernameLbl, passwordLbl, bgi;
+    private JLabel caseRemainingLbl, caseRemainingNumberLbl, dond, usernameLbl, passwordLbl, loginLbl;
     private JTextArea usernameTxt, passwordTxt;
-    private JButton login;
+    private JButton loginBtn;
     private ArrayList<JLabel> caseValuesList = new ArrayList<>();
     private Dimension screenDimension, frameDimension;
     
@@ -68,9 +69,10 @@ public class View extends JFrame implements Observer
 //        }
         
         //main panels
-        loginPanel = new JPanel();
+        loginPanel = new CurvedJPanel();
         backgroundPanel = new TestPanel();
 //        backgroundPanel = new JPanel();
+//        curved = new CurvedJPanel();
         newAccountPanel = new JPanel();
         mainGamePanel = new JPanel();
         //panels in main game panel
@@ -124,8 +126,12 @@ public class View extends JFrame implements Observer
 //        backgroundPanel.setBackground(0, 0, 0, );
         
         add(backgroundPanel);
-//        backgroundPanel.add(dond);
+//        curved.setBounds(375,150,450,285);//375, 170, 450, 285
+//        curved.setBackground(new Color(255,255,255, 245));
+//        curved.setOpaque(false);
         backgroundPanel.add(loginPanel);
+//        backgroundPanel.add(dond);
+//        backgroundPanel.add(loginPanel);
     }
 //    public void display
     public void displayMainGame()
@@ -146,29 +152,57 @@ public class View extends JFrame implements Observer
     public void createLoginPanel()
     {
         loginPanel.setLayout(null);
-        loginPanel.setLocation(300, 130);
-        loginPanel.setSize(600, 300);
+//        loginPanel.setLocation(375, 170);
+//        loginPanel.setSize(450, 285); 
 //        loginPanel.setBackground(Color.WHITE);
-        loginPanel.setBackground(new Color(255,255,255,128));
+//        loginPanel.setBackground(new Color(255,255,255, 235));
+        loginPanel.setBounds(400,150,400,285);//375, 170, 450, 285
+        loginPanel.setBackground(new Color(255,255,255, 245));
+        loginPanel.setOpaque(false);
+        
+        loginLbl = new JLabel("Login");
+        loginLbl.setLocation(175, 10);
+        loginLbl.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 20));
+        loginLbl.setForeground(Color.DARK_GRAY);
+        loginLbl.setSize(80, 30);
         
         usernameLbl = new JLabel("Username");
-        usernameLbl.setLocation(10, 50);
+        usernameLbl.setLocation(72, 60);
         usernameLbl.setFont(new Font("Arial", Font.PLAIN, 10));
         usernameLbl.setForeground(Color.DARK_GRAY);
         usernameLbl.setSize(50, 10);
         
         usernameTxt = new JTextArea();
         usernameTxt.setFont(new Font("Arial", Font.PLAIN, 20));
-        usernameTxt.setLocation(10, 75);
+        usernameTxt.setLocation(72, 75);
         usernameTxt.setSize(255, 30);
-        usernameTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
-
+        usernameTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+        
+        passwordLbl = new JLabel("Password");
+        passwordLbl.setLocation(72, 125);
+        passwordLbl.setFont(new Font("Arial", Font.PLAIN, 10));
+        passwordLbl.setForeground(Color.DARK_GRAY);
+        passwordLbl.setSize(50, 10);
+        
+        passwordTxt = new JTextArea();
+        passwordTxt.setFont(new Font("Arial", Font.PLAIN, 20));
+        passwordTxt.setLocation(72, 140);
+        passwordTxt.setSize(255, 30);
+        passwordTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+        
+        loginBtn = new JButton("LOGIN");
+        loginBtn.setFont(new Font("Microsoft YaHei UI Light", Font.BOLD, 15));
+        loginBtn.setLocation(125, 210);
+        loginBtn.setSize(150, 35);
+        loginBtn.setBackground(Color.YELLOW);
+        loginBtn.setBorder(BorderFactory.createRaisedBevelBorder());
+        loginPanel.add(loginLbl);
         loginPanel.add(usernameLbl);
         loginPanel.add(usernameTxt);
-      
-//        loginPanel.add(usernameTxt);
-//        passwordLbl = new JLabel("Password");
-//        passwordTxt = new JTextArea("Enter Password", 20, 20);
+        loginPanel.add(passwordLbl);
+        loginPanel.add(passwordTxt);
+        loginPanel.add(loginBtn);
+        
     }
     
     public void createMainGamePanel()
