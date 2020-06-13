@@ -4,13 +4,19 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.LayoutManager;
 import java.util.List;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,9 +33,10 @@ public class View extends JFrame implements Observer
      * Variables
      */
     private TestPanel backgroundPanel;
+//    private JPanel backgroundPanel;
     private JPanel loginPanel, newAccountPanel, mainGamePanel; //main panels
     private JPanel casePanel, leftMoneyPanel, rightMoneyPanel, caseRemainingPanel; //panels inside main game panel
-    private JLabel caseRemainingLbl, caseRemainingNumberLbl, dond, usernameLbl, passwordLbl;
+    private JLabel caseRemainingLbl, caseRemainingNumberLbl, dond, usernameLbl, passwordLbl, bgi;
     private JTextArea usernameTxt, passwordTxt;
     private JButton login;
     private ArrayList<JLabel> caseValuesList = new ArrayList<>();
@@ -42,16 +49,28 @@ public class View extends JFrame implements Observer
     {
         setLayout(null);
         setSize(1200, 609);
-//        getContentPane().setBackground(Color.black);
+        getContentPane().setBackground(Color.black);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         Toolkit tk = Toolkit.getDefaultToolkit();
         screenDimension = tk.getScreenSize();
         frameDimension = this.getSize();
         setLocation((screenDimension.width-frameDimension.width)/2, (screenDimension.height-frameDimension.height)/2);
         
+//        try {
+////            this.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("logo.jpg")))));
+//            bgi = (new JLabel(new ImageIcon(ImageIO.read(new File("logo.jpg")))));
+//            bgi.setSize(1200, 609);
+//            bgi.setLocation(0, 0);
+////            this.setContentPane(bgi);
+//            this.getContentPane().add(bgi);
+//        } catch (IOException ex) {
+//            
+//        }
+        
         //main panels
         loginPanel = new JPanel();
         backgroundPanel = new TestPanel();
+//        backgroundPanel = new JPanel();
         newAccountPanel = new JPanel();
         mainGamePanel = new JPanel();
         //panels in main game panel
@@ -85,18 +104,27 @@ public class View extends JFrame implements Observer
     
     public void background()
     {
-        dond = new JLabel("DEAL OR NO DEAL");
-        dond.setFont(new Font("Arial Black", Font.BOLD, 40));
-        dond.setForeground(Color.YELLOW);
-        dond.setLocation(380, 0);
-        dond.setSize(600, 100);
+//        dond = new JLabel("DEAL OR NO DEAL");
+//        dond.setFont(new Font("Arial Black", Font.BOLD, 40));
+//        dond.setForeground(Color.YELLOW);
+//        dond.setLocation(380, 0);
+//        dond.setSize(600, 100);
         backgroundPanel.setLayout(null);
         backgroundPanel.setLocation(0,0);
         backgroundPanel.setSize(1200, 609);
+        try {
+            Image img = ImageIO.read(new File("logo.jpg"));
+//            Image img = ImageIO.read(new File("logo.eps"));
+//            Image img = ImageIO.read(new File("logo.svg"));
+            backgroundPanel.setBackground(img);
+        } catch (IOException ex) {
+            System.out.println("io excpo");
+        }
+//        backgroundPanel.setBackground(new Color(0, 0, 0, 200));
+//        backgroundPanel.setBackground(0, 0, 0, );
         
         add(backgroundPanel);
-        
-        backgroundPanel.add(dond);
+//        backgroundPanel.add(dond);
         backgroundPanel.add(loginPanel);
     }
 //    public void display
@@ -120,16 +148,24 @@ public class View extends JFrame implements Observer
         loginPanel.setLayout(null);
         loginPanel.setLocation(300, 130);
         loginPanel.setSize(600, 300);
-        loginPanel.setBackground(Color.WHITE);
+//        loginPanel.setBackground(Color.WHITE);
+        loginPanel.setBackground(new Color(255,255,255,128));
         
         usernameLbl = new JLabel("Username");
-        usernameLbl.setLocation(100, 100);
-        usernameLbl.setFont(new Font("Arial", Font.PLAIN, 20));
-        usernameLbl.setForeground(Color.red);
-//        usernameLbl.setBounds(500, 400, 100, 50);
-//        usernameTxt = new JTextArea("Enter Username", 20, 20);
-//        usernameTxt.setLocation(600, 350);
+        usernameLbl.setLocation(10, 50);
+        usernameLbl.setFont(new Font("Arial", Font.PLAIN, 10));
+        usernameLbl.setForeground(Color.DARK_GRAY);
+        usernameLbl.setSize(50, 10);
+        
+        usernameTxt = new JTextArea();
+        usernameTxt.setFont(new Font("Arial", Font.PLAIN, 20));
+        usernameTxt.setLocation(10, 75);
+        usernameTxt.setSize(255, 30);
+        usernameTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
+
         loginPanel.add(usernameLbl);
+        loginPanel.add(usernameTxt);
+      
 //        loginPanel.add(usernameTxt);
 //        passwordLbl = new JLabel("Password");
 //        passwordTxt = new JTextArea("Enter Password", 20, 20);
