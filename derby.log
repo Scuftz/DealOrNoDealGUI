@@ -12,3 +12,9 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Sun Jun 14 00:20:55 NZST 2020: Shutting down Derby engine
+----------------------------------------------------------------
+Sun Jun 14 00:20:55 NZST 2020:
+Shutting down instance a816c00e-0172-ac3b-d384-ffffbe5c1b12 on database directory C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI\DealOrNoDealDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+----------------------------------------------------------------

@@ -38,7 +38,9 @@ public class View extends JFrame implements Observer
     private JPanel newAccountPanel, mainGamePanel; //main panels
     private JPanel casePanel, leftMoneyPanel, rightMoneyPanel, caseRemainingPanel; //panels inside main game panel
     private JLabel caseRemainingLbl, caseRemainingNumberLbl, dond, usernameLbl, passwordLbl, loginLbl;
-    private JTextArea usernameTxt, passwordTxt;
+//    public JTextArea usernameTxt, passwordTxt;
+    public JTextField usernameTxt;
+    public JPasswordField passwordTxt;
     private JButton loginBtn;
     private ArrayList<JLabel> caseValuesList = new ArrayList<>();
     private Dimension screenDimension, frameDimension;
@@ -151,12 +153,11 @@ public class View extends JFrame implements Observer
     //TODO: login panel;
     public void createLoginPanel()
     {
+        Font f = new Font("Arial", Font.PLAIN, 10);
+        Font f2 = new Font("Arial", Font.PLAIN, 20);
+        
         loginPanel.setLayout(null);
-//        loginPanel.setLocation(375, 170);
-//        loginPanel.setSize(450, 285); 
-//        loginPanel.setBackground(Color.WHITE);
-//        loginPanel.setBackground(new Color(255,255,255, 235));
-        loginPanel.setBounds(400,150,400,285);//375, 170, 450, 285
+        loginPanel.setBounds(400,150,400,285);
         loginPanel.setBackground(new Color(255,255,255, 245));
         loginPanel.setOpaque(false);
         
@@ -168,24 +169,29 @@ public class View extends JFrame implements Observer
         
         usernameLbl = new JLabel("Username");
         usernameLbl.setLocation(72, 60);
-        usernameLbl.setFont(new Font("Arial", Font.PLAIN, 10));
+        usernameLbl.setFont(f);
         usernameLbl.setForeground(Color.DARK_GRAY);
         usernameLbl.setSize(50, 10);
         
-        usernameTxt = new JTextArea();
-        usernameTxt.setFont(new Font("Arial", Font.PLAIN, 20));
+//        usernameTxt = new JTextArea();
+        usernameTxt = new JTextField();
+        usernameTxt.setDocument(new RestrictInputLength(20));
+        usernameTxt.setFont(f2);
         usernameTxt.setLocation(72, 75);
         usernameTxt.setSize(255, 30);
         usernameTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
         
         passwordLbl = new JLabel("Password");
         passwordLbl.setLocation(72, 125);
-        passwordLbl.setFont(new Font("Arial", Font.PLAIN, 10));
+        passwordLbl.setFont(f);
         passwordLbl.setForeground(Color.DARK_GRAY);
         passwordLbl.setSize(50, 10);
         
-        passwordTxt = new JTextArea();
-        passwordTxt.setFont(new Font("Arial", Font.PLAIN, 20));
+//        passwordTxt = new JTextArea();
+        passwordTxt = new JPasswordField();
+        passwordTxt.setEchoChar('*');
+        passwordTxt.setDocument(new RestrictInputLength(20));
+        passwordTxt.setFont(f2);
         passwordTxt.setLocation(72, 140);
         passwordTxt.setSize(255, 30);
         passwordTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
@@ -202,7 +208,6 @@ public class View extends JFrame implements Observer
         loginPanel.add(passwordLbl);
         loginPanel.add(passwordTxt);
         loginPanel.add(loginBtn);
-        
     }
     
     public void createMainGamePanel()
@@ -261,11 +266,13 @@ public class View extends JFrame implements Observer
         
     public void setController(ActionListener controller)
     {
-        
+        loginBtn.addActionListener(controller);
     }
     
     /**
      * 
+     * @param obs
+     * @param obj
      * @param o
      * @param arg 
      */
@@ -273,27 +280,29 @@ public class View extends JFrame implements Observer
     public void update(Observable obs, Object obj) {
         UpdateInfo update = (UpdateInfo) obj;
         
-        System.out.println("we in update");
-//        if(!update.loginFlag)
-//        {
-//        }
-        if(update.dealAccepted) //end game
+        System.out.println("we in update " + update.loginFlag);
+        if(!update.loginFlag)
         {
-            
+            System.out.println("in view LOG IN FAILED!");
+            JOptionPane.showMessageDialog(null, "Login Failed", "Failed to Login", 0);
+            passwordTxt.setText("");
+        }
+        else if(!update.gameStarted) //end game
+        {
+            update.loginFlag = true;
+            update.gameStarted = true;
+            for(Integer num : update.duplicateCaseValues)
+            {
+                caseValuesList.add(new JLabel("" + num));
+            }
+            //change panels
+            //set up new panel
         }
         else if(update.endOfRound)
         {
             if(update.totalAmountOfCases == 1) //check if its time to open (no more cases to open)
             {
                 
-            }
-        }
-        else if(!update.startGame)
-        {
-            update.startGame = true;
-            for(Integer num : update.duplicateCaseValues)
-            {
-                caseValuesList.add(new JLabel("" + num));
             }
         }
         else

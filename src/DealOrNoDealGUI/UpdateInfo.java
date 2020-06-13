@@ -15,11 +15,11 @@ public class UpdateInfo
 {
     //flags
     public boolean loginFlag = false;
-    public boolean quitGame = false;
-    public boolean dealAccepted = false;
-    public boolean startGame = false;
+    public boolean gameStarted = false;
     public boolean endOfRound = false;
+    public boolean dealAccepted = false;
     public boolean endOfGame = false;
+    public boolean quitGame = false;
     
     //variables
     public final int totalAmountOfCases = 26;

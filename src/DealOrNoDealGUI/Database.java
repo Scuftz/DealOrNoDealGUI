@@ -27,33 +27,41 @@ public class Database
         sessionFactory = configuration.buildSessionFactory(serviceRegistry); 
     }
     
+//    public static void main(String[] args)
+//    {
+//        Database db = new Database();
+//        Player p = new Player("apple", "apple");
+//        db.addPlayerToDB(p);
+//    }
     public void addPlayerToDB(Player player)
     {   
-        try
-        {
+//        try
+//        {
+            System.out.println("Adding Player to DB! " + player.getUsername() + ", " + player.getPassword());
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.save(player);
             session.getTransaction().commit();
             session.close();
-        }
-        catch (ConstraintViolationException e)
-        {
-            System.out.println("Username already exists!");
-        }
+            System.out.println("Player Added to DB! " + player.getUsername() + ", " + player.getPassword());
+//        }
+//        catch (ConstraintViolationException e)
+//        {
+//            System.out.println("Username already exists!");
+//        }
     }
     
     public boolean checkLogin(String un, String pw)
     {
         Session session = sessionFactory.openSession();
+        Player checkPlayer;
         try
         {
-            Player checkPlayerDetails = (Player)session.get(Player.class, un);
-            if(checkPlayerDetails.getPassword().equals(pw))
+            checkPlayer = (Player)session.get(Player.class, un);
+            if(checkPlayer.getPassword().equals(pw))
             {
                 System.out.println("Login success");
                 session.close();
-                return true;
             }
             else
             {
@@ -64,10 +72,12 @@ public class Database
         }
         catch (NullPointerException ex)
         {
-            System.out.println("Player: " + un + " does not exist");
+            System.out.println("Adding new player");
+            checkPlayer = new Player(un, pw);
             session.close();
-            return false;
+            addPlayerToDB(checkPlayer);
         }   
+        return true;
     }
     
     public int getPlayerHighScore(Player player)
@@ -118,10 +128,4 @@ public class Database
 //        }
 //        
 //    }
-    
-    public static void main(String[] args)
-    {
-//        Database db = new Database();
-//        System.out.println(db.conn);
-    }
 }

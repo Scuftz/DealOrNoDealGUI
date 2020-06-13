@@ -11,12 +11,13 @@ import java.util.Scanner;
 
 public class Model extends Observable
 {
-    protected UpdateInfo update;
+    UpdateInfo update;
     protected int caseCounter;
     protected Scanner input;
     protected String file;
     protected Random rand = new Random();
     protected Database databaseConnection;
+    protected String username, password;
     
     public Model()
     {
@@ -26,6 +27,15 @@ public class Model extends Observable
         databaseConnection = new Database();
         this.setUpCases();
     }
+    
+    public void checkLogin(String un, String pw)
+    {
+        boolean loginStatus = databaseConnection.checkLogin(un, pw);
+        update.loginFlag = loginStatus;
+        setChanged();
+        notifyObservers(update);
+    }
+    
     
     //will change the value of case opened to its case value
     public void openCase()
