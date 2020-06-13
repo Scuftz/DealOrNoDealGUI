@@ -27,7 +27,7 @@ public class Database
         sessionFactory = configuration.buildSessionFactory(serviceRegistry); 
     }
     
-    public void addToDB(Player player)
+    public void addPlayerToDB(Player player)
     {   
         try
         {
@@ -43,16 +43,56 @@ public class Database
         }
     }
     
+    public boolean checkLogin(String un, String pw)
+    {
+        Session session = sessionFactory.openSession();
+        try
+        {
+            Player checkPlayerDetails = (Player)session.get(Player.class, un);
+            if(checkPlayerDetails.getPassword().equals(pw))
+            {
+                System.out.println("Login success");
+                session.close();
+                return true;
+            }
+            else
+            {
+                System.out.println("Incorrect Password");
+                session.close();
+                return false;
+            }
+        }
+        catch (NullPointerException ex)
+        {
+            System.out.println("Player: " + un + " does not exist");
+            session.close();
+            return false;
+        }   
+    }
+    
+    public int getPlayerHighScore(Player player)
+    {
+        Session session = sessionFactory.openSession();
+        Player playerRetrieval = (Player)session.get(Player.class, player.getUsername());
+        session.close();
+        return playerRetrieval.getHighscore();
+    }
+    
     public void updateScore(Player player, int score)
     {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
 //            Player player = (Player)session.get(Player.class, "Leo"); //null pointer except if player dont exist
             Player updatingPlayer = (Player)session.get(Player.class, player.getUsername());
-            updatingPlayer.setScore(score);
+            updatingPlayer.setHighscore(score);
             session.update(updatingPlayer);
             session.getTransaction().commit();
             session.close();
+    }
+    
+    public void closeDatabase()
+    {
+        this.sessionFactory.close();
     }
     
 //Initial JDBC

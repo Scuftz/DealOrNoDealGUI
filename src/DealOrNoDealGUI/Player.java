@@ -5,6 +5,7 @@
  */
 package DealOrNoDealGUI;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -13,22 +14,23 @@ import javax.persistence.Id;
  * @author shivn
  */
 @Entity
-public class Player
+public class Player implements Serializable
 {
     @Id
     private String username;
     private String password;
-    private int score;
+    private int highscore;
     
     public Player()
     {
         
     }
+    
     public Player(String username, String password)
     {
         this.username = username;
         this.password = password;
-        this.score = 0;
+        this.highscore = 0;
     }
     
     public String getUsername()
@@ -49,17 +51,18 @@ public class Player
         this.password = pw;
     }
     
-    public int getScore()
+    public int getHighscore()
     {
-        return this.score;
+        return this.highscore;
     }
-    public void setScore(int score)
+    public void setHighscore(int score)
     {
-        this.score = score;
+        this.highscore = score;
     }
     
+    @Override
     public String toString()
     {
-        return this.username + ": " + this.score;
+        return this.username + ": " + this.highscore;
     }
 }

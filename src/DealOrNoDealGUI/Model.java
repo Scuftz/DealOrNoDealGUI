@@ -11,17 +11,19 @@ import java.util.Scanner;
 
 public class Model extends Observable
 {
-    private UpdateInfo update;
-    private int caseCounter;
+    protected UpdateInfo update;
+    protected int caseCounter;
     protected Scanner input;
     protected String file;
     protected Random rand = new Random();
+    protected Database databaseConnection;
     
     public Model()
     {
         file = "caseValues.txt";
         caseCounter = 0;
         update = new UpdateInfo();
+        databaseConnection = new Database();
         this.setUpCases();
     }
     
