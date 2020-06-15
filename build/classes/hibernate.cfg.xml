@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
-
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
-    <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
-    <property name="hibernate.connection.url">jdbc:derby://localhost:1527/DealOrNoDealDB</property>
+    <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
+    <property name="hibernate.connection.url">jdbc:derby:DealOrNoDealDB;create=true;</property>
     <property name="hibernate.connection.username">pdc</property>
     <property name="hibernate.connection.password">pdc</property>
-    
     <!-- JDBC connection pool -->
     <property name="connection.pool_size">1</property>
-    
     <!-- Disable the second level cache -->
     <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-    
     <!-- Echo all executed SQL -->
     <property name="show_sql">false</property>
-    
     <!-- Drop existing table and create a new one -->
     <property name="hbm2ddl.auto">update</property>
-    
     <!-- Mention all model classes here and package name-->
     <mapping class="DealOrNoDealGUI.Player"/>
-    
   </session-factory>
 </hibernate-configuration>
 <!--

@@ -1,20 +1,13 @@
-Mon Jun 15 22:15:13 NZST 2020 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Mon Jun 15 22:15:15 NZST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0172-b779-d11c-ffffbe5c1b12 
-on database directory C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI\DealOrNoDealDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Loaded from file:/C:/Users/shivn/Desktop/db-derby-10.14.2.0-bin/lib/derby.jar
+Tue Jun 16 00:32:48 NZST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0172-b7f7-c915-00000c9265d8 
+on database directory C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI\DealOrNoDealDB with class loader sun.misc.Launcher$AppClassLoader@30f39991 
+Loaded from file:/C:/Users/shivn/OneDrive/Documents/AUT/Second%20Year/Semester%201/Program%20Design%20and%20Construction/DealOrNoDealGUI/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_241-b07
-user.dir=C:\Users\shivn\Desktop\db-derby-10.14.2.0-bin
+user.dir=C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
-derby.system.home=C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI
+derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Mon Jun 15 22:48:06 NZST 2020: Shutting down Derby engine
-----------------------------------------------------------------
-Mon Jun 15 22:48:06 NZST 2020:
-Shutting down instance a816c00e-0172-b779-d11c-ffffbe5c1b12 on database directory C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI\DealOrNoDealDB with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-----------------------------------------------------------------
