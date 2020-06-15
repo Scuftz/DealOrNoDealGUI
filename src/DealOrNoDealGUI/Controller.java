@@ -1,8 +1,12 @@
 package DealOrNoDealGUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import javax.swing.JComponent;
+import javax.swing.JToggleButton;
 
-public class Controller implements ActionListener
+public class Controller implements ActionListener, ItemListener
 {
     Model model;
     View view;
@@ -12,6 +16,7 @@ public class Controller implements ActionListener
         this.model = model;
         this.view = view;
         view.setController(this);
+        view.setItemController(this);
     }
     
     
@@ -19,7 +24,7 @@ public class Controller implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         String cmp = e.getActionCommand();
-        System.out.println(cmp);
+        Object o = e.getSource();
         if(cmp.equals("LOGIN"))
         {
             String un = view.usernameTxt.getText();
@@ -28,13 +33,30 @@ public class Controller implements ActionListener
             {
                 String password = String.valueOf(pw);
                 model.checkLogin(un, password);
-            }
-            else
-            {
-                System.out.println("Canot hve null detail");
+                view.setCaseController(this);
             }
         }
-//        if ()
+        else if (o instanceof Case)
+        {
+            model.openOrSetCase((Case)o);
+        }
+        else
+        {
+            
+        }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e)
+    {
+//        String cmp = e.get
+        String name = ((JComponent)e.getItem()).getName();
+        
+        if(name.equals("Deal"))
+        {
+            System.out.println("trigger");
+            model.endGame();
+        }
     }
     
 }

@@ -1,6 +1,13 @@
 package DealOrNoDealGUI;
 
 //import org.apache.log4j.BasicConfigurator;
+
+import com.sun.prism.paint.Color;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import org.apache.log4j.BasicConfigurator;
+import org.hibernate.cfg.Configuration;
+
 //import org.hibernate.Session;
 //import org.hibernate.SessionFactory;
 //import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -16,19 +23,20 @@ package DealOrNoDealGUI;
 public class DealOrNoDealApplication
 {
     public static void main(String[] args)
-    {
+    { 
+//        BasicConfigurator.configure();
+        
         Model model = new Model();
         View view = new View();
-        Controller controller = new Controller(model, view);
         model.addObserver(view);
-        view.setVisible(true);
+        Controller controller = new Controller(model, view);
+        view.setVisible(true);  
     }
 }
 
 /**
- * //        BasicConfigurator.configure();
-        Configuration configuration = new Configuration();
-        configuration.configure();
+//        Configuration configuration = new Configuration();
+//        configuration.configure();
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry); 
     

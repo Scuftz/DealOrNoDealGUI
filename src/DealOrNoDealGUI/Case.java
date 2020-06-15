@@ -1,5 +1,10 @@
 package DealOrNoDealGUI;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.border.BevelBorder;
 
 public class Case extends JButton
 {
@@ -10,7 +15,6 @@ public class Case extends JButton
     private int caseValue;
     private boolean openStatus;
     private boolean playerCase;
-     
     /**
      * This is the constructor for the Case class
      * @param caseNum   An integer to store the cases' number
@@ -18,10 +22,31 @@ public class Case extends JButton
      */
     public Case(int caseNum, int caseVal)
     {
+        super(Integer.toString(caseNum));
         this.caseNumber = caseNum;
         this.caseValue = caseVal;
         this.openStatus = false;
         this.playerCase = false;
+        this.setSize(110, 80);
+        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));      
+    }
+    
+    @Override
+    public void paintComponent(Graphics g)
+    {
+        if(!this.getOpenStatus())
+        {
+            this.setForeground(Color.BLACK);
+            this.setFont(new Font("serif", Font.BOLD, 40));
+            this.setText(Integer.toString(caseNumber));        
+        }
+        else
+        {              
+            this.setFont(new Font("Arial Black", Font.BOLD, 17));
+            this.setText("$"+Integer.toString(this.caseValue));
+            this.setEnabled(false);
+        }
+        super.paintComponent(g);
     }
     
     /**

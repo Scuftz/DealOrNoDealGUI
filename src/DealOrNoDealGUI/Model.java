@@ -1,6 +1,8 @@
 package DealOrNoDealGUI;
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
@@ -8,9 +10,11 @@ import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
+import javax.swing.UIManager;
 
 public class Model extends Observable
 {
+    private static NumberFormat nf = NumberFormat.getNumberInstance();
     UpdateInfo update;
     protected int caseCounter;
     protected Scanner input;
@@ -18,6 +22,7 @@ public class Model extends Observable
     protected Random rand = new Random();
     protected Database databaseConnection;
     protected String username, password;
+    public boolean caseSelected = false;
     
     public Model()
     {
@@ -36,11 +41,67 @@ public class Model extends Observable
         notifyObservers(update);
     }
     
+    public void endGame()
+    {
+        update.endOfGame = true;
+        setChanged();
+        notifyObservers(update);
+    }
     
     //will change the value of case opened to its case value
-    public void openCase()
+    public void openOrSetCase(Case c)
     {
-        
+        if (!update.caseSelected)
+        {
+            update.caseList.get(c.getCaseNumber()-1).setPlayerCase(true);
+        }
+        else
+        {
+            update.caseList.get(c.getCaseNumber() - 1).setOpenStatus(true);
+            update.tester.get(c.getCaseValue()).setOpen();
+            update.totalCasesLeft--;
+            update.casesRemainingThisRound--;
+            if(update.casesRemainingThisRound == 0)
+            {
+                this.calculateBankOffer(update.roundNumber, update.caseList);
+                this.setUpNewRound();
+                update.endOfRound = true;
+            }
+        }
+        setChanged();
+        notifyObservers(update);
+    }
+    
+    public void calculateBankOffer(int roundNumber, ArrayList<Case> cases)
+    {
+        int sum = 0;
+        for(Case c : cases)
+        {
+            if(!c.getOpenStatus())
+            {
+                sum += c.getCaseValue();
+            }
+        }
+        //calculate the sum of the unopenned cases, divide by the amount of cases left, multiply by the deductor
+        float bankOffer = (sum / update.totalCasesLeft) * update.percentageDeductions[update.roundNumber];
+        System.out.println("BANK OFFER...\n" + nf.format((int)bankOffer));
+        update.bankOffer = (int)bankOffer;
+    }
+    
+    public void setUpNewRound()
+    {
+        if(update.totalCasesToOpen > 1)
+        {
+            update.totalCasesToOpen--;
+        }
+        update.casesRemainingThisRound = update.totalCasesToOpen;
+        update.roundNumber++;
+        System.out.println("Round Number" + update.roundNumber);
+        if(update.roundNumber == 9)
+        {
+            //At Round Nine we should we ending");
+            update.endOfGame = true;
+        }
     }
     
     public void setUpCases()
@@ -87,6 +148,28 @@ public class Model extends Observable
             for (int x = 1; x <= update.totalAmountOfCases; x++)
             {
                 update.caseList.add(new Case(x, (1000 * (rand.nextInt(100) + 1))));
+            }
+        }
+        this.setUpValues();
+    }
+    
+    public void setUpValues()
+    {
+        for (int k = 1; k <= 26; k++)
+        {                                
+                //this is for labels...??
+            int num = update.duplicateCaseValues.get(k - 1);
+            if (k <= 13)
+            {
+                update.tester.put(num, new GradientCmp("$" + nf.format(num), MoneyValueType.BLUE));
+            }
+            else if (k >= 14 && k <= 22)
+            {
+                update.tester.put(num, new GradientCmp("$" + nf.format(num), MoneyValueType.RED));
+            }
+            else
+            {
+                update.tester.put(num, new GradientCmp("$" + nf.format(num), MoneyValueType.GREEN));
             }
         }
     }

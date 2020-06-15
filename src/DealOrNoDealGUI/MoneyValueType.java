@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package assignment2;
-
-import javax.swing.JLabel;
+package DealOrNoDealGUI;
 
 /**
  *
  * @author shivn
  */
-public class MoneyLabel extends JLabel
+public enum MoneyValueType
 {
-    
+    BLUE, RED, GREEN;
 }
