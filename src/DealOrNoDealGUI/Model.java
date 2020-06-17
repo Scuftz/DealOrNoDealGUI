@@ -1,5 +1,6 @@
 package DealOrNoDealGUI;
-import java.awt.Color;
+import SpecialClassPackage.GradientLabel;
+import SpecialClassPackage.MoneyValueType;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.text.NumberFormat;
@@ -10,8 +11,6 @@ import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
-import javax.swing.Timer;
-import javax.swing.UIManager;
 
 public class Model extends Observable
 {

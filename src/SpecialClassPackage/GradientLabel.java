@@ -1,5 +1,4 @@
-package DealOrNoDealGUI;
-
+package SpecialClassPackage;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;

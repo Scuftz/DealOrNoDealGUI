@@ -5,7 +5,7 @@
  */
 package PanelPackage;
 
-import DealOrNoDealGUI.GradientLabel;
+import SpecialClassPackage.GradientLabel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

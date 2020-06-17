@@ -1,10 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PanelPackage;
-
+import SpecialClassPackage.RestrictInputLength;
 import DealOrNoDealGUI.*;
 import java.awt.Color;
 import java.awt.Font;
@@ -19,7 +14,7 @@ import javax.swing.JTextField;
  *
  * @author shivn
  */
-public class LoginPanels extends CurvedJPanel
+public class LoginPanel extends CurvedJPanel
 {
     private JLabel loginLbl, usernameLbl, passwordLbl;
     private JTextField usernameTxt;
@@ -27,7 +22,7 @@ public class LoginPanels extends CurvedJPanel
     private JButton loginBtn;
     private Font fontOne, fontTwo;
     
-    public LoginPanels()
+    public LoginPanel()
     {
         fontOne = new Font("Arial", Font.PLAIN, 10);
         fontTwo = new Font("Arial", Font.PLAIN, 20);

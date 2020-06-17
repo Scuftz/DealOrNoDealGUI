@@ -1,4 +1,5 @@
 package DealOrNoDealGUI;
+import SpecialClassPackage.GradientLabel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
@@ -16,7 +17,7 @@ public class View extends JFrame implements Observer
     private Dimension screenDimension, frameDimension;
 
     protected PanelPackage.BackgroundPanel bp;
-    protected PanelPackage.LoginPanels lp;
+    protected PanelPackage.LoginPanel lp;
     protected PanelPackage.GameHeaderPanel ghp;
     protected PanelPackage.CasePanel cp;
     protected PanelPackage.MoneyPanel mp;
@@ -81,9 +82,6 @@ public class View extends JFrame implements Observer
             System.out.println("End of Game");
             this.validate();
             this.repaint();
-            System.out.println("Should've repainted");
-//            timer.start();
-            System.out.println("ouk");
             
 //            this.getContentPane().removeAll();
 //            this.displayEndOfGame();
@@ -163,7 +161,7 @@ public class View extends JFrame implements Observer
     public void createLoginPanel()
     {
         bp = new PanelPackage.BackgroundPanel();
-        lp = new PanelPackage.LoginPanels();
+        lp = new PanelPackage.LoginPanel();
         bp.add(lp);
         add(bp);
     }

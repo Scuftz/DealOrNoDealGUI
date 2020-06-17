@@ -1,11 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PanelPackage;
-
-import DealOrNoDealGUI.*;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -13,16 +6,13 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  *
  * @author shivn
  */
-public class ImagePanel extends JPanel
+public abstract class ImagePanel extends JPanel
 {
     Image img;
     public void setBackground(Image image)
