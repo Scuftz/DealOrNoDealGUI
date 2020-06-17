@@ -15,26 +15,27 @@ public class View extends JFrame implements Observer
     /**
      * Variables
      */
-    private BackgroundPanel bp;
-    public LoginPanel lp;
-    
-    private ImagePanel backgroundPanel, topPanel, endOfGamePanel;
-    private CurvedJPanel loginPanel;
-    private Dimension screenDimension, frameDimension;
-    public JTextField usernameTxt;
-    public JPasswordField passwordTxt;
-    private JButton loginBtn;
     public boolean setUp = false;
     private NumberFormat nf = NumberFormat.getNumberInstance();
     public JToggleButton tb = new JToggleButton("Deal");
-            
-    public JButton[] finalCases = new JButton[2];
-    public GradientLabel[] finalLabels = new GradientLabel[2];
+    private Dimension screenDimension, frameDimension;
+
+    protected PanelPackage.BackgroundPanels bp;
+    protected PanelPackage.LoginPanels lp;
+    protected PanelPackage.GameHeaderPanel ghp;
+    
+    private ImagePanel /*backgroundPanel,topPanel,*/ endOfGamePanel;
+//    private CurvedJPanel loginPanel;
+//    public JTextField usernameTxt;
+//    public JPasswordField passwordTxt;
+//    private JButton loginBtn;            
+//    public JButton[] finalCases = new JButton[2];
+//    public GradientLabel[] finalLabels = new GradientLabel[2];
             
     //in game panels and variables
     private JPanel mainGamePanel; //main panel
     private JPanel casePanel, leftMoneyPanel, rightMoneyPanel; //panels inside main game panel
-    private JLabel caseRemainingNumberLbl, usernameLbl, passwordLbl, loginLbl;
+    private JLabel caseRemainingNumberLbl;//, usernameLbl, passwordLbl, loginLbl;
     private ArrayList<Case> caseListBtn = new ArrayList();
 //    public Timer timer;
     
@@ -54,16 +55,16 @@ public class View extends JFrame implements Observer
         setLocation((screenDimension.width-frameDimension.width)/2, (screenDimension.height-frameDimension.height)/2);
         
         //main panels
-        loginPanel = new CurvedJPanel();
-        bp = new BackgroundPanel();
-        backgroundPanel = new ImagePanel();
+//        loginPanel = new CurvedJPanel();
+        bp = new PanelPackage.BackgroundPanels();
+//        backgroundPanel = new ImagePanel();
         
         mainGamePanel = new JPanel();
         //panels in main game panel
         casePanel = new JPanel();
         leftMoneyPanel = new JPanel();
         rightMoneyPanel = new JPanel();
-        topPanel = new ImagePanel();
+//        topPanel = new ImagePanel();
         tb.setName("Deal");
         
         endOfGamePanel = new ImagePanel();
@@ -85,7 +86,7 @@ public class View extends JFrame implements Observer
         {
             System.out.println("in view LOG IN FAILED!");
             JOptionPane.showMessageDialog(null, "Login Failed", "Failed to Login", 0);
-            passwordTxt.setText("");
+            lp.setPasswordBlank();
         }
         else if(!update.gameStarted)
         {
@@ -99,6 +100,7 @@ public class View extends JFrame implements Observer
             System.out.println("User Case Selected");
             update.caseSelected = true;
             createTopPanel(update.casesRemainingThisRound);
+//            PanelPackage.GameHeaderPanel
             createMoneyPanels(update.tester);
             this.createCasePanel(update.caseList);
             this.displayMainGame();
@@ -175,7 +177,8 @@ public class View extends JFrame implements Observer
     
     public void updateCaseToOpen(int num)
     {
-        caseRemainingNumberLbl.setText(Integer.toString(num));
+//        caseRemainingNumberLbl.setText(Integer.toString(num));
+        ghp.changeCaseRemainingValue(num);
     }
     
     public void createCasesForController(ArrayList<Case> caseList)
@@ -190,103 +193,31 @@ public class View extends JFrame implements Observer
     {
         bp.add(lp);
         add(bp);
-//        backgroundPanel.setLayout(null);
-//        backgroundPanel.setLocation(0,0);
-//        backgroundPanel.setSize(1200, 609);
-//        try {
-//            Image img = ImageIO.read(new File("logo.jpg"));
-//            backgroundPanel.setBackground(img);
-//        } catch (IOException ex) {
-//            System.out.println("io excpo");
-//        }
-//        
-//        add(backgroundPanel);
-//        backgroundPanel.add(loginPanel);
     }
     
-//    public void selectCasePanel()
     public void selectCasePanel(ArrayList<Case> caseList)
     {
-//        backgroundPanel.remove(loginPanel);
         bp.remove(lp);
-        JPanel temp = new JPanel(new GridLayout(4, 7, 25, 25));
-        temp.setBounds(200, 130, 790, 350);
-        temp.setBackground(new Color(255,255,255,100));
-//        for(Case c : caseListBtn)
+        JPanel selectCase = new JPanel(new GridLayout(4, 7, 25, 25));
+        selectCase.setBounds(200, 130, 790, 350);
+        selectCase.setBackground(new Color(255,255,255,100));
         for(Case c : caseList)
         {
-            temp.add(c);
+            selectCase.add(c);
         }
-        JLabel select = new JLabel("Select A Case!");
-        select.setFont(new Font("Verdana", Font.BOLD, 40));
-        select.setForeground(Color.YELLOW);
-        select.setBounds(450, 30, 400, 40);
-        bp.add(select);
-        bp.add(temp);
+        JLabel selectLbl = new JLabel("Select A Case!");
+        selectLbl.setFont(new Font("Verdana", Font.BOLD, 40));
+        selectLbl.setForeground(Color.YELLOW);
+        selectLbl.setBounds(450, 30, 400, 40);
+        bp.add(selectLbl);
+        bp.add(selectCase);
         bp.revalidate();
         bp.repaint();
-//        backgroundPanel.add(select);
-//        backgroundPanel.add(temp);
-//        backgroundPanel.revalidate();
-//        backgroundPanel.repaint(); 
     }
     
     public void createLoginPanel()
     {
-        lp = new LoginPanel();
-//        Font f = new Font("Arial", Font.PLAIN, 10);
-//        Font f2 = new Font("Arial", Font.PLAIN, 20);
-//        
-//        loginPanel.setLayout(null);
-//        loginPanel.setBounds(400,150,400,285);
-//        loginPanel.setBackground(new Color(255,255,255, 245));
-//        loginPanel.setOpaque(false);
-//        
-//        loginLbl = new JLabel("Login");
-//        loginLbl.setLocation(175, 10);
-//        loginLbl.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 20));
-//        loginLbl.setForeground(Color.DARK_GRAY);
-//        loginLbl.setSize(80, 30);
-//        
-//        usernameLbl = new JLabel("Username");
-//        usernameLbl.setLocation(72, 60);
-//        usernameLbl.setFont(f);
-//        usernameLbl.setForeground(Color.DARK_GRAY);
-//        usernameLbl.setSize(50, 10);
-//        
-//        usernameTxt = new JTextField();
-//        usernameTxt.setDocument(new RestrictInputLength(20));
-//        usernameTxt.setFont(f2);
-//        usernameTxt.setLocation(72, 75);
-//        usernameTxt.setSize(255, 30);
-//        usernameTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
-//        
-//        passwordLbl = new JLabel("Password");
-//        passwordLbl.setLocation(72, 125);
-//        passwordLbl.setFont(f);
-//        passwordLbl.setForeground(Color.DARK_GRAY);
-//        passwordLbl.setSize(50, 10);
-//        
-//        passwordTxt = new JPasswordField();
-//        passwordTxt.setEchoChar('*');
-//        passwordTxt.setDocument(new RestrictInputLength(20));
-//        passwordTxt.setFont(f2);
-//        passwordTxt.setLocation(72, 140);
-//        passwordTxt.setSize(255, 30);
-//        passwordTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
-//        
-//        loginBtn = new JButton("LOGIN");
-//        loginBtn.setFont(new Font("Microsoft YaHei UI Light", Font.BOLD, 15));
-//        loginBtn.setLocation(125, 210);
-//        loginBtn.setSize(150, 35);
-//        loginBtn.setBackground(Color.YELLOW);
-//        loginBtn.setBorder(BorderFactory.createRaisedBevelBorder());
-//        loginPanel.add(loginLbl);
-//        loginPanel.add(usernameLbl);
-//        loginPanel.add(usernameTxt);
-//        loginPanel.add(passwordLbl);
-//        loginPanel.add(passwordTxt);
-//        loginPanel.add(loginBtn);
+        lp = new PanelPackage.LoginPanels();
     }
     
     public void displayMainGame()
@@ -304,7 +235,7 @@ public class View extends JFrame implements Observer
         mainGamePanel.setLocation(0, 0);
         mainGamePanel.setSize(this.frameDimension.width, this.frameDimension.height);
         
-        mainGamePanel.add(topPanel, BorderLayout.NORTH);
+        mainGamePanel.add(ghp, BorderLayout.NORTH);
         mainGamePanel.add(leftMoneyPanel, BorderLayout.WEST);
         mainGamePanel.add(rightMoneyPanel, BorderLayout.EAST);
         mainGamePanel.add(casePanel, BorderLayout.CENTER);
@@ -312,46 +243,47 @@ public class View extends JFrame implements Observer
     
     public void createTopPanel(int casesToOpen)
     {
-        topPanel.setLayout(null);
-        topPanel.setOpaque(false);
-        topPanel.setPreferredSize(new Dimension(1200, 50));
+        ghp = new PanelPackage.GameHeaderPanel(casesToOpen);
+//        topPanel.setLayout(null);
+//        topPanel.setOpaque(false);
+//        topPanel.setPreferredSize(new Dimension(1200, 50));
         
-        caseRemainingNumberLbl = new JLabel(Integer.toString(casesToOpen));
-        caseRemainingNumberLbl.setBounds(590, 5, 25, 40);
-        Font f = caseRemainingNumberLbl.getFont();
-        caseRemainingNumberLbl.setFont(new Font(caseRemainingNumberLbl.getFont().getFontName(), Font.PLAIN, 40));
+//        caseRemainingNumberLbl = new JLabel(Integer.toString(casesToOpen));
+//        caseRemainingNumberLbl.setBounds(590, 5, 25, 40);
+//        Font f = caseRemainingNumberLbl.getFont
+//        caseRemainingNumberLbl.setFont(new Font("Dialog", Font.BOLD, 40));
 
-        JLabel caseToOpenLbl = new JLabel("To Open");
-        caseToOpenLbl.setBounds(620, 15, 50, 20);
-
-        topPanel.add(caseRemainingNumberLbl);
-        topPanel.add(caseToOpenLbl);
+//        JLabel caseToOpenLbl = new JLabel("To Open");
+//        caseToOpenLbl.setBounds(620, 15, 50, 20);
+//
+//        topPanel.add(caseRemainingNumberLbl);
+//        topPanel.add(caseToOpenLbl);
         
-        JButton test;
-        Color[] c = new Color[]{ Color.RED, Color.GREEN, Color.BLUE };
-        int xPos = 70;
-        int xIncrease = 40;
-        for (int k = 0; k < 3; k++)
-        {
-            test = new JButton("");
-            test.setSize(20, 20);
-            test.setLocation(xPos, 15);
-            test.setBackground(c[k]);
-            test.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLACK));
-            topPanel.add(test);
-            xPos += xIncrease;
-        }
-        xPos = 1025;
-        for (int k = 0; k < 3; k++)
-        {
-            test = new JButton("");
-            test.setSize(20, 20);
-            test.setLocation(xPos, 15);
-            test.setBackground(c[k]);
-            test.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLACK));
-            topPanel.add(test);
-            xPos += xIncrease;
-        }     
+//        JButton test;
+//        Color[] c = new Color[]{ Color.RED, Color.GREEN, Color.BLUE };
+//        int xPos = 70;
+//        int xIncrease = 40;
+//        for (int k = 0; k < 3; k++)
+//        {
+//            test = new JButton("");
+//            test.setSize(20, 20);
+//            test.setLocation(xPos, 15);
+//            test.setBackground(c[k]);
+//            test.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLACK));
+//            topPanel.add(test);
+//            xPos += xIncrease;
+//        }
+//        xPos = 1025;
+//        for (int k = 0; k < 3; k++)
+//        {
+//            test = new JButton("");
+//            test.setSize(20, 20);
+//            test.setLocation(xPos, 15);
+//            test.setBackground(c[k]);
+//            test.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLACK));
+//            topPanel.add(test);
+//            xPos += xIncrease;
+//        }     
     }
     
     public void createMoneyPanels(LinkedHashMap<Integer, GradientLabel> valueLbls)
@@ -409,7 +341,7 @@ public class View extends JFrame implements Observer
                 Case temp = caseList.get(counter);
                 if(temp.isPlayerCase())
                 {
-                    finalCases[0] = temp;
+//                    finalCases[0] = temp;
                     temp = caseListBtn.get(++counter);
                 }
                 temp.setLocation(location);

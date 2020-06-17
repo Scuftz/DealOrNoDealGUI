@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DealOrNoDealGUI;
+package PanelPackage;
 
+import DealOrNoDealGUI.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -18,7 +19,7 @@ import javax.swing.JTextField;
  *
  * @author shivn
  */
-public class LoginPanel extends CurvedJPanel
+public class LoginPanels extends CurvedJPanels
 {
     private JLabel loginLbl, usernameLbl, passwordLbl;
     private JTextField usernameTxt;
@@ -26,7 +27,7 @@ public class LoginPanel extends CurvedJPanel
     private JButton loginBtn;
     private Font fontOne, fontTwo;
     
-    public LoginPanel()
+    public LoginPanels()
     {
         fontOne = new Font("Arial", Font.PLAIN, 10);
         fontTwo = new Font("Arial", Font.PLAIN, 20);
