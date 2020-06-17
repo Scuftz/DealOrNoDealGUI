@@ -2,14 +2,9 @@ package DealOrNoDealGUI;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
-import java.io.*;
 import java.text.NumberFormat;
 import java.util.*;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.Timer;
-
 public class View extends JFrame implements Observer
 {
     /**
@@ -25,21 +20,10 @@ public class View extends JFrame implements Observer
     protected PanelPackage.GameHeaderPanel ghp;
     protected PanelPackage.CasePanel cp;
     protected PanelPackage.MoneyPanel mp;
+    protected PanelPackage.MainGamePanel mgp;
     
-    private ImagePanel /*backgroundPanel,topPanel,*/ endOfGamePanel;
-//    private CurvedJPanel loginPanel;
-//    public JTextField usernameTxt;
-//    public JPasswordField passwordTxt;
-//    private JButton loginBtn;            
-//    public JButton[] finalCases = new JButton[2];
-//    public GradientLabel[] finalLabels = new GradientLabel[2];
-            
-    //in game panels and variables
-    private JPanel mainGamePanel; //main panel
-//    private JPanel /*casePanel, leftMoneyPanel,*/ rightMoneyPanel; //panels inside main game panel
-//    private JLabel caseRemainingNumberLbl;//, usernameLbl, passwordLbl, loginLbl;
+    private ImagePanel endOfGamePanel;
     private ArrayList<Case> caseListBtn = new ArrayList();
-//    public Timer timer;
     
     /**
      * Constructor
@@ -58,10 +42,9 @@ public class View extends JFrame implements Observer
         
         //main panels
 //        loginPanel = new CurvedJPanel();
-        bp = new PanelPackage.BackgroundPanels();
 //        backgroundPanel = new ImagePanel();
         
-        mainGamePanel = new JPanel();
+//        mainGamePanel = new JPanel();
         //panels in main game panel
 //        casePanel = new JPanel();
 //        leftMoneyPanel = new JPanel();
@@ -72,7 +55,6 @@ public class View extends JFrame implements Observer
         endOfGamePanel = new ImagePanel();
         
         createLoginPanel();
-        background();
     }
     
         
@@ -191,8 +173,10 @@ public class View extends JFrame implements Observer
         }
     }
     
-    public void background()
+    public void createLoginPanel()
     {
+        bp = new PanelPackage.BackgroundPanels();
+        lp = new PanelPackage.LoginPanels();
         bp.add(lp);
         add(bp);
     }
@@ -217,78 +201,34 @@ public class View extends JFrame implements Observer
         bp.repaint();
     }
     
-    public void createLoginPanel()
-    {
-        lp = new PanelPackage.LoginPanels();
-    }
-    
     public void displayMainGame()
     {
         this.getContentPane().removeAll();
         createMainGamePanel();
-        getContentPane().add(mainGamePanel);       
+        getContentPane().add(mgp);       
         this.revalidate();
         this.repaint();
     }
        
     public void createMainGamePanel()
     {
-        mainGamePanel.setLayout(new BorderLayout());
-        mainGamePanel.setLocation(0, 0);
-        mainGamePanel.setSize(this.frameDimension.width, this.frameDimension.height);
-        
-        mainGamePanel.add(ghp, BorderLayout.NORTH);
-//        mainGamePanel.add(leftMoneyPanel, BorderLayout.WEST);
-        mainGamePanel.add(mp.getLeftPanel(), BorderLayout.WEST);
-//        mainGamePanel.add(rightMoneyPanel, BorderLayout.EAST);
-        mainGamePanel.add(mp.getRightPanel(), BorderLayout.EAST);
-//        mainGamePanel.add(casePanel, BorderLayout.CENTER);
-        mainGamePanel.add(cp, BorderLayout.CENTER);
+//        mainGamePanel.setLayout(new BorderLayout());
+//        mainGamePanel.setLocation(0, 0);
+//        mainGamePanel.setSize(this.frameDimension.width, this.frameDimension.height);
+        mgp = new PanelPackage.MainGamePanel(frameDimension);
+        mgp.add(ghp, BorderLayout.NORTH);
+        mgp.add(mp.getLeftPanel(), BorderLayout.WEST);
+        mgp.add(mp.getRightPanel(), BorderLayout.EAST);
+        mgp.add(cp, BorderLayout.CENTER);
+//        mainGamePanel.add(ghp, BorderLayout.NORTH);
+//        mainGamePanel.add(mp.getLeftPanel(), BorderLayout.WEST);
+//        mainGamePanel.add(mp.getRightPanel(), BorderLayout.EAST);
+//        mainGamePanel.add(cp, BorderLayout.CENTER);
     }
     
     public void createTopPanel(int casesToOpen)
     {
-        ghp = new PanelPackage.GameHeaderPanel(casesToOpen);
-//        topPanel.setLayout(null);
-//        topPanel.setOpaque(false);
-//        topPanel.setPreferredSize(new Dimension(1200, 50));
-        
-//        caseRemainingNumberLbl = new JLabel(Integer.toString(casesToOpen));
-//        caseRemainingNumberLbl.setBounds(590, 5, 25, 40);
-//        Font f = caseRemainingNumberLbl.getFont
-//        caseRemainingNumberLbl.setFont(new Font("Dialog", Font.BOLD, 40));
-
-//        JLabel caseToOpenLbl = new JLabel("To Open");
-//        caseToOpenLbl.setBounds(620, 15, 50, 20);
-//
-//        topPanel.add(caseRemainingNumberLbl);
-//        topPanel.add(caseToOpenLbl);
-        
-//        JButton test;
-//        Color[] c = new Color[]{ Color.RED, Color.GREEN, Color.BLUE };
-//        int xPos = 70;
-//        int xIncrease = 40;
-//        for (int k = 0; k < 3; k++)
-//        {
-//            test = new JButton("");
-//            test.setSize(20, 20);
-//            test.setLocation(xPos, 15);
-//            test.setBackground(c[k]);
-//            test.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLACK));
-//            topPanel.add(test);
-//            xPos += xIncrease;
-//        }
-//        xPos = 1025;
-//        for (int k = 0; k < 3; k++)
-//        {
-//            test = new JButton("");
-//            test.setSize(20, 20);
-//            test.setLocation(xPos, 15);
-//            test.setBackground(c[k]);
-//            test.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLACK));
-//            topPanel.add(test);
-//            xPos += xIncrease;
-//        }     
+        ghp = new PanelPackage.GameHeaderPanel(casesToOpen);  
     }
     
     public void createMoneyPanels(LinkedHashMap<Integer, GradientLabel> valueLbls)
