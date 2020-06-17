@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 
 public class Model extends Observable
@@ -23,6 +24,7 @@ public class Model extends Observable
     protected Database databaseConnection;
     protected String username, password;
     public boolean caseSelected = false;
+    private boolean stopRequest = false;
     
     public Model()
     {
@@ -44,6 +46,7 @@ public class Model extends Observable
     public void endGame()
     {
         update.endOfGame = true;
+//        sleep(2000);
         setChanged();
         notifyObservers(update);
     }
@@ -63,9 +66,16 @@ public class Model extends Observable
             update.casesRemainingThisRound--;
             if(update.casesRemainingThisRound == 0)
             {
-                this.calculateBankOffer(update.roundNumber, update.caseList);
-                this.setUpNewRound();
-                update.endOfRound = true;
+                if(update.roundNumber != 9)
+                {
+                    this.calculateBankOffer(update.roundNumber, update.caseList);
+                    this.setUpNewRound();
+                    update.endOfRound = true;
+                }
+                else
+                {
+                    this.endGame();
+                }
             }
         }
         setChanged();
@@ -97,11 +107,10 @@ public class Model extends Observable
         update.casesRemainingThisRound = update.totalCasesToOpen;
         update.roundNumber++;
         System.out.println("Round Number" + update.roundNumber);
-        if(update.roundNumber == 9)
-        {
-            //At Round Nine we should we ending");
-            update.endOfGame = true;
-        }
+//        if(update.roundNumber > 9)
+//        {
+//            update.endOfGame = true;
+//        }
     }
     
     public void setUpCases()
@@ -161,15 +170,15 @@ public class Model extends Observable
             int num = update.duplicateCaseValues.get(k - 1);
             if (k <= 13)
             {
-                update.tester.put(num, new GradientCmp("$" + nf.format(num), MoneyValueType.BLUE));
+                update.tester.put(num, new GradientLabel("$" + nf.format(num), MoneyValueType.BLUE));
             }
             else if (k >= 14 && k <= 22)
             {
-                update.tester.put(num, new GradientCmp("$" + nf.format(num), MoneyValueType.RED));
+                update.tester.put(num, new GradientLabel("$" + nf.format(num), MoneyValueType.RED));
             }
             else
             {
-                update.tester.put(num, new GradientCmp("$" + nf.format(num), MoneyValueType.GREEN));
+                update.tester.put(num, new GradientLabel("$" + nf.format(num), MoneyValueType.GREEN));
             }
         }
     }

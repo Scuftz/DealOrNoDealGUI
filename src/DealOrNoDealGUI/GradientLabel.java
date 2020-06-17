@@ -7,22 +7,25 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.Timer;
 
 /**
  *
  * @author shivn
  */
-public class GradientCmp extends JLabel
+public class GradientLabel extends JLabel
 {
     protected MoneyValueType mvt;
     protected boolean open;
+    Timer timer;
     
-    public GradientCmp(String text, MoneyValueType mvt)
+    public GradientLabel(String text, MoneyValueType mvt)
     {
         super(text);
         this.mvt = mvt;
         this.open = false;
     }
+    
     
     public void setOpen()
     {

@@ -8,14 +8,15 @@ import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.Timer;
 
 public class View extends JFrame implements Observer
 {
     /**
      * Variables
      */
-    //log in panels and variables
-    private ImagePanel backgroundPanel, topPanel;
+    private BackgroundPanel bp;
+    private ImagePanel backgroundPanel, topPanel, endOfGamePanel;
     private CurvedJPanel loginPanel;
     private Dimension screenDimension, frameDimension;
     public JTextField usernameTxt;
@@ -25,11 +26,15 @@ public class View extends JFrame implements Observer
     private NumberFormat nf = NumberFormat.getNumberInstance();
     public JToggleButton tb = new JToggleButton("Deal");
             
+    public JButton[] finalCases = new JButton[2];
+    public GradientLabel[] finalLabels = new GradientLabel[2];
+            
     //in game panels and variables
     private JPanel mainGamePanel; //main panel
     private JPanel casePanel, leftMoneyPanel, rightMoneyPanel; //panels inside main game panel
     private JLabel caseRemainingNumberLbl, usernameLbl, passwordLbl, loginLbl;
     private ArrayList<Case> caseListBtn = new ArrayList();
+//    public Timer timer;
     
     /**
      * Constructor
@@ -48,7 +53,9 @@ public class View extends JFrame implements Observer
         
         //main panels
         loginPanel = new CurvedJPanel();
+        bp = new BackgroundPanel();
         backgroundPanel = new ImagePanel();
+        
         mainGamePanel = new JPanel();
         //panels in main game panel
         casePanel = new JPanel();
@@ -56,6 +63,9 @@ public class View extends JFrame implements Observer
         rightMoneyPanel = new JPanel();
         topPanel = new ImagePanel();
         tb.setName("Deal");
+        
+        endOfGamePanel = new ImagePanel();
+        
         createLoginPanel();
         background();
     }
@@ -84,6 +94,7 @@ public class View extends JFrame implements Observer
         }
         else if (!update.caseSelected)
         {
+            System.out.println("User Case Selected");
             update.caseSelected = true;
             createTopPanel(update.casesRemainingThisRound);
             createMoneyPanels(update.tester);
@@ -92,12 +103,20 @@ public class View extends JFrame implements Observer
         }
         else if (update.endOfGame)
         {
-            System.out.println("ending");
-            this.getContentPane().removeAll();
+            System.out.println("End of Game");
+            this.validate();
+            this.repaint();
+            System.out.println("Should've repainted");
+//            timer.start();
+            System.out.println("ouk");
+            
+//            this.getContentPane().removeAll();
+//            this.displayEndOfGame();
             //go to end game panel, maybe introduce timer here with a thread when display shocker result
         }
         else if(update.endOfRound)
         {
+            System.out.println("End of Round");
             update.endOfRound = false;
             this.updateCaseToOpen(update.casesRemainingThisRound);
             this.validate();
@@ -113,14 +132,35 @@ public class View extends JFrame implements Observer
         }
         else if (update.quitGame)
         {
-            
+            System.out.println("Quitting Game");
         }
         else
         {
+            System.out.println("Doing Else");
             this.updateCaseToOpen(update.casesRemainingThisRound);
         }
-        this.validate();
-        this.repaint();
+        if (!update.endOfGame)
+        {
+            System.out.println("V&P");
+            this.validate();
+            this.repaint();     
+        }
+    }
+    
+    public void displayEndOfGame()
+    {
+        endOfGamePanel.setLayout(null);
+        endOfGamePanel.setOpaque(false);
+        endOfGamePanel.setSize(1200, 609);
+        
+        for (Case c : caseListBtn)
+        {
+            if(!c.getOpenStatus() & !c.isPlayerCase())
+            {
+                System.out.println(c.getCaseNumber() + ": " + c.getCaseValue());
+            }
+        }
+        add(endOfGamePanel);
     }
     
     public int displayBankOffer(int bankOffer)
@@ -146,24 +186,27 @@ public class View extends JFrame implements Observer
     
     public void background()
     {
-        backgroundPanel.setLayout(null);
-        backgroundPanel.setLocation(0,0);
-        backgroundPanel.setSize(1200, 609);
-        try {
-            Image img = ImageIO.read(new File("logo.jpg"));
-            backgroundPanel.setBackground(img);
-        } catch (IOException ex) {
-            System.out.println("io excpo");
-        }
-        
-        add(backgroundPanel);
-        backgroundPanel.add(loginPanel);
+        bp.add(loginPanel);
+        add(bp);
+//        backgroundPanel.setLayout(null);
+//        backgroundPanel.setLocation(0,0);
+//        backgroundPanel.setSize(1200, 609);
+//        try {
+//            Image img = ImageIO.read(new File("logo.jpg"));
+//            backgroundPanel.setBackground(img);
+//        } catch (IOException ex) {
+//            System.out.println("io excpo");
+//        }
+//        
+//        add(backgroundPanel);
+//        backgroundPanel.add(loginPanel);
     }
     
 //    public void selectCasePanel()
     public void selectCasePanel(ArrayList<Case> caseList)
     {
-        backgroundPanel.remove(loginPanel);
+//        backgroundPanel.remove(loginPanel);
+        bp.remove(loginPanel);
         JPanel temp = new JPanel(new GridLayout(4, 7, 25, 25));
         temp.setBounds(200, 130, 790, 350);
         temp.setBackground(new Color(255,255,255,100));
@@ -176,10 +219,14 @@ public class View extends JFrame implements Observer
         select.setFont(new Font("Verdana", Font.BOLD, 40));
         select.setForeground(Color.YELLOW);
         select.setBounds(450, 30, 400, 40);
-        backgroundPanel.add(select);
-        backgroundPanel.add(temp);
-        backgroundPanel.revalidate();
-        backgroundPanel.repaint(); 
+        bp.add(select);
+        bp.add(temp);
+        bp.revalidate();
+        bp.repaint();
+//        backgroundPanel.add(select);
+//        backgroundPanel.add(temp);
+//        backgroundPanel.revalidate();
+//        backgroundPanel.repaint(); 
     }
     
     public void createLoginPanel()
@@ -263,10 +310,8 @@ public class View extends JFrame implements Observer
     public void createTopPanel(int casesToOpen)
     {
         topPanel.setLayout(null);
-        topPanel.setBackground(Color.blue);
         topPanel.setOpaque(false);
         topPanel.setPreferredSize(new Dimension(1200, 50));
-        topPanel.setBackground(new Color(255, 217, 102));
         
         caseRemainingNumberLbl = new JLabel(Integer.toString(casesToOpen));
         caseRemainingNumberLbl.setBounds(590, 5, 25, 40);
@@ -306,16 +351,16 @@ public class View extends JFrame implements Observer
         }     
     }
     
-    public void createMoneyPanels(LinkedHashMap<Integer, GradientCmp> valueLbls)
+    public void createMoneyPanels(LinkedHashMap<Integer, GradientLabel> valueLbls)
     {
         leftMoneyPanel.setLayout(new BoxLayout(leftMoneyPanel, BoxLayout.Y_AXIS));
         rightMoneyPanel.setLayout(new BoxLayout(rightMoneyPanel, BoxLayout.Y_AXIS));
         int width = 250;
         int height = 40;
                 
-        for(Map.Entry<Integer, GradientCmp> entry  : valueLbls.entrySet())
+        for(Map.Entry<Integer, GradientLabel> entry  : valueLbls.entrySet())
         {
-            GradientCmp lbl = entry.getValue();
+            GradientLabel lbl = entry.getValue();
             lbl.setOpaque(false);
             lbl.setFont(new Font("Arial", Font.BOLD, 20));
             lbl.setForeground(Color.WHITE);
@@ -358,11 +403,10 @@ public class View extends JFrame implements Observer
         {
             for(int j = 0; j < 5; j++)
             {
-//                Case temp = caseListBtn.get(counter);
                 Case temp = caseList.get(counter);
                 if(temp.isPlayerCase())
                 {
-//                    temp = caseListBtn.get(++counter);
+                    finalCases[0] = temp;
                     temp = caseListBtn.get(++counter);
                 }
                 temp.setLocation(location);
@@ -377,6 +421,7 @@ public class View extends JFrame implements Observer
         
     public void setController(ActionListener controller)
     {
+//        timer = new Timer(2000, controller);
         loginBtn.addActionListener(controller);
     }
     
@@ -396,7 +441,7 @@ public class View extends JFrame implements Observer
 
 
 //THIS WAS INSIDE CREATE MONEY PANELS        
-//        for(GradientCmp lbl : caseValuesList)
+//        for(GradientLabel lbl : caseValuesList)
 //        {
 //            lbl.setOpaque(false);
 //            lbl.setFont(new Font("Arial", Font.BOLD, 20));

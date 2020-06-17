@@ -5,6 +5,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
+import javax.swing.Timer;
 
 public class Controller implements ActionListener, ItemListener
 {
@@ -40,10 +41,10 @@ public class Controller implements ActionListener, ItemListener
         {
             model.openOrSetCase((Case)o);
         }
-        else
-        {
-            
-        }
+//        else if (o instanceof Timer)
+//        {
+//            model.delay((Timer)o);
+//        }
     }
 
     @Override
