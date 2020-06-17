@@ -18,7 +18,7 @@ import javax.swing.border.Border;
  *
  * @author shivn
  */
-public class GameHeaderPanel extends ImagePanels
+public class GameHeaderPanel extends ImagePanel
 {
     private JLabel caseRemainingNumberLbl, casesToOpenLbl;
     private JButton colouredBtn;

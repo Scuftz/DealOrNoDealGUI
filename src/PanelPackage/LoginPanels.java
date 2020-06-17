@@ -19,7 +19,7 @@ import javax.swing.JTextField;
  *
  * @author shivn
  */
-public class LoginPanels extends CurvedJPanels
+public class LoginPanels extends CurvedJPanel
 {
     private JLabel loginLbl, usernameLbl, passwordLbl;
     private JTextField usernameTxt;

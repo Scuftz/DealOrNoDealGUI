@@ -22,7 +22,7 @@ import javax.swing.SwingUtilities;
  *
  * @author shivn
  */
-public class ImagePanels extends JPanel
+public class ImagePanel extends JPanel
 {
     Image img;
     public void setBackground(Image image)

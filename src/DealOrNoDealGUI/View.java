@@ -15,14 +15,15 @@ public class View extends JFrame implements Observer
     public JToggleButton tb = new JToggleButton("Deal");
     private Dimension screenDimension, frameDimension;
 
-    protected PanelPackage.BackgroundPanels bp;
+    protected PanelPackage.BackgroundPanel bp;
     protected PanelPackage.LoginPanels lp;
     protected PanelPackage.GameHeaderPanel ghp;
     protected PanelPackage.CasePanel cp;
     protected PanelPackage.MoneyPanel mp;
     protected PanelPackage.MainGamePanel mgp;
+    protected PanelPackage.SelectCasePanel scp;
+    protected PanelPackage.EndOfGamePanel ep;
     
-    private ImagePanel endOfGamePanel;
     private ArrayList<Case> caseListBtn = new ArrayList();
     
     /**
@@ -39,21 +40,7 @@ public class View extends JFrame implements Observer
         screenDimension = tk.getScreenSize();
         frameDimension = this.getSize();
         setLocation((screenDimension.width-frameDimension.width)/2, (screenDimension.height-frameDimension.height)/2);
-        
-        //main panels
-//        loginPanel = new CurvedJPanel();
-//        backgroundPanel = new ImagePanel();
-        
-//        mainGamePanel = new JPanel();
-        //panels in main game panel
-//        casePanel = new JPanel();
-//        leftMoneyPanel = new JPanel();
-//        rightMoneyPanel = new JPanel();
-//        topPanel = new ImagePanel();
         tb.setName("Deal");
-        
-        endOfGamePanel = new ImagePanel();
-        
         createLoginPanel();
     }
     
@@ -137,9 +124,10 @@ public class View extends JFrame implements Observer
     
     public void displayEndOfGame()
     {
-        endOfGamePanel.setLayout(null);
-        endOfGamePanel.setOpaque(false);
-        endOfGamePanel.setSize(1200, 609);
+        ep = new PanelPackage.EndOfGamePanel();
+//        endOfGamePanel.setLayout(null);
+//        endOfGamePanel.setOpaque(false);
+//        endOfGamePanel.setSize(1200, 609);
         
         for (Case c : caseListBtn)
         {
@@ -148,7 +136,7 @@ public class View extends JFrame implements Observer
                 System.out.println(c.getCaseNumber() + ": " + c.getCaseValue());
             }
         }
-        add(endOfGamePanel);
+        add(ep);
     }
     
     public int displayBankOffer(int bankOffer)
@@ -161,7 +149,6 @@ public class View extends JFrame implements Observer
     
     public void updateCaseToOpen(int num)
     {
-//        caseRemainingNumberLbl.setText(Integer.toString(num));
         ghp.changeCaseRemainingValue(num);
     }
     
@@ -175,7 +162,7 @@ public class View extends JFrame implements Observer
     
     public void createLoginPanel()
     {
-        bp = new PanelPackage.BackgroundPanels();
+        bp = new PanelPackage.BackgroundPanel();
         lp = new PanelPackage.LoginPanels();
         bp.add(lp);
         add(bp);
@@ -184,19 +171,13 @@ public class View extends JFrame implements Observer
     public void selectCasePanel(ArrayList<Case> caseList)
     {
         bp.remove(lp);
-        JPanel selectCase = new JPanel(new GridLayout(4, 7, 25, 25));
-        selectCase.setBounds(200, 130, 790, 350);
-        selectCase.setBackground(new Color(255,255,255,100));
-        for(Case c : caseList)
-        {
-            selectCase.add(c);
-        }
+        scp = new PanelPackage.SelectCasePanel(caseList);
         JLabel selectLbl = new JLabel("Select A Case!");
         selectLbl.setFont(new Font("Verdana", Font.BOLD, 40));
         selectLbl.setForeground(Color.YELLOW);
         selectLbl.setBounds(450, 30, 400, 40);
         bp.add(selectLbl);
-        bp.add(selectCase);
+        bp.add(scp);
         bp.revalidate();
         bp.repaint();
     }
@@ -212,18 +193,11 @@ public class View extends JFrame implements Observer
        
     public void createMainGamePanel()
     {
-//        mainGamePanel.setLayout(new BorderLayout());
-//        mainGamePanel.setLocation(0, 0);
-//        mainGamePanel.setSize(this.frameDimension.width, this.frameDimension.height);
         mgp = new PanelPackage.MainGamePanel(frameDimension);
         mgp.add(ghp, BorderLayout.NORTH);
         mgp.add(mp.getLeftPanel(), BorderLayout.WEST);
         mgp.add(mp.getRightPanel(), BorderLayout.EAST);
         mgp.add(cp, BorderLayout.CENTER);
-//        mainGamePanel.add(ghp, BorderLayout.NORTH);
-//        mainGamePanel.add(mp.getLeftPanel(), BorderLayout.WEST);
-//        mainGamePanel.add(mp.getRightPanel(), BorderLayout.EAST);
-//        mainGamePanel.add(cp, BorderLayout.CENTER);
     }
     
     public void createTopPanel(int casesToOpen)

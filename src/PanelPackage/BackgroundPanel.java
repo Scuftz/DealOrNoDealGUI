@@ -15,9 +15,9 @@ import javax.imageio.ImageIO;
  *
  * @author shivn
  */
-public class BackgroundPanels extends ImagePanels
+public class BackgroundPanel extends ImagePanel
 {
-    public BackgroundPanels()
+    public BackgroundPanel()
     {
         setLayout(null);
         setLocation(0,0);
