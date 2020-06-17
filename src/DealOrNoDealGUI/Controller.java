@@ -28,8 +28,11 @@ public class Controller implements ActionListener, ItemListener
         Object o = e.getSource();
         if(cmp.equals("LOGIN"))
         {
-            String un = view.usernameTxt.getText();
-            char[] pw = view.passwordTxt.getPassword();
+//            String un = view.usernameTxt.getText();
+//            char[] pw = view.passwordTxt.getPassword();
+            String un = view.lp.getUsername();
+            char[] pw = view.lp.getPassword();
+                    
             if((!un.equals("")) && (pw.length>0))
             {
                 String password = String.valueOf(pw);

@@ -16,6 +16,8 @@ public class View extends JFrame implements Observer
      * Variables
      */
     private BackgroundPanel bp;
+    public LoginPanel lp;
+    
     private ImagePanel backgroundPanel, topPanel, endOfGamePanel;
     private CurvedJPanel loginPanel;
     private Dimension screenDimension, frameDimension;
@@ -186,7 +188,7 @@ public class View extends JFrame implements Observer
     
     public void background()
     {
-        bp.add(loginPanel);
+        bp.add(lp);
         add(bp);
 //        backgroundPanel.setLayout(null);
 //        backgroundPanel.setLocation(0,0);
@@ -206,7 +208,7 @@ public class View extends JFrame implements Observer
     public void selectCasePanel(ArrayList<Case> caseList)
     {
 //        backgroundPanel.remove(loginPanel);
-        bp.remove(loginPanel);
+        bp.remove(lp);
         JPanel temp = new JPanel(new GridLayout(4, 7, 25, 25));
         temp.setBounds(200, 130, 790, 350);
         temp.setBackground(new Color(255,255,255,100));
@@ -231,59 +233,60 @@ public class View extends JFrame implements Observer
     
     public void createLoginPanel()
     {
-        Font f = new Font("Arial", Font.PLAIN, 10);
-        Font f2 = new Font("Arial", Font.PLAIN, 20);
-        
-        loginPanel.setLayout(null);
-        loginPanel.setBounds(400,150,400,285);
-        loginPanel.setBackground(new Color(255,255,255, 245));
-        loginPanel.setOpaque(false);
-        
-        loginLbl = new JLabel("Login");
-        loginLbl.setLocation(175, 10);
-        loginLbl.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 20));
-        loginLbl.setForeground(Color.DARK_GRAY);
-        loginLbl.setSize(80, 30);
-        
-        usernameLbl = new JLabel("Username");
-        usernameLbl.setLocation(72, 60);
-        usernameLbl.setFont(f);
-        usernameLbl.setForeground(Color.DARK_GRAY);
-        usernameLbl.setSize(50, 10);
-        
-        usernameTxt = new JTextField();
-        usernameTxt.setDocument(new RestrictInputLength(20));
-        usernameTxt.setFont(f2);
-        usernameTxt.setLocation(72, 75);
-        usernameTxt.setSize(255, 30);
-        usernameTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
-        
-        passwordLbl = new JLabel("Password");
-        passwordLbl.setLocation(72, 125);
-        passwordLbl.setFont(f);
-        passwordLbl.setForeground(Color.DARK_GRAY);
-        passwordLbl.setSize(50, 10);
-        
-        passwordTxt = new JPasswordField();
-        passwordTxt.setEchoChar('*');
-        passwordTxt.setDocument(new RestrictInputLength(20));
-        passwordTxt.setFont(f2);
-        passwordTxt.setLocation(72, 140);
-        passwordTxt.setSize(255, 30);
-        passwordTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
-        
-        loginBtn = new JButton("LOGIN");
-        loginBtn.setFont(new Font("Microsoft YaHei UI Light", Font.BOLD, 15));
-        loginBtn.setLocation(125, 210);
-        loginBtn.setSize(150, 35);
-        loginBtn.setBackground(Color.YELLOW);
-        loginBtn.setBorder(BorderFactory.createRaisedBevelBorder());
-        loginPanel.add(loginLbl);
-        loginPanel.add(usernameLbl);
-        loginPanel.add(usernameTxt);
-        loginPanel.add(passwordLbl);
-        loginPanel.add(passwordTxt);
-        loginPanel.add(loginBtn);
+        lp = new LoginPanel();
+//        Font f = new Font("Arial", Font.PLAIN, 10);
+//        Font f2 = new Font("Arial", Font.PLAIN, 20);
+//        
+//        loginPanel.setLayout(null);
+//        loginPanel.setBounds(400,150,400,285);
+//        loginPanel.setBackground(new Color(255,255,255, 245));
+//        loginPanel.setOpaque(false);
+//        
+//        loginLbl = new JLabel("Login");
+//        loginLbl.setLocation(175, 10);
+//        loginLbl.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 20));
+//        loginLbl.setForeground(Color.DARK_GRAY);
+//        loginLbl.setSize(80, 30);
+//        
+//        usernameLbl = new JLabel("Username");
+//        usernameLbl.setLocation(72, 60);
+//        usernameLbl.setFont(f);
+//        usernameLbl.setForeground(Color.DARK_GRAY);
+//        usernameLbl.setSize(50, 10);
+//        
+//        usernameTxt = new JTextField();
+//        usernameTxt.setDocument(new RestrictInputLength(20));
+//        usernameTxt.setFont(f2);
+//        usernameTxt.setLocation(72, 75);
+//        usernameTxt.setSize(255, 30);
+//        usernameTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+//        
+//        passwordLbl = new JLabel("Password");
+//        passwordLbl.setLocation(72, 125);
+//        passwordLbl.setFont(f);
+//        passwordLbl.setForeground(Color.DARK_GRAY);
+//        passwordLbl.setSize(50, 10);
+//        
+//        passwordTxt = new JPasswordField();
+//        passwordTxt.setEchoChar('*');
+//        passwordTxt.setDocument(new RestrictInputLength(20));
+//        passwordTxt.setFont(f2);
+//        passwordTxt.setLocation(72, 140);
+//        passwordTxt.setSize(255, 30);
+//        passwordTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+//        
+//        loginBtn = new JButton("LOGIN");
+//        loginBtn.setFont(new Font("Microsoft YaHei UI Light", Font.BOLD, 15));
+//        loginBtn.setLocation(125, 210);
+//        loginBtn.setSize(150, 35);
+//        loginBtn.setBackground(Color.YELLOW);
+//        loginBtn.setBorder(BorderFactory.createRaisedBevelBorder());
+//        loginPanel.add(loginLbl);
+//        loginPanel.add(usernameLbl);
+//        loginPanel.add(usernameTxt);
+//        loginPanel.add(passwordLbl);
+//        loginPanel.add(passwordTxt);
+//        loginPanel.add(loginBtn);
     }
     
     public void displayMainGame()
@@ -421,8 +424,8 @@ public class View extends JFrame implements Observer
         
     public void setController(ActionListener controller)
     {
-//        timer = new Timer(2000, controller);
-        loginBtn.addActionListener(controller);
+        lp.setController(controller);
+//        loginBtn.addActionListener(controller);
     }
     
     public void setCaseController(ActionListener controller)
