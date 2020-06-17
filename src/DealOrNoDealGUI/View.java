@@ -23,6 +23,8 @@ public class View extends JFrame implements Observer
     protected PanelPackage.BackgroundPanels bp;
     protected PanelPackage.LoginPanels lp;
     protected PanelPackage.GameHeaderPanel ghp;
+    protected PanelPackage.CasePanel cp;
+    protected PanelPackage.MoneyPanel mp;
     
     private ImagePanel /*backgroundPanel,topPanel,*/ endOfGamePanel;
 //    private CurvedJPanel loginPanel;
@@ -34,8 +36,8 @@ public class View extends JFrame implements Observer
             
     //in game panels and variables
     private JPanel mainGamePanel; //main panel
-    private JPanel casePanel, leftMoneyPanel, rightMoneyPanel; //panels inside main game panel
-    private JLabel caseRemainingNumberLbl;//, usernameLbl, passwordLbl, loginLbl;
+//    private JPanel /*casePanel, leftMoneyPanel,*/ rightMoneyPanel; //panels inside main game panel
+//    private JLabel caseRemainingNumberLbl;//, usernameLbl, passwordLbl, loginLbl;
     private ArrayList<Case> caseListBtn = new ArrayList();
 //    public Timer timer;
     
@@ -61,9 +63,9 @@ public class View extends JFrame implements Observer
         
         mainGamePanel = new JPanel();
         //panels in main game panel
-        casePanel = new JPanel();
-        leftMoneyPanel = new JPanel();
-        rightMoneyPanel = new JPanel();
+//        casePanel = new JPanel();
+//        leftMoneyPanel = new JPanel();
+//        rightMoneyPanel = new JPanel();
 //        topPanel = new ImagePanel();
         tb.setName("Deal");
         
@@ -236,9 +238,12 @@ public class View extends JFrame implements Observer
         mainGamePanel.setSize(this.frameDimension.width, this.frameDimension.height);
         
         mainGamePanel.add(ghp, BorderLayout.NORTH);
-        mainGamePanel.add(leftMoneyPanel, BorderLayout.WEST);
-        mainGamePanel.add(rightMoneyPanel, BorderLayout.EAST);
-        mainGamePanel.add(casePanel, BorderLayout.CENTER);
+//        mainGamePanel.add(leftMoneyPanel, BorderLayout.WEST);
+        mainGamePanel.add(mp.getLeftPanel(), BorderLayout.WEST);
+//        mainGamePanel.add(rightMoneyPanel, BorderLayout.EAST);
+        mainGamePanel.add(mp.getRightPanel(), BorderLayout.EAST);
+//        mainGamePanel.add(casePanel, BorderLayout.CENTER);
+        mainGamePanel.add(cp, BorderLayout.CENTER);
     }
     
     public void createTopPanel(int casesToOpen)
@@ -288,76 +293,17 @@ public class View extends JFrame implements Observer
     
     public void createMoneyPanels(LinkedHashMap<Integer, GradientLabel> valueLbls)
     {
-        leftMoneyPanel.setLayout(new BoxLayout(leftMoneyPanel, BoxLayout.Y_AXIS));
-        rightMoneyPanel.setLayout(new BoxLayout(rightMoneyPanel, BoxLayout.Y_AXIS));
-        int width = 250;
-        int height = 40;
-                
-        for(Map.Entry<Integer, GradientLabel> entry  : valueLbls.entrySet())
-        {
-            GradientLabel lbl = entry.getValue();
-            lbl.setOpaque(false);
-            lbl.setFont(new Font("Arial", Font.BOLD, 20));
-            lbl.setForeground(Color.WHITE);
-            lbl.setMinimumSize(new Dimension(width, height));
-            lbl.setPreferredSize(new Dimension(width, height));
-            lbl.setMaximumSize(new Dimension(width, height));
-            
-            BevelBorder rbb = new BevelBorder(BevelBorder.RAISED);
-            MatteBorder mb;
-            CompoundBorder cb;
-            if(leftMoneyPanel.getComponents().length < 13)
-            {
-                mb = new MatteBorder(0, 0, 0, 1, (new Color(255, 204, 51)));     
-                cb = new CompoundBorder(rbb, mb);
-                lbl.setHorizontalAlignment(SwingConstants.RIGHT);
-                leftMoneyPanel.add(lbl);
-            }
-            else
-            {
-                mb = new MatteBorder(0, 1, 0, 0, (new Color(255, 204, 51)));
-                cb = new CompoundBorder(rbb, mb);
-                lbl.setHorizontalAlignment(SwingConstants.LEFT);
-                rightMoneyPanel.add(lbl);
-            }
-            lbl.setBorder(cb);           
-        }
+        mp = new PanelPackage.MoneyPanel(valueLbls);
     }
     
-//    public void createCasePanel()
     public void createCasePanel(ArrayList<Case> caseList)
     {
-        casePanel.setBackground(Color.black);
-        casePanel.setLayout(null);
-        Point location = new Point(25, 432);
-        int xIncrease = 135;
-        int yIncrease = 105;
-        
-        int counter = 0;
-        for(int k = 0; k < 5; k++)
-        {
-            for(int j = 0; j < 5; j++)
-            {
-                Case temp = caseList.get(counter);
-                if(temp.isPlayerCase())
-                {
-//                    finalCases[0] = temp;
-                    temp = caseListBtn.get(++counter);
-                }
-                temp.setLocation(location);
-                location.x += xIncrease;
-                casePanel.add(temp);
-                counter++;
-            }
-            location.y -= yIncrease;
-            location.x = 25;
-        }
+        cp = new PanelPackage.CasePanel(caseList);
     }
         
     public void setController(ActionListener controller)
     {
         lp.setController(controller);
-//        loginBtn.addActionListener(controller);
     }
     
     public void setCaseController(ActionListener controller)
@@ -373,34 +319,3 @@ public class View extends JFrame implements Observer
         tb.addItemListener(controller);
     }
 }
-
-
-//THIS WAS INSIDE CREATE MONEY PANELS        
-//        for(GradientLabel lbl : caseValuesList)
-//        {
-//            lbl.setOpaque(false);
-//            lbl.setFont(new Font("Arial", Font.BOLD, 20));
-//            lbl.setForeground(Color.WHITE);
-//            lbl.setMinimumSize(new Dimension(width, height));
-//            lbl.setPreferredSize(new Dimension(width, height));
-//            lbl.setMaximumSize(new Dimension(width, height));
-//            
-//            BevelBorder rbb = new BevelBorder(BevelBorder.RAISED);
-//            MatteBorder mb;
-//            CompoundBorder cb;
-//            if(leftMoneyPanel.getComponents().length < 13)
-//            {
-//                mb = new MatteBorder(0, 0, 0, 1, (new Color(255, 204, 51)));     
-//                cb = new CompoundBorder(rbb, mb);
-//                lbl.setHorizontalAlignment(SwingConstants.RIGHT);
-//                leftMoneyPanel.add(lbl);
-//            }
-//            else
-//            {
-//                mb = new MatteBorder(0, 1, 0, 0, (new Color(255, 204, 51)));
-//                cb = new CompoundBorder(rbb, mb);
-//                lbl.setHorizontalAlignment(SwingConstants.LEFT);
-//                rightMoneyPanel.add(lbl);
-//            }
-//            lbl.setBorder(cb);
-//        }

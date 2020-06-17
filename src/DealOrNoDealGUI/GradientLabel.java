@@ -5,9 +5,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.Timer;
 
 /**
  *
@@ -17,7 +15,6 @@ public class GradientLabel extends JLabel
 {
     protected MoneyValueType mvt;
     protected boolean open;
-    Timer timer;
     
     public GradientLabel(String text, MoneyValueType mvt)
     {
@@ -25,8 +22,7 @@ public class GradientLabel extends JLabel
         this.mvt = mvt;
         this.open = false;
     }
-    
-    
+        
     public void setOpen()
     {
         this.open = true;

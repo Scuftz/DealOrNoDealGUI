@@ -17,10 +17,18 @@ import javax.swing.JPanel;
  */
 public class CasePanel extends JPanel
 {
+    private ArrayList<Case> caseListBtn;
+    
     public CasePanel(ArrayList<Case> caseListBtn)
     {
         setBackground(Color.black);
         setLayout(null);
+        this.caseListBtn = caseListBtn;
+        createCaseLocations();
+    }
+    
+    public void createCaseLocations()
+    {
         Point location = new Point(25, 432);
         int xIncrease = 135;
         int yIncrease = 105;
@@ -30,23 +38,18 @@ public class CasePanel extends JPanel
         {
             for(int j = 0; j < 5; j++)
             {
-                Case temp = caseListBtn.get(counter);
-                if(temp.isPlayerCase())
+                Case tempCase = caseListBtn.get(counter);
+                if(tempCase.isPlayerCase())
                 {
-                    temp = caseListBtn.get(++counter);
+                    tempCase = caseListBtn.get(++counter);
                 }
-                temp.setLocation(location);
+                tempCase.setLocation(location);
                 location.x += xIncrease;
-                add(temp);
+                add(tempCase);
                 counter++;
             }
             location.y -= yIncrease;
             location.x = 25;
         }
-    }
-    
-    public void createCaseLocations()
-    {
-        
     }
 }
