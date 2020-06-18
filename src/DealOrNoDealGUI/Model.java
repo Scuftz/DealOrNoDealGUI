@@ -42,7 +42,8 @@ public class Model extends Observable
     public void quitGame()
     {
         playerDB.closeDatabase();
-        update.quitGame = true;
+//        update.quitGame = true;
+        update.setQuitGameFlag(true);
         setChanged();
         notifyObservers(update);
     }
@@ -61,47 +62,51 @@ public class Model extends Observable
     public void checkLogin(String un, String pw)
     {
         boolean loginStatus = playerDB.checkLogin(un, pw);
-        update.loginFlag = loginStatus;
-        update.playerUsername = un;
+        update.setLoginFlag(loginStatus);
+//        update.loginFlag = loginStatus;
+        update.setPlayerName(un);// = un;
         setChanged();
         notifyObservers(update);
     }
     
     public void checkHighScore()
     {
-        int highscore = playerDB.getPlayerHighScore(update.playerUsername);
+        int highscore = playerDB.getPlayerHighScore(update.getPlayerName());
         System.out.println("PLAYER CURRENT HIGH SCORE: " + highscore);
-        System.out.println("MOST RECENT BANK OFFER: " + update.bankOffer);
-        System.out.println("USER CASE VALUE: " + update.userCaseValue);
+        System.out.println("MOST RECENT BANK OFFER: " + update.getBankOffer());
+        System.out.println("USER CASE VALUE: " + update.getPlayerCaseValue());
         
-        if(update.dealAccepted)
+        if(update.getDealAcceptedFlag())
         {
-            if (highscore < update.bankOffer)
+            if (highscore < update.getBankOffer())
             {
-                playerDB.updateScore(update.playerUsername, update.bankOffer);
+                playerDB.updateScore(update.getPlayerName(), update.getBankOffer());
             }
         }
         else
         {
-            if (highscore < update.userCaseValue)
+            if (highscore < update.getPlayerCaseValue())
             {
-                playerDB.updateScore(update.playerUsername, update.userCaseValue);
+                playerDB.updateScore(update.getPlayerName(), update.getPlayerCaseValue());
             }
         }
-        highscore = playerDB.getPlayerHighScore(update.playerUsername);
-        update.userHighScore = highscore;
+        highscore = playerDB.getPlayerHighScore(update.getPlayerName());
+        update.setPlayerHighScore(highscore);
+//        update.userHighScore = highscore;
         System.out.println("PLAYER CURRENT HIGH SCORE: " + highscore);
     }
     
     public void getAllTimeScore()
     {
         int topScore = playerDB.getAllTimeHighScore();
-        update.allTimeHighScore = topScore;
+        update.setAllTimeScore(topScore);
+//        update.allTimeHighScore = topScore;
     }
     
     public void endGame()
     {
-        update.endOfGame = true;
+//        update.endOfGame = true;
+        update.setEndOfGameFlag(true);
         this.checkHighScore();
         this.getAllTimeScore();
         setChanged();
@@ -111,24 +116,28 @@ public class Model extends Observable
     //will change the value of case opened to its case value
     public void openOrSetCase(Case c)
     {
-        if (!update.caseSelected)
+        if (!update.getCaseSelectedFlag())
         {
             update.caseList.get(c.getCaseNumber()-1).setPlayerCase(true);
-            update.userCaseValue = c.getCaseValue();
+//            update.userCaseValue = c.getCaseValue();
+            update.setPlayerCaseValue(c.getCaseValue());
         }
         else
         {
             update.caseList.get(c.getCaseNumber() - 1).setOpenStatus(true);
             update.tester.get(c.getCaseValue()).setOpen();
-            update.totalCasesLeft--;
-            update.casesRemainingThisRound--;
-            if(update.casesRemainingThisRound == 0)
+            update.setTotalCasesLeft(update.getTotalCasesLeft() - 1);
+//            update.totalCasesLeft--;
+//            update.casesRemainingThisRound--;
+            update.setCasesRemainingThisRound(update.getCasesRemainingThisRound() - 1);
+            if(update.getCasesRemainingThisRound() == 0)
             {
-                if(update.roundNumber != update.maxRounds)
+                if(update.getRoundNumber() != update.getMaxRounds())
                 {
-                    this.calculateBankOffer(update.roundNumber, update.caseList);
+                    this.calculateBankOffer(update.getRoundNumber(), update.caseList);
                     this.setUpNewRound();
-                    update.endOfRound = true;
+//                    update.endOfRound = true;
+                    update.setEndOfRoundFlag(true);
                 }
                 else
                 {
@@ -183,20 +192,24 @@ public class Model extends Observable
             }
         }
         //calculate the sum of the unopenned cases, divide by the amount of cases left, multiply by the deductor
-        float bankOffer = (sum / update.totalCasesLeft) * update.percentageDeductions[update.roundNumber];
+        float bankOffer = (sum / update.getTotalCasesLeft()) * update.percentageDeductions[update.getRoundNumber()];
         System.out.println("BANK OFFER...\n" + nf.format((int)bankOffer));
-        update.bankOffer = (int)bankOffer;
+//        update.bankOffer = (int)bankOffer;
+        update.setBankOffer((int)bankOffer);
     }
     
     public void setUpNewRound()
     {
-        if(update.totalCasesToOpen > 1)
+        if(update.getTotalCasesToOpen() > 1)
         {
-            update.totalCasesToOpen--;
+//            update.totalCasesToOpen--;
+            update.setTotalCasesToOpen(update.getTotalCasesToOpen() - 1);
         }
-        update.casesRemainingThisRound = update.totalCasesToOpen;
-        update.roundNumber++;
-        System.out.println("Round Number" + update.roundNumber);
+//        update.casesRemainingThisRound = update.getTotalCasesToOpen();
+        update.setCasesRemainingThisRound(update.getTotalCasesToOpen());
+//        update.roundNumber++;
+        update.setRoundNumber(update.getRoundNumber() + 1);
+        System.out.println("Round Number" + update.getRoundNumber());
     }
     
     public void setUpCases()
@@ -204,7 +217,7 @@ public class Model extends Observable
         try
         {
             input = new Scanner(new FileReader(file));
-            while (caseCounter < update.totalAmountOfCases)
+            while (caseCounter < update.getTotalAmountOfCases())
             {
                 try
                 {
@@ -228,7 +241,7 @@ public class Model extends Observable
             update.duplicateCaseValues = (ArrayList<Integer>)update.moneyValuesForCases.clone();
             Collections.sort(update.duplicateCaseValues);
             
-            for (int caseNumbers = 1; caseNumbers <= update.totalAmountOfCases; caseNumbers++)
+            for (int caseNumbers = 1; caseNumbers <= update.getTotalAmountOfCases(); caseNumbers++)
             {
                 int x = rand.nextInt(update.moneyValuesForCases.size());
                 update.caseList.add(new Case(caseNumbers, update.moneyValuesForCases.get(x)));
@@ -240,7 +253,7 @@ public class Model extends Observable
             System.err.println("File for the case values was not found (caseValues.txt). The proper game values are unable to be used.");
             System.err.println("Case values have been defaulted to $1000 multiplied by a random integer between 1-100 as opposed to proper game values.");
             System.err.println("For the proper values to be used, the case values files must be in the right file location with the right name.");
-            for (int x = 1; x <= update.totalAmountOfCases; x++)
+            for (int x = 1; x <= update.getTotalAmountOfCases(); x++)
             {
                 update.caseList.add(new Case(x, (1000 * (rand.nextInt(100) + 1))));
             }
@@ -250,7 +263,7 @@ public class Model extends Observable
     
     public void setUpValues()
     {
-        for (int k = 1; k <= update.totalAmountOfCases; k++)
+        for (int k = 1; k <= update.getTotalAmountOfCases(); k++)
         {                                
                 //this is for labels...??
             int num = update.duplicateCaseValues.get(k - 1);

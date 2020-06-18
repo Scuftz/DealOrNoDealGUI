@@ -23,7 +23,6 @@ public class Controller implements ActionListener, ItemListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        System.out.println("WE BOUTTA RESTART");
         String cmp = e.getActionCommand();
         Object o = e.getSource();
         if (o instanceof Case)
@@ -57,8 +56,8 @@ public class Controller implements ActionListener, ItemListener
         }
         else if (cmp.equals("Quit Game"))
         {
+            System.out.println("Quitting Game");
             model.quitGame();
-            System.out.println("quit game");
         }
     }
 
@@ -66,9 +65,9 @@ public class Controller implements ActionListener, ItemListener
     public void itemStateChanged(ItemEvent e)
     {
         String name = ((JComponent)e.getItem()).getName();
-        System.out.println("ITEM STATE CHANGED");
         if(name.equals("Deal"))
         {
+            System.out.println("Deal Accepted");
             model.endGame();
         }
         else if (name.equals("Restart"))

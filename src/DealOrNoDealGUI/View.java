@@ -65,43 +65,46 @@ public class View extends JFrame implements Observer, Runnable
 //            restartToggle.setSelected(true);
 //            createLoginPanel();
 //        }
-        if (update.quitGame)
+        if (update.getQuitGameFlag())
         {
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
-        else if(!update.loginFlag)
+        else if(!update.getLoginFlag())
         {
             System.out.println("in view LOG IN FAILED!");
             JOptionPane.showMessageDialog(null, "Login Failed", "Failed to Login", 0);
             loginPanel.setPasswordBlank();
         }
-        else if(!update.gameStarted)
+        else if(!update.getGameStartedFlag())
         {
-            update.loginFlag = true;
-            update.gameStarted = true;
-            this.createCasesForController(update.caseList, update.totalAmountOfCases);
+//            update.loginFlag = true;
+//            update.gameStarted = true;
+            update.setGameStartedFlag(true);
+            this.createCasesForController(update.caseList, update.getTotalAmountOfCases());
             this.selectCasePanel(update.caseList);
         }
-        else if (!update.caseSelected)
+        else if (!update.getCaseSelectedFlag())
         {
             System.out.println("User Case Selected");
-            update.caseSelected = true;
-            createTopPanel(update.casesRemainingThisRound, update.flashBtn);
+//            update.caseSelected = true;
+            update.setCaseSelectedFlag(true);
+            createTopPanel(update.getCasesRemainingThisRound(), update.flashBtn);
             createMoneyPanels(update.tester);
             this.createCasePanel(update.caseList);
             this.displayMainGame();
         }
-        else if (update.endOfGame)
+        else if (update.getEndOfGameFlag())
         {
             System.out.println("End of Game");
             this.getContentPane().removeAll();
-            this.displayEndOfGame(update.dealAccepted, update.userCaseValue, update.bankOffer, update.userHighScore, update.allTimeHighScore);
+            this.displayEndOfGame(update.getDealAcceptedFlag(), update.getPlayerCaseValue(), update.getBankOffer(), update.getPlayerHighScore(), update.getAllTimeScore());
         }
-        else if(update.endOfRound)
+        else if(update.getEndOfRoundFlag())
         {
-            update.endOfRound = false;
+//            update.endOfRound = false;
+            update.setEndOfRoundFlag(false);
             System.out.println("End of Round");
-            this.updateCaseToOpen(update.casesRemainingThisRound);
+            this.updateCaseToOpen(update.getCasesRemainingThisRound());
             
             SwingUtilities.invokeLater(this);
             SwingUtilities.invokeLater(new Runnable()
@@ -112,16 +115,17 @@ public class View extends JFrame implements Observer, Runnable
                     timer.start();
                 }
             });
-            displayBankOffer(update.bankOffer);
+            displayBankOffer(update.getBankOffer());
             if(result == 0)
             {
-                update.dealAccepted = true;
+//                update.dealAccepted = true;
+                update.setDealAcceptedFlag(true);
                 dealAcceptedToggle.setSelected((!dealAcceptedToggle.isSelected()));
             }
         }
         else
         {
-            this.updateCaseToOpen(update.casesRemainingThisRound);
+            this.updateCaseToOpen(update.getCasesRemainingThisRound());
         }
         this.validate();
         this.repaint();
