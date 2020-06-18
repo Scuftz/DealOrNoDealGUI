@@ -1,7 +1,10 @@
 package PanelPackage;
+import SpecialClassPackage.ThreadedButton;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,6 +21,7 @@ public class GameHeaderPanel extends ImagePanel
     private JButton colouredBtn;
     private Color[] colourArray;
     private Border border;
+    private ArrayList<ThreadedButton> tbs = new ArrayList();
     
     public GameHeaderPanel(int casesToOpen)
     {
@@ -51,31 +55,31 @@ public class GameHeaderPanel extends ImagePanel
     
     public void createButtons()
     {
-        colourArray = new Color[]{ Color.RED, Color.GREEN, Color.BLUE };
-        border = BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLACK);
-        int xPosition = 70;
-        int xIncrease = 40;
+        SpecialClassPackage.ThreadedButton threadButton;
+        int[] xLocations = new int[]{70, 110, 150, 1025, 1065, 1105};
+        int yLocation = 15;
+        SpecialClassPackage.MoneyValueType mvt;
         for (int k = 0; k < 6; k++)
         {
-            colouredBtn = new JButton("");
-            colouredBtn.setSize(20, 20);
-            colouredBtn.setBorder(border);
-            
-            if (k >= 3)
+            if(k == 0 || k == 3)
             {
-                if (xPosition < 1025)
-                {
-                    xPosition = 1025;
-                }
-                colouredBtn.setBackground(colourArray[k - 3]);
+                mvt = SpecialClassPackage.MoneyValueType.RED;
+            }
+            else if(k == 1 || k == 4)
+            {
+                mvt = SpecialClassPackage.MoneyValueType.GREEN;
             }
             else
             {
-                colouredBtn.setBackground(colourArray[k]);
+                mvt = SpecialClassPackage.MoneyValueType.BLUE;
             }
-            colouredBtn.setLocation(xPosition, 15);
-            add(colouredBtn);
-            xPosition += xIncrease;
+            threadButton = new SpecialClassPackage.ThreadedButton(xLocations[k], yLocation, mvt);
+            tbs.add(threadButton);
+            add(threadButton);
         }
+    }
+    public ArrayList<ThreadedButton> getButtons()
+    {
+        return this.tbs;
     }
 }

@@ -1,16 +1,23 @@
 package DealOrNoDealGUI;
 import SpecialClassPackage.GradientLabel;
+import SpecialClassPackage.ThreadedButton;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 public class View extends JFrame implements Observer
 {
-    /**
-     * Variables
-     */
+    protected Lock lock = new ReentrantLock();
+    protected Condition con = lock.newCondition();
+    private int result;
+    
     public boolean setUp = false;
     private NumberFormat nf = NumberFormat.getNumberInstance();
     public JToggleButton tb = new JToggleButton("Deal");
@@ -92,9 +99,57 @@ public class View extends JFrame implements Observer
             System.out.println("End of Round");
             update.endOfRound = false;
             this.updateCaseToOpen(update.casesRemainingThisRound);
-            this.validate();
-            this.repaint();
-            int result = displayBankOffer(update.bankOffer);
+            this.validate(); //wont work til end pointless
+            this.repaint(); // wont work till end pointless
+            
+//            result = -1;
+//            Thread t1 = new Thread(new Runnable()
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        displayBankOffer(update.bankOffer);
+                    }
+                    catch (InterruptedException e)
+                    {
+                    }            
+                }
+            });
+                       
+//            Thread t2 = new Thread(new Runnable()
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+//                        SpecialClassPackage.ThreadedButton.doShit(lock, con);
+                        for(ThreadedButton t : ghp.getButtons())
+                        {
+                            t.doShit(lock, con);
+                        }
+                    }
+                    catch (InterruptedException e)
+                    {
+                        
+                    }            
+                }
+            });
+            
+//            t1.start();
+//            t2.start();
+//            try {
+////                t1.join();
+//                t2.join();
+//            } catch (InterruptedException ex) {
+//                System.out.println("Error when joining");
+//            }
+            
+//            int result = displayBankOffer(update.bankOffer);
             if(result == 0)
             {
                 System.out.println(result);
@@ -109,17 +164,41 @@ public class View extends JFrame implements Observer
         }
         else
         {
-            System.out.println("Doing Else");
             this.updateCaseToOpen(update.casesRemainingThisRound);
         }
         if (!update.endOfGame)
         {
-            System.out.println("V&P");
             this.validate();
             this.repaint();     
         }
     }
     
+    public void displayBankOffer(int bankOffer) throws InterruptedException
+    {
+//        Object[] options = {"Deal", "No Deal"};
+//        int accept;
+//        lock.lock();
+//        con.await();
+//        System.out.println("T1 now awake");
+//        try
+//        {
+//            System.out.println("Showing Bank Offer Now");
+//            accept = JOptionPane.showOptionDialog(null, ("BANK OFFER: $" + nf.format(bankOffer)), "Bank Offer",
+//                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);  
+//            System.out.println("Received Bank Offer");
+//        }
+//        finally
+//        {
+//            lock.unlock();
+//        }
+//        return accept;
+
+        Object[] options = {"Deal", "No Deal"};
+        result = JOptionPane.showOptionDialog(null, ("BANK OFFER: $" + nf.format(bankOffer)), "Bank Offer",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+//        return accept;
+    }
+        
     public void displayEndOfGame()
     {
         ep = new PanelPackage.EndOfGamePanel();
@@ -135,14 +214,6 @@ public class View extends JFrame implements Observer
             }
         }
         add(ep);
-    }
-    
-    public int displayBankOffer(int bankOffer)
-    {
-        Object[] options = {"Deal", "No Deal"};
-        int accept = JOptionPane.showOptionDialog(null, ("BANK OFFER: $" + nf.format(bankOffer)), "Bank Offer",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-        return accept;
     }
     
     public void updateCaseToOpen(int num)
