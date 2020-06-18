@@ -4,13 +4,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JComponent;
-import javax.swing.JToggleButton;
 import javax.swing.Timer;
 
 public class Controller implements ActionListener, ItemListener
 {
     Model model;
     View view;
+    int counter = 0;
     
     public Controller(Model model, View view)
     {
@@ -18,18 +18,29 @@ public class Controller implements ActionListener, ItemListener
         this.view = view;
         view.setController(this);
         view.setItemController(this);
-    }
-    
+    }    
     
     @Override
     public void actionPerformed(ActionEvent e)
     {
         String cmp = e.getActionCommand();
         Object o = e.getSource();
-        if(cmp.equals("LOGIN"))
+        if (o instanceof Case)
         {
-//            String un = view.usernameTxt.getText();
-//            char[] pw = view.passwordTxt.getPassword();
+            model.openOrSetCase((Case)o);
+        }
+        else if (o instanceof Timer)
+        {
+            model.invert();
+            counter++;
+            System.out.println(counter);
+            if (counter % 12 == 0)
+            {
+                ((Timer)e.getSource()).stop();
+            }
+        }
+        else if(cmp.equals("LOGIN"))
+        {
             String un = view.lp.getUsername();
             char[] pw = view.lp.getPassword();
                     
@@ -40,20 +51,11 @@ public class Controller implements ActionListener, ItemListener
                 view.setCaseController(this);
             }
         }
-        else if (o instanceof Case)
-        {
-            model.openOrSetCase((Case)o);
-        }
-//        else if (o instanceof Timer)
-//        {
-//            model.delay((Timer)o);
-//        }
     }
 
     @Override
     public void itemStateChanged(ItemEvent e)
     {
-//        String cmp = e.get
         String name = ((JComponent)e.getItem()).getName();
         
         if(name.equals("Deal"))

@@ -51,7 +51,7 @@ public class LoginPanel extends CurvedJPanel
         add(loginBtn);
     }
     
-    public void setController(ActionListener controller)
+    public void setButtonListener(ActionListener controller)
     {
         loginBtn.addActionListener(controller);
     }

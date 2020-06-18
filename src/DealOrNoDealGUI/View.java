@@ -1,18 +1,16 @@
 package DealOrNoDealGUI;
 import SpecialClassPackage.GradientLabel;
-import SpecialClassPackage.ThreadedButton;
+import SpecialClassPackage.FlashButton;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
-import java.lang.reflect.InvocationTargetException;
+import java.awt.event.*;
 import java.text.NumberFormat;
-import java.util.*;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.concurrent.locks.*;
 import javax.swing.*;
+
 public class View extends JFrame implements Observer, Runnable
 {
     protected Lock lock = new ReentrantLock();
@@ -24,6 +22,7 @@ public class View extends JFrame implements Observer, Runnable
     public JToggleButton tb = new JToggleButton("Deal");
     private Dimension screenDimension, frameDimension;
 
+    protected Timer timer;
     protected PanelPackage.BackgroundPanel bp;
     protected PanelPackage.LoginPanel lp;
     protected PanelPackage.GameHeaderPanel ghp;
@@ -51,6 +50,7 @@ public class View extends JFrame implements Observer, Runnable
         setLocation((screenDimension.width-frameDimension.width)/2, (screenDimension.height-frameDimension.height)/2);
         tb.setName("Deal");
         createLoginPanel();
+        timer = new Timer(250, null);
     }
     
         
@@ -79,8 +79,7 @@ public class View extends JFrame implements Observer, Runnable
         {
             System.out.println("User Case Selected");
             update.caseSelected = true;
-            createTopPanel(update.casesRemainingThisRound);
-//            PanelPackage.GameHeaderPanel
+            createTopPanel(update.casesRemainingThisRound, update.flashBtn);
             createMoneyPanels(update.tester);
             this.createCasePanel(update.caseList);
             this.displayMainGame();
@@ -94,8 +93,8 @@ public class View extends JFrame implements Observer, Runnable
         }
         else if(update.endOfRound)
         {
-            System.out.println("End of Round");
             update.endOfRound = false;
+            System.out.println("End of Round");
             this.updateCaseToOpen(update.casesRemainingThisRound);
             
             SwingUtilities.invokeLater(this);
@@ -104,13 +103,9 @@ public class View extends JFrame implements Observer, Runnable
                 @Override
                 public void run()
                 {
-                    for(ThreadedButton t : ghp.getButtons())
+                    for(FlashButton t : ghp.getButtons())
                     {
-                        try {
-                            t.doShit(lock, con);
-                        } catch (InterruptedException ex) {
-                            System.err.println("Unable to run threads that flash buttons");
-                        }
+                        timer.start();
                     }        
                 }
             });
@@ -152,29 +147,11 @@ public class View extends JFrame implements Observer, Runnable
     
     public void displayBankOffer(int bankOffer)
     {
-//        Object[] options = {"Deal", "No Deal"};
-//        int accept;
-//        lock.lock();
-//        con.await();
-//        System.out.println("T1 now awake");
-//        try
-//        {
-//            System.out.println("Showing Bank Offer Now");
-//            accept = JOptionPane.showOptionDialog(null, ("BANK OFFER: $" + nf.format(bankOffer)), "Bank Offer",
-//                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);  
-//            System.out.println("Received Bank Offer");
-//        }
-//        finally
-//        {
-//            lock.unlock();
-//        }
-//        return accept;
         System.out.println("We Are In Display Bank Offer--------------------------------");
         Object[] options = {"Deal", "No Deal"};
         result = JOptionPane.showOptionDialog(null, ("BANK OFFER: $" + nf.format(bankOffer)), "Bank Offer",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
         System.out.println("RINDBO: " + result);
-//        return accept;
     }
         
     public void displayEndOfGame()
@@ -247,9 +224,9 @@ public class View extends JFrame implements Observer, Runnable
         mgp.add(cp, BorderLayout.CENTER);
     }
     
-    public void createTopPanel(int casesToOpen)
+    public void createTopPanel(int casesToOpen, ArrayList<FlashButton> flashBtn)
     {
-        ghp = new PanelPackage.GameHeaderPanel(casesToOpen);  
+        ghp = new PanelPackage.GameHeaderPanel(casesToOpen, flashBtn);  
     }
     
     public void createMoneyPanels(LinkedHashMap<Integer, GradientLabel> valueLbls)
@@ -264,7 +241,8 @@ public class View extends JFrame implements Observer, Runnable
         
     public void setController(ActionListener controller)
     {
-        lp.setController(controller);
+        lp.setButtonListener(controller);
+        timer.addActionListener(controller);
     }
     
     public void setCaseController(ActionListener controller)
@@ -307,8 +285,8 @@ public class View extends JFrame implements Observer, Runnable
 //                {
 //                    try
 //                    {
-////                        SpecialClassPackage.ThreadedButton.doShit(lock, con);
-//                        for(ThreadedButton t : ghp.getButtons())
+////                        SpecialClassPackage.FlashButton.doShit(lock, con);
+//                        for(FlashButton t : ghp.getButtons())
 //                        {
 //                            t.doShit(lock, con);
 //                        }
@@ -350,7 +328,7 @@ public class View extends JFrame implements Observer, Runnable
 //                        System.out.println("finish flashing");
 //                        stop = true;
 //                    }
-//                    for(ThreadedButton t : ghp.getButtons())
+//                    for(FlashButton t : ghp.getButtons())
 //                    {
 //                        try {
 //                            t.doShit(lock, con);
@@ -378,3 +356,77 @@ public class View extends JFrame implements Observer, Runnable
 //            } catch (InterruptedException e) {
 //                System.err.println("Unable to join Threads " + e);
 //            }
+
+
+//Thread t1 = new Thread(new Runnable() {
+//                           public void run() {
+//                               try {
+//                                   t.oneC();
+//                               } catch (InterruptedException ex) {}
+//                           }
+//                        });
+//                        Thread t2 = new Thread(new Runnable() {
+//                           public void run() {
+//                               try {
+//                                   t.twoC();
+//                               } catch (InterruptedException ex) {}
+//                           }
+//                        });
+//                        t1.start();
+//                        t2.start();
+//                        try {
+//                            t1.join();
+//                            t2.join(); 
+//                        } catch (InterruptedException ex) {
+//                            System.out.println("--error joined--");
+//                        }
+
+////                        try {
+////                            t.doShit(lock, con);
+////                            t.run();
+//                        } catch (InterruptedException ex) {
+//                            System.err.println("Unable to run threads that flash buttons");
+//                        }
+
+
+//        Object[] options = {"Deal", "No Deal"};
+//        int accept;
+//        lock.lock();
+//        con.await();
+//        System.out.println("T1 now awake");
+//        try
+//        {
+//            System.out.println("Showing Bank Offer Now");
+//            accept = JOptionPane.showOptionDialog(null, ("BANK OFFER: $" + nf.format(bankOffer)), "Bank Offer",
+//                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);  
+//            System.out.println("Received Bank Offer");
+//        }
+//        finally
+//        {
+//            lock.unlock();
+//        }
+//        return accept;
+
+//SwingUtilities.invokeLater(new Runnable()
+//            {
+//                @Override
+//                public void run()
+//                {
+//                    for(FlashButton t : ghp.getButtons())
+//                    {
+//                        timer = new Timer(250, new ActionListener() {
+//                            int counter = 0;
+//                            @Override
+//                            public void actionPerformed(ActionEvent e) {
+//                                t.invert();
+//                                counter++;
+//                                if (counter == 12)
+//                                {
+//                                    ((Timer)e.getSource()).stop();
+//                                }
+//                            }
+//                        });
+//                        timer.start();
+//                    }        
+//                }
+//            });

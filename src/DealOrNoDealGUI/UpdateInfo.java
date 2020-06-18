@@ -1,4 +1,5 @@
 package DealOrNoDealGUI;
+import SpecialClassPackage.FlashButton;
 import SpecialClassPackage.GradientLabel;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -33,4 +34,6 @@ public class UpdateInfo
     public ArrayList<Integer> moneyValuesForCases = new ArrayList<>();
     public ArrayList<Integer> duplicateCaseValues = new ArrayList<>();    
     public LinkedHashMap<Integer, GradientLabel> tester = new LinkedHashMap<>();
+    
+    public ArrayList<FlashButton> flashBtn = new ArrayList<>();
 }

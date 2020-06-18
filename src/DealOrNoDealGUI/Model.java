@@ -1,4 +1,5 @@
 package DealOrNoDealGUI;
+import SpecialClassPackage.FlashButton;
 import SpecialClassPackage.GradientLabel;
 import SpecialClassPackage.MoneyValueType;
 import java.io.FileNotFoundException;
@@ -32,6 +33,7 @@ public class Model extends Observable
         update = new UpdateInfo();
         databaseConnection = new Database();
         this.setUpCases();
+        this.setUpFlashes();
     }
     
     public void checkLogin(String un, String pw)
@@ -78,6 +80,38 @@ public class Model extends Observable
         }
         setChanged();
         notifyObservers(update);
+    }
+    
+    public void setUpFlashes()
+    {
+        int[] xLocations = new int[]{70, 110, 150, 1025, 1065, 1105};
+        int yLocation = 15;
+        MoneyValueType mvt;
+        for (int k = 0; k < 6; k++)
+        {
+            if(k == 0 || k == 3)
+            {
+                mvt = SpecialClassPackage.MoneyValueType.RED;
+            }
+            else if(k == 1 || k == 4)
+            {
+                mvt = SpecialClassPackage.MoneyValueType.GREEN;
+            }
+            else
+            {
+                mvt = SpecialClassPackage.MoneyValueType.BLUE;
+            }
+            FlashButton flashButton = new FlashButton(xLocations[k], yLocation, mvt);
+            update.flashBtn.add(flashButton);
+        }
+    }
+    
+    public void invert()
+    {
+        for(FlashButton fb : update.flashBtn)
+        {
+            fb.invert();
+        }
     }
     
     public void calculateBankOffer(int roundNumber, ArrayList<Case> cases)

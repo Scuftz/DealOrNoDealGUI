@@ -1,15 +1,11 @@
 package PanelPackage;
-import SpecialClassPackage.ThreadedButton;
+import SpecialClassPackage.FlashButton;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.concurrent.locks.Lock;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 
 /**
  *
@@ -20,10 +16,9 @@ public class GameHeaderPanel extends ImagePanel
     private JLabel caseRemainingNumberLbl, casesToOpenLbl;
     private JButton colouredBtn;
     private Color[] colourArray;
-    private Border border;
-    private ArrayList<ThreadedButton> tbs = new ArrayList();
+    private ArrayList<FlashButton> tbs;
     
-    public GameHeaderPanel(int casesToOpen)
+    public GameHeaderPanel(int casesToOpen, ArrayList<FlashButton> flashBtn)
     {
         setLayout(null);
         setOpaque(false);
@@ -33,7 +28,8 @@ public class GameHeaderPanel extends ImagePanel
         add(caseRemainingNumberLbl);
         createCaseToOpenLabel();
         add(casesToOpenLbl);
-        createButtons();
+        tbs = flashBtn;
+        addButtons(tbs);
     }
     
     public void changeCaseRemainingValue(int casesToOpen)
@@ -53,32 +49,15 @@ public class GameHeaderPanel extends ImagePanel
         casesToOpenLbl.setBounds(620, 15, 50, 20);
     }
     
-    public void createButtons()
+    public void addButtons(ArrayList<FlashButton> flashBtn)
     {
-        SpecialClassPackage.ThreadedButton threadButton;
-        int[] xLocations = new int[]{70, 110, 150, 1025, 1065, 1105};
-        int yLocation = 15;
-        SpecialClassPackage.MoneyValueType mvt;
-        for (int k = 0; k < 6; k++)
+        for (FlashButton fb : flashBtn)
         {
-            if(k == 0 || k == 3)
-            {
-                mvt = SpecialClassPackage.MoneyValueType.RED;
-            }
-            else if(k == 1 || k == 4)
-            {
-                mvt = SpecialClassPackage.MoneyValueType.GREEN;
-            }
-            else
-            {
-                mvt = SpecialClassPackage.MoneyValueType.BLUE;
-            }
-            threadButton = new SpecialClassPackage.ThreadedButton(xLocations[k], yLocation, mvt);
-            tbs.add(threadButton);
-            add(threadButton);
+            add(fb);
         }
     }
-    public ArrayList<ThreadedButton> getButtons()
+    
+    public ArrayList<FlashButton> getButtons()
     {
         return this.tbs;
     }
