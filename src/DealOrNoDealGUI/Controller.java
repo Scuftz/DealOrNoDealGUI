@@ -33,7 +33,6 @@ public class Controller implements ActionListener, ItemListener
         {
             model.invert();
             counter++;
-            System.out.println(counter);
             if (counter % 12 == 0)
             {
                 ((Timer)e.getSource()).stop();
@@ -64,5 +63,4 @@ public class Controller implements ActionListener, ItemListener
             model.endGame();
         }
     }
-    
 }
