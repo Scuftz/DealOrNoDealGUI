@@ -20,23 +20,42 @@ public class Model extends Observable
 {
     private static NumberFormat nf = NumberFormat.getNumberInstance();
     UpdateInfo update;
-    protected int caseCounter;
+    protected int caseCounter; //reset
     protected Scanner input;
     protected String file;
     protected Random rand = new Random();
     protected Database playerDB;
     protected String username, password;
-    public boolean caseSelected = false;
-    private boolean stopRequest = false;
+    public boolean caseSelected; //reset
     
     public Model()
     {
         file = "caseValues.txt";
         caseCounter = 0;
+        caseSelected = false;
         update = new UpdateInfo();
         playerDB = new Database();
         this.setUpCases();
         this.setUpFlashes();
+    }
+    
+    public void quitGame()
+    {
+        playerDB.closeDatabase();
+        update.quitGame = true;
+        setChanged();
+        notifyObservers(update);
+    }
+    public void restartGame()
+    {
+        update = new UpdateInfo();
+        update.restarting = true;
+        caseCounter = 0;
+        caseSelected = false;
+        this.setUpCases();
+        this.setUpFlashes();
+        setChanged();
+        notifyObservers(update);
     }
     
     public void checkLogin(String un, String pw)

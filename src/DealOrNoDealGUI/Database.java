@@ -27,7 +27,6 @@ public class Database
     
     public void addPlayerToDB(Player player)
     {   
-        System.out.println("Adding Player to DB! " + player.getUsername() + ", " + player.getPassword());
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(player);
@@ -71,7 +70,6 @@ public class Database
         Criteria criteria = session.createCriteria(Player.class).setProjection(Projections.max("highscore"));
         Integer topScore = (Integer)criteria.uniqueResult();
         session.close();
-        System.out.println("ALL TIME HS: " + topScore);
         return topScore;
     }
     

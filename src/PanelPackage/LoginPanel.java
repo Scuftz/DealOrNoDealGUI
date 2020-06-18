@@ -19,7 +19,7 @@ public class LoginPanel extends CurvedJPanel
     private JLabel loginLbl, usernameLbl, passwordLbl;
     private JTextField usernameTxt;
     private JPasswordField passwordTxt;
-    private JButton loginBtn;
+    public JButton loginBtn;
     private Font fontOne, fontTwo;
     
     public LoginPanel()

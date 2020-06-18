@@ -12,10 +12,10 @@ import javax.swing.*;
 
 public class View extends JFrame implements Observer, Runnable
 {
-    private int result;
-    public boolean setUp = false;
+    private int result; //reset
     private NumberFormat nf = NumberFormat.getNumberInstance();
-    public JToggleButton toggle = new JToggleButton("Deal");
+    public JToggleButton dealAcceptedToggle = new JToggleButton("Deal"); //has to reset
+    public JToggleButton restartToggle = new JToggleButton("Restart");
     private Dimension screenDimension, frameDimension;
 
     protected Timer timer;
@@ -28,7 +28,7 @@ public class View extends JFrame implements Observer, Runnable
     protected PanelPackage.SelectCasePanel selectCasePanel;
     protected PanelPackage.EndOfGamePanel endPanel;
     
-    private ArrayList<Case> caseListBtn = new ArrayList();
+    private ArrayList<Case> caseListBtn = new ArrayList(); //reset
     
     /**
      * Constructor
@@ -44,11 +44,11 @@ public class View extends JFrame implements Observer, Runnable
         screenDimension = tk.getScreenSize();
         frameDimension = this.getSize();
         setLocation((screenDimension.width-frameDimension.width)/2, (screenDimension.height-frameDimension.height)/2);
-        toggle.setName("Deal");
+        dealAcceptedToggle.setName("Deal");
+        restartToggle.setName("Restart");
         createLoginPanel();
         timer = new Timer(250, null);
     }
-    
         
     /**
      * @param obs
@@ -58,7 +58,18 @@ public class View extends JFrame implements Observer, Runnable
     public void update(Observable obs, Object obj) {
         UpdateInfo update = (UpdateInfo) obj;
         
-        if(!update.loginFlag)
+//        if (update.restarting)
+//        {
+//            update.restarting = false;
+//            this.getContentPane().removeAll();
+//            restartToggle.setSelected(true);
+//            createLoginPanel();
+//        }
+        if (update.quitGame)
+        {
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }
+        else if(!update.loginFlag)
         {
             System.out.println("in view LOG IN FAILED!");
             JOptionPane.showMessageDialog(null, "Login Failed", "Failed to Login", 0);
@@ -105,12 +116,8 @@ public class View extends JFrame implements Observer, Runnable
             if(result == 0)
             {
                 update.dealAccepted = true;
-                toggle.setSelected(true);
+                dealAcceptedToggle.setSelected((!dealAcceptedToggle.isSelected()));
             }
-        }
-        else if (update.quitGame)
-        {
-            System.out.println("Quitting Game");
         }
         else
         {
@@ -129,17 +136,16 @@ public class View extends JFrame implements Observer, Runnable
     
     public void displayBankOffer(int bankOffer)
     {
-        System.out.println("We Are In Display Bank Offer--------------------------------");
         Object[] options = {"Deal", "No Deal"};
         result = JOptionPane.showOptionDialog(null, ("BANK OFFER: $" + nf.format(bankOffer)), "Bank Offer",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-        System.out.println("RINDBO: " + result);
     }
         
     public void displayEndOfGame(boolean dealAccepted, int userCaseValue, int bankOffer, int userHighScore, int allTimeScore)
     {
         backgroundPanel.removeAll();
-        endPanel = new PanelPackage.EndOfGamePanel(dealAccepted, userCaseValue, bankOffer, userHighScore, allTimeScore);
+//        endPanel = new PanelPackage.EndOfGamePanel(dealAccepted, userCaseValue, bankOffer, userHighScore, allTimeScore);
+        endPanel.updatePanel(dealAccepted, userCaseValue, bankOffer, userHighScore, allTimeScore);
         backgroundPanel.add(endPanel);
         add(backgroundPanel);
     }
@@ -161,6 +167,7 @@ public class View extends JFrame implements Observer, Runnable
     {
         backgroundPanel = new PanelPackage.BackgroundPanel();
         loginPanel = new PanelPackage.LoginPanel();
+        endPanel = new PanelPackage.EndOfGamePanel(); //this is only to add actions listeners to buttons
         backgroundPanel.add(loginPanel);
         add(backgroundPanel);
     }
@@ -215,6 +222,7 @@ public class View extends JFrame implements Observer, Runnable
     public void setController(ActionListener controller)
     {
         loginPanel.setButtonListener(controller);
+        endPanel.setButtonListener(controller);
         timer.addActionListener(controller);
     }
     
@@ -228,6 +236,7 @@ public class View extends JFrame implements Observer, Runnable
     
     public void setItemController(ItemListener controller)
     {
-        toggle.addItemListener(controller);
+        dealAcceptedToggle.addItemListener(controller);
+        restartToggle.addItemListener(controller);
     }
 }

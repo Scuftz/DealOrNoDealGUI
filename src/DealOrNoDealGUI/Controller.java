@@ -23,6 +23,7 @@ public class Controller implements ActionListener, ItemListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        System.out.println("WE BOUTTA RESTART");
         String cmp = e.getActionCommand();
         Object o = e.getSource();
         if (o instanceof Case)
@@ -50,17 +51,29 @@ public class Controller implements ActionListener, ItemListener
                 view.setCaseController(this);
             }
         }
+        else if(cmp.equals("Play Again"))
+        {
+            model.restartGame();
+        }
+        else if (cmp.equals("Quit Game"))
+        {
+            model.quitGame();
+            System.out.println("quit game");
+        }
     }
 
     @Override
     public void itemStateChanged(ItemEvent e)
     {
         String name = ((JComponent)e.getItem()).getName();
-        
+        System.out.println("ITEM STATE CHANGED");
         if(name.equals("Deal"))
         {
-            System.out.println("trigger");
             model.endGame();
+        }
+        else if (name.equals("Restart"))
+        {
+            view.setController(this);
         }
     }
 }

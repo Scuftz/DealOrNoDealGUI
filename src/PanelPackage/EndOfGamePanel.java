@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import static java.awt.GridBagConstraints.CENTER;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,18 +30,29 @@ public class EndOfGamePanel extends CurvedJPanel
     private int userCaseValue, bankOffer, userHighScore, allTimeHighScore;
     private NumberFormat nf = NumberFormat.getNumberInstance();
 
-    public EndOfGamePanel(boolean dealAccepted, int userCaseValue, int bankOffer, int userHighScore, int allTimeScore)
+    public EndOfGamePanel()
     {
-        this.userCaseValue = userCaseValue;
-        this.bankOffer = bankOffer;
-        this.userHighScore = userHighScore;
-        this.allTimeHighScore = allTimeScore;
-        
         setLayout(new GridBagLayout());
         setOpaque(false);
         setBounds(275, 40, 650, 500);
         setBackground(new Color(255, 219, 77, 240));
         setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//, Color.lightGray, Color.lightGray, Color.white, Color.white))
+        quitBtn = new JButton("Quit Game");
+        playAgainBtn = new JButton("Play Again");
+    }
+    
+    public void setButtonListener(ActionListener controller)
+    {
+        quitBtn.addActionListener(controller);
+        playAgainBtn.addActionListener(controller);
+    }
+    
+    public void updatePanel(boolean dealAccepted, int userCaseValue, int bankOffer, int userHighScore, int allTimeScore)
+    {
+        this.userCaseValue = userCaseValue;
+        this.bankOffer = bankOffer;
+        this.userHighScore = userHighScore;
+        this.allTimeHighScore = allTimeScore;
         this.buildEndScreen();
         this.dealAccepted = dealAccepted;
         if(dealAccepted)
@@ -52,6 +64,30 @@ public class EndOfGamePanel extends CurvedJPanel
             noDealEndScreen();
         }
     }
+    
+//    public EndOfGamePanel(boolean dealAccepted, int userCaseValue, int bankOffer, int userHighScore, int allTimeScore)
+//    {
+//        this.userCaseValue = userCaseValue;
+//        this.bankOffer = bankOffer;
+//        this.userHighScore = userHighScore;
+//        this.allTimeHighScore = allTimeScore;
+//        
+//        setLayout(new GridBagLayout());
+//        setOpaque(false);
+//        setBounds(275, 40, 650, 500);
+//        setBackground(new Color(255, 219, 77, 240));
+//        setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//, Color.lightGray, Color.lightGray, Color.white, Color.white))
+//        this.buildEndScreen();
+//        this.dealAccepted = dealAccepted;
+//        if(dealAccepted)
+//        {
+//            dealEndScreen();
+//        }
+//        else
+//        {
+//            noDealEndScreen();
+//        }
+//    }
     
     public void addComponent(JComponent cmp, Font f, int gridx, int gridy, int gridwidth, int fill)
     {
@@ -98,12 +134,12 @@ public class EndOfGamePanel extends CurvedJPanel
         
         topScoreValueLbl = new JLabel("$" + nf.format(allTimeHighScore));
         addComponent(topScoreValueLbl, f2, 1, 4, 1, 2);
-        
-        playAgainBtn = new JButton("Play Again");
+
+//        playAgainBtn = new JButton("Play Again");
         playAgainBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         addComponent(playAgainBtn, f3, 0, 5, 1, 2);
         
-        quitBtn = new JButton("Quit Game");
+//        quitBtn = new JButton("Quit Game");
         quitBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         addComponent(quitBtn, f3, 1, 5, 1, 2);
     }
