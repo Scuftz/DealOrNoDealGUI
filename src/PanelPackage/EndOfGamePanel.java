@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.text.NumberFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 
@@ -24,6 +25,7 @@ public class EndOfGamePanel extends CurvedJPanel
     private GridBagConstraints gbc = new GridBagConstraints();
     private Font f = new Font("Times New Roman", Font.BOLD, 30);
     private Font f2 = new Font("Sitka Heading", Font.BOLD, 34);
+    private Font f3 = new Font("Microsoft YaHei UI Light", Font.PLAIN, 20);
     private int userCaseValue, bankOffer, userHighScore, allTimeHighScore;
     private NumberFormat nf = NumberFormat.getNumberInstance();
 
@@ -51,6 +53,61 @@ public class EndOfGamePanel extends CurvedJPanel
         }
     }
     
+    public void addComponent(JComponent cmp, Font f, int gridx, int gridy, int gridwidth, int fill)
+    {
+        cmp.setForeground(Color.BLACK);
+        cmp.setFont(f);
+        gbc.gridx = gridx;
+        gbc.gridy = gridy;
+        gbc.gridwidth = gridwidth;
+        gbc.fill = fill;
+        add(cmp, gbc);
+    }
+    
+    public void buildEndScreen()
+    {
+        gbc.anchor = CENTER;
+        gbc.insets.top = 20;
+        gbc.insets.bottom = 20;
+        gbc.insets.left = 20;
+        gbc.insets.right = 20;
+        
+        dealNoDealLbl = new JLabel("PLACEHOLDER");
+        addComponent(dealNoDealLbl, f, 0, 0, 1, 2);
+        
+        bankedOffer = new JLabel("$" + nf.format(bankOffer));
+        addComponent(bankedOffer, f2, 1, 0, 1, 2);
+        
+        yourCaseLbl = new JLabel("YOUR CASE: ");
+        addComponent(yourCaseLbl, f, 0, 1, 1, 2);
+        
+        caseValueLbl = new JLabel("$" + nf.format(userCaseValue));
+        addComponent(caseValueLbl, f2, 1, 1, 1, 2);
+        
+        messageLbl = new JLabel("PLACEHOLDER");
+        addComponent(messageLbl, new Font("Sylfaen", Font.PLAIN, 30), 0, 2, 2, 0);
+  
+        highScoreLbl = new JLabel("Your High Score: ");
+        addComponent(highScoreLbl, f, 0, 3, 1, 2);
+
+        highScoreValueLbl = new JLabel("$" + nf.format(userHighScore));
+        addComponent(highScoreValueLbl, f2, 1, 3, 1, 2);
+        
+        topScoreLbl = new JLabel("All-Time High Score: ");
+        addComponent(topScoreLbl, f, 0, 4, 1, 2);
+        
+        topScoreValueLbl = new JLabel("$" + nf.format(allTimeHighScore));
+        addComponent(topScoreValueLbl, f2, 1, 4, 1, 2);
+        
+        playAgainBtn = new JButton("Play Again");
+        playAgainBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        addComponent(playAgainBtn, f3, 0, 5, 1, 2);
+        
+        quitBtn = new JButton("Quit Game");
+        quitBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        addComponent(quitBtn, f3, 1, 5, 1, 2);
+    }
+    
     public void dealEndScreen()
     {
         dealNoDealLbl.setText("YOU TOOK A DEAL WORTH:");
@@ -58,16 +115,18 @@ public class EndOfGamePanel extends CurvedJPanel
         if(this.bankOffer > this.userCaseValue)
         {
             messageLbl.setText("Congrats! You made the right call...");
+            bankedOffer.setForeground(new Color(0,153,51));
         }
         else
         {
             messageLbl.setText("You should've risked it!");
+            bankedOffer.setForeground(new Color(230,0,0));
+            caseValueLbl.setForeground(new Color(0,153,51));
         }
     }
     public void noDealEndScreen()
     {
         dealNoDealLbl.setText("YOU DECLINED AN OFFER OF:");
-        bankedOffer.setForeground(new Color(230,0,0));
         if(this.bankOffer < this.userCaseValue)
         {
             messageLbl.setText("Congrats! You made the right call...");
@@ -77,104 +136,8 @@ public class EndOfGamePanel extends CurvedJPanel
         else
         {
             messageLbl.setText("Should've taken that deal!");
+            bankedOffer.setForeground(new Color(0,153,51));
+            caseValueLbl.setForeground(new Color(230,0,0));
         }
     }
-    
-    public void buildEndScreen()
-    {
-        gbc.anchor = CENTER;
-        
-        gbc.insets.top = 20;
-        gbc.insets.bottom = 20;
-        gbc.insets.left = 20;
-        gbc.insets.right = 20;
-        
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        dealNoDealLbl = new JLabel("PLACEHOLDER");
-        dealNoDealLbl.setForeground(new Color(0,0,0));
-        dealNoDealLbl.setFont(f);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        add(dealNoDealLbl, gbc);
-        
-        bankedOffer = new JLabel("$" + nf.format(bankOffer));
-        bankedOffer.setFont(f2);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        add(bankedOffer, gbc);
-        
-        yourCaseLbl = new JLabel("YOUR CASE: ");
-        yourCaseLbl.setForeground(new Color(0,0,0));
-        yourCaseLbl.setFont(f);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        System.out.println("!!!!!!!!!" + gbc.fill);
-        add(yourCaseLbl, gbc);
-        
-        caseValueLbl = new JLabel("$" + nf.format(userCaseValue));
-                caseValueLbl.setForeground(new Color(0,0,0));
-
-        caseValueLbl.setFont(f2);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        add(caseValueLbl, gbc);
-        
-        gbc.fill = 0;
-        messageLbl = new JLabel("PLACEHOLDER");
-        messageLbl.setForeground(new Color(0,0,0));
-        messageLbl.setFont(f);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        add(messageLbl, gbc);
-        
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        System.out.println("?????????????" + gbc.fill);
-        highScoreLbl = new JLabel("Your High Score: ");
-        highScoreLbl.setForeground(new Color(0,0,0));
-        highScoreLbl.setFont(f);
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        add(highScoreLbl, gbc);
-        
-        highScoreValueLbl = new JLabel("$" + nf.format(userHighScore));
-        highScoreValueLbl.setForeground(new Color(0,0,0));
-        highScoreValueLbl.setFont(f2);
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        add(highScoreValueLbl, gbc);
-        
-        topScoreLbl = new JLabel("All-Time High Score: ");
-        topScoreLbl.setForeground(new Color(0,0,0));
-        topScoreLbl.setFont(f);
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        add(topScoreLbl, gbc);
-        
-        topScoreValueLbl = new JLabel("$" + nf.format(allTimeHighScore));
-        topScoreValueLbl.setForeground(new Color(0,0,0));
-        topScoreValueLbl.setFont(f2);
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        add(topScoreValueLbl, gbc);
-        
-        playAgainBtn = new JButton("Play Again");
-        playAgainBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        add(playAgainBtn, gbc);
-        
-        quitBtn = new JButton("Quit Game");
-        quitBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        add(quitBtn, gbc);
-    }
-    
-    public void noDealBuilderEndScreen()
-    {
-        
-    }
-    
 }
