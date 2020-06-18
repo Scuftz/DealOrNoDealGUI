@@ -45,7 +45,6 @@ public class Model extends Observable
     public void endGame()
     {
         update.endOfGame = true;
-//        sleep(2000);
         setChanged();
         notifyObservers(update);
     }

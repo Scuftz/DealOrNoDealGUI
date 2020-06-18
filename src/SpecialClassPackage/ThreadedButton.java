@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
@@ -28,32 +31,11 @@ public class ThreadedButton extends JButton
         this.setBorder(border);    
     }
     
-    
     public void doShit(Lock lock, Condition con) throws InterruptedException
     {
-        System.out.println("Please Change");
         this.changeOfPaint = true;
         this.revalidate();
         this.repaint();
-        System.out.println("We Repainted");
-//        Thread.sleep(1000);
-//        lock.lock();
-//        
-//        System.out.println("Press return key");
-//        new Scanner(System.in).nextLine();
-//        System.out.println("Got return");
-//        con.signal();
-//        
-//        try
-//        {
-//            System.out.println("T2 in try");
-//            Thread.sleep(2000);
-//            System.out.println("finish sleeping");
-//        }
-//        finally
-//        {
-//            lock.unlock();
-//        }
     }
     
     @Override
@@ -118,4 +100,23 @@ public class ThreadedButton extends JButton
 //            colouredBtn.setLocation(xPosition, 15);
 //            btnList.add(colouredBtn);
 //            xPosition += xIncrease;
+//        }
+
+//        Thread.sleep(1000);
+//        lock.lock();
+//        
+//        System.out.println("Press return key");
+//        new Scanner(System.in).nextLine();
+//        System.out.println("Got return");
+//        con.signal();
+//        
+//        try
+//        {
+//            System.out.println("T2 in try");
+//            Thread.sleep(2000);
+//            System.out.println("finish sleeping");
+//        }
+//        finally
+//        {
+//            lock.unlock();
 //        }

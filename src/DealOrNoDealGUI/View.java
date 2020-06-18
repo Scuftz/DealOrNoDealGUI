@@ -4,6 +4,7 @@ import SpecialClassPackage.ThreadedButton;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import java.lang.reflect.InvocationTargetException;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.locks.Condition;
@@ -12,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-public class View extends JFrame implements Observer
+public class View extends JFrame implements Observer, Runnable
 {
     protected Lock lock = new ReentrantLock();
     protected Condition con = lock.newCondition();
@@ -87,76 +88,43 @@ public class View extends JFrame implements Observer
         else if (update.endOfGame)
         {
             System.out.println("End of Game");
-            this.validate();
-            this.repaint();
-            
-//            this.getContentPane().removeAll();
-//            this.displayEndOfGame();
-            //go to end game panel, maybe introduce timer here with a thread when display shocker result
+            this.getContentPane().removeAll();
+            this.displayEndOfGame();
+            //go to end game panel, maybe introduce timer here with a thread when display shocker 
         }
         else if(update.endOfRound)
         {
             System.out.println("End of Round");
             update.endOfRound = false;
             this.updateCaseToOpen(update.casesRemainingThisRound);
-            this.validate(); //wont work til end pointless
-            this.repaint(); // wont work till end pointless
             
-//            result = -1;
-//            Thread t1 = new Thread(new Runnable()
+            SwingUtilities.invokeLater(this);
             SwingUtilities.invokeLater(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    try
+                    for(ThreadedButton t : ghp.getButtons())
                     {
-                        displayBankOffer(update.bankOffer);
-                    }
-                    catch (InterruptedException e)
-                    {
-                    }            
-                }
-            });
-                       
-//            Thread t2 = new Thread(new Runnable()
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    try
-                    {
-//                        SpecialClassPackage.ThreadedButton.doShit(lock, con);
-                        for(ThreadedButton t : ghp.getButtons())
-                        {
+                        try {
                             t.doShit(lock, con);
+                        } catch (InterruptedException ex) {
+                            System.err.println("Unable to run threads that flash buttons");
                         }
-                    }
-                    catch (InterruptedException e)
-                    {
-                        
-                    }            
+                    }        
                 }
             });
-            
-//            t1.start();
-//            t2.start();
-//            try {
-////                t1.join();
-//                t2.join();
-//            } catch (InterruptedException ex) {
-//                System.out.println("Error when joining");
-//            }
-            
-//            int result = displayBankOffer(update.bankOffer);
+   
+            System.out.println("Outside thread life");
+            displayBankOffer(update.bankOffer);
+            System.out.println("WE ARE GOING TO CHECK THE RESULT");
             if(result == 0)
             {
                 System.out.println(result);
                 update.endOfGame = true;
                 tb.setSelected(true);
             }
-            System.out.println(result);
+            System.out.println("R: " + result);
         }
         else if (update.quitGame)
         {
@@ -166,14 +134,23 @@ public class View extends JFrame implements Observer
         {
             this.updateCaseToOpen(update.casesRemainingThisRound);
         }
-        if (!update.endOfGame)
+        this.validate();
+        this.repaint();
+    }
+    
+    @Override
+    public void run() {
+        boolean stop = false;
+        while(!stop)
         {
             this.validate();
-            this.repaint();     
+            this.repaint();
+            System.out.println("finished this runnable");
+            stop = true;
         }
     }
     
-    public void displayBankOffer(int bankOffer) throws InterruptedException
+    public void displayBankOffer(int bankOffer)
     {
 //        Object[] options = {"Deal", "No Deal"};
 //        int accept;
@@ -192,10 +169,11 @@ public class View extends JFrame implements Observer
 //            lock.unlock();
 //        }
 //        return accept;
-
+        System.out.println("We Are In Display Bank Offer--------------------------------");
         Object[] options = {"Deal", "No Deal"};
         result = JOptionPane.showOptionDialog(null, ("BANK OFFER: $" + nf.format(bankOffer)), "Bank Offer",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+        System.out.println("RINDBO: " + result);
 //        return accept;
     }
         
@@ -206,13 +184,13 @@ public class View extends JFrame implements Observer
 //        endOfGamePanel.setOpaque(false);
 //        endOfGamePanel.setSize(1200, 609);
         
-        for (Case c : caseListBtn)
-        {
-            if(!c.getOpenStatus() & !c.isPlayerCase())
-            {
-                System.out.println(c.getCaseNumber() + ": " + c.getCaseValue());
-            }
-        }
+//        for (Case c : caseListBtn)
+//        {
+//            if(!c.getOpenStatus() & !c.isPlayerCase())
+//            {
+//                System.out.println(c.getCaseNumber() + ": " + c.getCaseValue());
+//            }
+//        }
         add(ep);
     }
     
@@ -302,3 +280,101 @@ public class View extends JFrame implements Observer
         tb.addItemListener(controller);
     }
 }
+
+
+//Thread t1 = new Thread(new Runnable()
+//            SwingUtilities.invokeLater(new Runnable()
+//            {
+//                @Override
+//                public void run()
+//                {
+//                    try
+//                    {
+//                        displayBankOffer(update.bankOffer);
+//                    }
+//                    catch (InterruptedException e)
+//                    {
+//                    }            
+//                }
+//            });
+//                       
+////            Thread t2 = new Thread(new Runnable()
+//            SwingUtilities.invokeLater(new Runnable()
+////                    SwingUtilities.in
+//            {
+//                @Override
+//                public void run()
+//                {
+//                    try
+//                    {
+////                        SpecialClassPackage.ThreadedButton.doShit(lock, con);
+//                        for(ThreadedButton t : ghp.getButtons())
+//                        {
+//                            t.doShit(lock, con);
+//                        }
+//                    }
+//                    catch (InterruptedException e)
+//                    {
+//                        
+//                    }            
+//                }
+//            });
+            
+//            t1.start();
+//            t2.start();
+//            try {
+////                t1.join();
+//                t2.join();
+//            } catch (InterruptedException ex) {
+//                System.out.println("Error when joining");
+//            }
+
+//--------------------------runnables----------------------------
+//            Runnable banker = new Runnable() {
+//                @Override
+//                public void run() {
+//                }
+//            };
+//            
+//            Runnable flashButtons = new Runnable() {
+//                @Override
+//                public void run() {
+////                    System.out.println("Inside flash runnable");
+//                    boolean stop = false;
+//                    while(!stop)
+//                    {
+//                        for (char x = 'A'; x < 'J'; x++)
+//                        {
+//                            System.out.println(x);
+//                        }
+//                        System.out.println("finish flashing");
+//                        stop = true;
+//                    }
+//                    for(ThreadedButton t : ghp.getButtons())
+//                    {
+//                        try {
+//                            t.doShit(lock, con);
+//                        } catch (InterruptedException ex) {
+//                            System.err.println("Unable to run threads that flash buttons");
+//                        }
+//                    }
+//                }
+//            };
+
+//Thread guiThread = new Thread() {
+//                @Override
+//                public void run() {
+//                    System.out.println("invoking flash");
+//                    SwingUtilities.invokeLater(flashButtons);
+//                    System.out.println("invoking runnable");
+////                    SwingUtilities.invokeLater(this);
+//                    System.out.println("Finished on " + Thread.currentThread());
+//                }
+//            };
+//            guiThread.start();
+//            System.out.println("We started GUI");
+//            try {
+//                guiThread.join();
+//            } catch (InterruptedException e) {
+//                System.err.println("Unable to join Threads " + e);
+//            }
