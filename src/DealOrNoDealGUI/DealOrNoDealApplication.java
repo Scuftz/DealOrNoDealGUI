@@ -5,8 +5,7 @@ public class DealOrNoDealApplication
 {
     public static void main(String[] args)
     { 
-//        BasicConfigurator.configure();
-        
+//        BasicConfigurator.configure(); 
         Model model = new Model();
         View view = new View();
         model.addObserver(view);

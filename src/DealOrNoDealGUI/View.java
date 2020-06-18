@@ -80,17 +80,17 @@ public class View extends JFrame implements Observer, Runnable
 //            update.loginFlag = true;
 //            update.gameStarted = true;
             update.setGameStartedFlag(true);
-            this.createCasesForController(update.caseList, update.getTotalAmountOfCases());
-            this.selectCasePanel(update.caseList);
+            this.createCasesForController(update.getCaseList(), update.getTotalAmountOfCases());
+            this.selectCasePanel(update.getCaseList());
         }
         else if (!update.getCaseSelectedFlag())
         {
             System.out.println("User Case Selected");
 //            update.caseSelected = true;
             update.setCaseSelectedFlag(true);
-            createTopPanel(update.getCasesRemainingThisRound(), update.flashBtn);
-            createMoneyPanels(update.tester);
-            this.createCasePanel(update.caseList);
+            createTopPanel(update.getCasesRemainingThisRound(), update.getFlashBtns());
+            createMoneyPanels(update.getMoneyLabels());
+            this.createCasePanel(update.getCaseList());
             this.displayMainGame();
         }
         else if (update.getEndOfGameFlag())
@@ -115,13 +115,16 @@ public class View extends JFrame implements Observer, Runnable
                     timer.start();
                 }
             });
-            displayBankOffer(update.getBankOffer());
-            if(result == 0)
+            do
             {
-//                update.dealAccepted = true;
-                update.setDealAcceptedFlag(true);
-                dealAcceptedToggle.setSelected((!dealAcceptedToggle.isSelected()));
-            }
+                displayBankOffer(update.getBankOffer());
+                System.out.println(result);
+                if(result == 0)
+                {
+                    update.setDealAcceptedFlag(true);
+                    dealAcceptedToggle.setSelected((!dealAcceptedToggle.isSelected()));
+                }
+            } while (result < 0);
         }
         else
         {

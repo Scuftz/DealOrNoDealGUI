@@ -33,13 +33,12 @@ public class UpdateInfo
     private String playerUsername;
     private int playerHighScore;
     
-    public float[] percentageDeductions = new  float[]{ 0.15f, 0.25f, 0.35f, 0.45f, 0.55f, 0.65f, 0.75f, 0.85f, 1.0f };
-    public ArrayList<Case> caseList;// = new ArrayList<>();
-    public ArrayList<Integer> moneyValuesForCases;// = new ArrayList<>();
-    public ArrayList<Integer> duplicateCaseValues;// = new ArrayList<>();    
-    public LinkedHashMap<Integer, GradientLabel> tester;// = new LinkedHashMap<>();
-    
-    public ArrayList<FlashButton> flashBtn;// = new ArrayList<>();
+    private final float[] PERCENTAGE_DEDUCTIONS = new  float[]{ 0.15f, 0.25f, 0.35f, 0.45f, 0.55f, 0.65f, 0.75f, 0.85f, 1.0f };
+    private ArrayList<Case> caseList;// = new ArrayList<>();
+    private ArrayList<Integer> moneyValuesForCases;// = new ArrayList<>();
+    private ArrayList<Integer> duplicateCaseValues;// = new ArrayList<>();    
+    private LinkedHashMap<Integer, GradientLabel> moneyLabels;// = new LinkedHashMap<>();
+    private ArrayList<FlashButton> flashBtn;// = new ArrayList<>();
     
     public UpdateInfo()
     {
@@ -67,7 +66,7 @@ public class UpdateInfo
         caseList = new ArrayList<>();
         moneyValuesForCases = new ArrayList<>();
         duplicateCaseValues = new ArrayList<>();    
-        tester = new LinkedHashMap<>();
+        moneyLabels = new LinkedHashMap<>();
         flashBtn = new ArrayList<>();
     }
     
@@ -204,5 +203,32 @@ public class UpdateInfo
     
     public void setGameStartedFlag(boolean flag) {
         this.gameStartedFlag = flag;
+    }
+    
+    public float[] getPercentageDeductions() {
+        return this.PERCENTAGE_DEDUCTIONS;
+    }
+    
+    public ArrayList<FlashButton> getFlashBtns() {
+        return this.flashBtn;
+    }
+    public ArrayList<Case> getCaseList() {
+        return this.caseList;
+    }
+    
+    public ArrayList<Integer> getMoneyValueForCases() {
+        return this.moneyValuesForCases;
+    }
+    
+    public LinkedHashMap<Integer, GradientLabel> getMoneyLabels() {
+        return this.moneyLabels;
+    }
+    
+    public ArrayList<Integer> getDuplicateCaseValues() {
+        return this.duplicateCaseValues;
+    }
+    
+    public void setDuplicateCaseValues(ArrayList<Integer> duplicates) {
+        this.duplicateCaseValues = duplicates;
     }
 }

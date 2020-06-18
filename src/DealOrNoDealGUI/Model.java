@@ -118,14 +118,15 @@ public class Model extends Observable
     {
         if (!update.getCaseSelectedFlag())
         {
-            update.caseList.get(c.getCaseNumber()-1).setPlayerCase(true);
+//            update.caseList.get(c.getCaseNumber()-1).setPlayerCase(true);
+            update.getCaseList().get(c.getCaseNumber()-1).setPlayerCase(true);
 //            update.userCaseValue = c.getCaseValue();
             update.setPlayerCaseValue(c.getCaseValue());
         }
         else
         {
-            update.caseList.get(c.getCaseNumber() - 1).setOpenStatus(true);
-            update.tester.get(c.getCaseValue()).setOpen();
+            update.getCaseList().get(c.getCaseNumber() - 1).setOpenStatus(true);
+            update.getMoneyLabels().get(c.getCaseValue()).setOpen();
             update.setTotalCasesLeft(update.getTotalCasesLeft() - 1);
 //            update.totalCasesLeft--;
 //            update.casesRemainingThisRound--;
@@ -134,7 +135,7 @@ public class Model extends Observable
             {
                 if(update.getRoundNumber() != update.getMaxRounds())
                 {
-                    this.calculateBankOffer(update.getRoundNumber(), update.caseList);
+                    this.calculateBankOffer(update.getRoundNumber(), update.getCaseList());
                     this.setUpNewRound();
 //                    update.endOfRound = true;
                     update.setEndOfRoundFlag(true);
@@ -169,13 +170,13 @@ public class Model extends Observable
                 mvt = SpecialClassPackage.MoneyValueType.BLUE;
             }
             FlashButton flashButton = new FlashButton(xLocations[k], yLocation, mvt);
-            update.flashBtn.add(flashButton);
+            update.getFlashBtns().add(flashButton);
         }
     }
     
     public void invert()
     {
-        for(FlashButton fb : update.flashBtn)
+        for(FlashButton fb : update.getFlashBtns())
         {
             fb.invert();
         }
@@ -192,7 +193,7 @@ public class Model extends Observable
             }
         }
         //calculate the sum of the unopenned cases, divide by the amount of cases left, multiply by the deductor
-        float bankOffer = (sum / update.getTotalCasesLeft()) * update.percentageDeductions[update.getRoundNumber()];
+        float bankOffer = (sum / update.getTotalCasesLeft()) * update.getPercentageDeductions()[update.getRoundNumber()];
         System.out.println("BANK OFFER...\n" + nf.format((int)bankOffer));
 //        update.bankOffer = (int)bankOffer;
         update.setBankOffer((int)bankOffer);
@@ -221,7 +222,7 @@ public class Model extends Observable
             {
                 try
                 {
-                    update.moneyValuesForCases.add(input.nextInt());
+                    update.getMoneyValueForCases().add(input.nextInt());
                     caseCounter++;
                 }
                 catch (InputMismatchException e)  //Non-integer value in file
@@ -232,20 +233,21 @@ public class Model extends Observable
                 catch (NoSuchElementException e) //There are not enough values to meet the total amount of cases (missing values)
                 {
                     System.err.println("There is a value missing from the caseValues file. A default $1000 will replace the missing value.");
-                    update.moneyValuesForCases.add(1000);
+                    update.getMoneyValueForCases().add(1000);
                     caseCounter++;
                 }
             }
             input.close();
             
-            update.duplicateCaseValues = (ArrayList<Integer>)update.moneyValuesForCases.clone();
-            Collections.sort(update.duplicateCaseValues);
+//            update.duplicateCaseValues = (ArrayList<Integer>)update.getMoneyValueForCases().clone();
+            update.setDuplicateCaseValues((ArrayList<Integer>)update.getMoneyValueForCases().clone());
+            Collections.sort(update.getDuplicateCaseValues());
             
             for (int caseNumbers = 1; caseNumbers <= update.getTotalAmountOfCases(); caseNumbers++)
             {
-                int x = rand.nextInt(update.moneyValuesForCases.size());
-                update.caseList.add(new Case(caseNumbers, update.moneyValuesForCases.get(x)));
-                update.moneyValuesForCases.remove(x);           
+                int x = rand.nextInt(update.getMoneyValueForCases().size());
+                update.getCaseList().add(new Case(caseNumbers, update.getMoneyValueForCases().get(x)));
+                update.getMoneyValueForCases().remove(x);           
             }
         }
         catch (FileNotFoundException e) //Case value file not found, random values will be used
@@ -255,7 +257,7 @@ public class Model extends Observable
             System.err.println("For the proper values to be used, the case values files must be in the right file location with the right name.");
             for (int x = 1; x <= update.getTotalAmountOfCases(); x++)
             {
-                update.caseList.add(new Case(x, (1000 * (rand.nextInt(100) + 1))));
+                update.getCaseList().add(new Case(x, (1000 * (rand.nextInt(100) + 1))));
             }
         }
         this.setUpValues();
@@ -266,18 +268,18 @@ public class Model extends Observable
         for (int k = 1; k <= update.getTotalAmountOfCases(); k++)
         {                                
                 //this is for labels...??
-            int num = update.duplicateCaseValues.get(k - 1);
+            int num = update.getDuplicateCaseValues().get(k - 1);
             if (k <= 13)
             {
-                update.tester.put(num, new GradientLabel("$" + nf.format(num), MoneyValueType.BLUE));
+                update.getMoneyLabels().put(num, new GradientLabel("$" + nf.format(num), MoneyValueType.BLUE));
             }
             else if (k >= 14 && k <= 22)
             {
-                update.tester.put(num, new GradientLabel("$" + nf.format(num), MoneyValueType.RED));
+                update.getMoneyLabels().put(num, new GradientLabel("$" + nf.format(num), MoneyValueType.RED));
             }
             else
             {
-                update.tester.put(num, new GradientLabel("$" + nf.format(num), MoneyValueType.GREEN));
+                update.getMoneyLabels().put(num, new GradientLabel("$" + nf.format(num), MoneyValueType.GREEN));
             }
         }
     }
