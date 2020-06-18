@@ -1,8 +1,10 @@
 package DealOrNoDealGUI;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Projections;
 import org.hibernate.service.ServiceRegistry;
 
 /**
@@ -63,24 +65,34 @@ public class Database
         return true;
     }
     
-    public int getPlayerHighScore(Player player)
+    public int getAllTimeHighScore()
     {
         Session session = sessionFactory.openSession();
-        Player playerRetrieval = (Player)session.get(Player.class, player.getUsername());
+        Criteria criteria = session.createCriteria(Player.class).setProjection(Projections.max("highscore"));
+        Integer topScore = (Integer)criteria.uniqueResult();
+        session.close();
+        System.out.println("ALL TIME HS: " + topScore);
+        return topScore;
+    }
+    
+    public int getPlayerHighScore(String username)
+    {
+        Session session = sessionFactory.openSession();
+        Player playerRetrieval = (Player)session.get(Player.class, username);
         session.close();
         return playerRetrieval.getHighscore();
     }
     
-    public void updateScore(Player player, int score)
+    public void updateScore(String username, int score)
     {
-            Session session = sessionFactory.openSession();
-            session.beginTransaction();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
 //            Player player = (Player)session.get(Player.class, "Leo"); //null pointer except if player dont exist
-            Player updatingPlayer = (Player)session.get(Player.class, player.getUsername());
-            updatingPlayer.setHighscore(score);
-            session.update(updatingPlayer);
-            session.getTransaction().commit();
-            session.close();
+        Player updatingPlayer = (Player)session.get(Player.class, username);
+        updatingPlayer.setHighscore(score);
+        session.update(updatingPlayer);
+        session.getTransaction().commit();
+        session.close();
     }
     
     public void closeDatabase()

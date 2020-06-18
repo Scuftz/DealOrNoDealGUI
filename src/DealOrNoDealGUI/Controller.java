@@ -40,8 +40,8 @@ public class Controller implements ActionListener, ItemListener
         }
         else if(cmp.equals("LOGIN"))
         {
-            String un = view.lp.getUsername();
-            char[] pw = view.lp.getPassword();
+            String un = view.loginPanel.getUsername();
+            char[] pw = view.loginPanel.getPassword();
                     
             if((!un.equals("")) && (pw.length>0))
             {

@@ -12,6 +12,9 @@ import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 
 public class Model extends Observable
 {
@@ -21,7 +24,7 @@ public class Model extends Observable
     protected Scanner input;
     protected String file;
     protected Random rand = new Random();
-    protected Database databaseConnection;
+    protected Database playerDB;
     protected String username, password;
     public boolean caseSelected = false;
     private boolean stopRequest = false;
@@ -31,22 +34,57 @@ public class Model extends Observable
         file = "caseValues.txt";
         caseCounter = 0;
         update = new UpdateInfo();
-        databaseConnection = new Database();
+        playerDB = new Database();
         this.setUpCases();
         this.setUpFlashes();
     }
     
     public void checkLogin(String un, String pw)
     {
-        boolean loginStatus = databaseConnection.checkLogin(un, pw);
+        boolean loginStatus = playerDB.checkLogin(un, pw);
         update.loginFlag = loginStatus;
+        update.playerUsername = un;
         setChanged();
         notifyObservers(update);
+    }
+    
+    public void checkHighScore()
+    {
+        int highscore = playerDB.getPlayerHighScore(update.playerUsername);
+        System.out.println("PLAYER CURRENT HIGH SCORE: " + highscore);
+        System.out.println("MOST RECENT BANK OFFER: " + update.bankOffer);
+        System.out.println("USER CASE VALUE: " + update.userCaseValue);
+        
+        if(update.dealAccepted)
+        {
+            if (highscore < update.bankOffer)
+            {
+                playerDB.updateScore(update.playerUsername, update.bankOffer);
+            }
+        }
+        else
+        {
+            if (highscore < update.userCaseValue)
+            {
+                playerDB.updateScore(update.playerUsername, update.userCaseValue);
+            }
+        }
+        highscore = playerDB.getPlayerHighScore(update.playerUsername);
+        update.userHighScore = highscore;
+        System.out.println("PLAYER CURRENT HIGH SCORE: " + highscore);
+    }
+    
+    public void getAllTimeScore()
+    {
+        int topScore = playerDB.getAllTimeHighScore();
+        update.allTimeHighScore = topScore;
     }
     
     public void endGame()
     {
         update.endOfGame = true;
+        this.checkHighScore();
+        this.getAllTimeScore();
         setChanged();
         notifyObservers(update);
     }
@@ -57,6 +95,7 @@ public class Model extends Observable
         if (!update.caseSelected)
         {
             update.caseList.get(c.getCaseNumber()-1).setPlayerCase(true);
+            update.userCaseValue = c.getCaseValue();
         }
         else
         {
@@ -66,7 +105,7 @@ public class Model extends Observable
             update.casesRemainingThisRound--;
             if(update.casesRemainingThisRound == 0)
             {
-                if(update.roundNumber != 9)
+                if(update.roundNumber != update.maxRounds)
                 {
                     this.calculateBankOffer(update.roundNumber, update.caseList);
                     this.setUpNewRound();
@@ -139,10 +178,6 @@ public class Model extends Observable
         update.casesRemainingThisRound = update.totalCasesToOpen;
         update.roundNumber++;
         System.out.println("Round Number" + update.roundNumber);
-//        if(update.roundNumber > 9)
-//        {
-//            update.endOfGame = true;
-//        }
     }
     
     public void setUpCases()
@@ -196,7 +231,7 @@ public class Model extends Observable
     
     public void setUpValues()
     {
-        for (int k = 1; k <= 26; k++)
+        for (int k = 1; k <= update.totalAmountOfCases; k++)
         {                                
                 //this is for labels...??
             int num = update.duplicateCaseValues.get(k - 1);

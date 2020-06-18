@@ -8,29 +8,25 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.locks.*;
 import javax.swing.*;
 
 public class View extends JFrame implements Observer, Runnable
 {
-    protected Lock lock = new ReentrantLock();
-    protected Condition con = lock.newCondition();
     private int result;
-    
     public boolean setUp = false;
     private NumberFormat nf = NumberFormat.getNumberInstance();
-    public JToggleButton tb = new JToggleButton("Deal");
+    public JToggleButton toggle = new JToggleButton("Deal");
     private Dimension screenDimension, frameDimension;
 
     protected Timer timer;
-    protected PanelPackage.BackgroundPanel bp;
-    protected PanelPackage.LoginPanel lp;
-    protected PanelPackage.GameHeaderPanel ghp;
-    protected PanelPackage.CasePanel cp;
-    protected PanelPackage.MoneyPanel mp;
-    protected PanelPackage.MainGamePanel mgp;
-    protected PanelPackage.SelectCasePanel scp;
-    protected PanelPackage.EndOfGamePanel ep;
+    protected PanelPackage.BackgroundPanel backgroundPanel;
+    protected PanelPackage.LoginPanel loginPanel;
+    protected PanelPackage.GameHeaderPanel gameHeaderPanel;
+    protected PanelPackage.CasePanel casePanel;
+    protected PanelPackage.MoneyPanel moneyPanels;
+    protected PanelPackage.MainGamePanel mainGamePanel;
+    protected PanelPackage.SelectCasePanel selectCasePanel;
+    protected PanelPackage.EndOfGamePanel endPanel;
     
     private ArrayList<Case> caseListBtn = new ArrayList();
     
@@ -48,7 +44,7 @@ public class View extends JFrame implements Observer, Runnable
         screenDimension = tk.getScreenSize();
         frameDimension = this.getSize();
         setLocation((screenDimension.width-frameDimension.width)/2, (screenDimension.height-frameDimension.height)/2);
-        tb.setName("Deal");
+        toggle.setName("Deal");
         createLoginPanel();
         timer = new Timer(250, null);
     }
@@ -66,13 +62,13 @@ public class View extends JFrame implements Observer, Runnable
         {
             System.out.println("in view LOG IN FAILED!");
             JOptionPane.showMessageDialog(null, "Login Failed", "Failed to Login", 0);
-            lp.setPasswordBlank();
+            loginPanel.setPasswordBlank();
         }
         else if(!update.gameStarted)
         {
             update.loginFlag = true;
             update.gameStarted = true;
-            this.createCasesForController(update.caseList);
+            this.createCasesForController(update.caseList, update.totalAmountOfCases);
             this.selectCasePanel(update.caseList);
         }
         else if (!update.caseSelected)
@@ -88,8 +84,7 @@ public class View extends JFrame implements Observer, Runnable
         {
             System.out.println("End of Game");
             this.getContentPane().removeAll();
-            this.displayEndOfGame(update.dealAccepted);
-            //go to end game panel, maybe introduce timer here with a thread when display shocker 
+            this.displayEndOfGame(update.dealAccepted, update.userCaseValue, update.bankOffer, update.userHighScore, update.allTimeHighScore);
         }
         else if(update.endOfRound)
         {
@@ -110,7 +105,7 @@ public class View extends JFrame implements Observer, Runnable
             if(result == 0)
             {
                 update.dealAccepted = true;
-                tb.setSelected(true);
+                toggle.setSelected(true);
             }
         }
         else if (update.quitGame)
@@ -141,22 +136,22 @@ public class View extends JFrame implements Observer, Runnable
         System.out.println("RINDBO: " + result);
     }
         
-    public void displayEndOfGame(boolean dealAccepted)
+    public void displayEndOfGame(boolean dealAccepted, int userCaseValue, int bankOffer, int userHighScore, int allTimeScore)
     {
-        bp.removeAll();
-        ep = new PanelPackage.EndOfGamePanel(dealAccepted);
-        bp.add(ep);
-        add(bp);
+        backgroundPanel.removeAll();
+        endPanel = new PanelPackage.EndOfGamePanel(dealAccepted, userCaseValue, bankOffer, userHighScore, allTimeScore);
+        backgroundPanel.add(endPanel);
+        add(backgroundPanel);
     }
     
     public void updateCaseToOpen(int num)
     {
-        ghp.changeCaseRemainingValue(num);
+        gameHeaderPanel.changeCaseRemainingValue(num);
     }
     
-    public void createCasesForController(ArrayList<Case> caseList)
+    public void createCasesForController(ArrayList<Case> caseList, int totalAmountOfCases)
     {
-        for (int k = 1; k <= 26; k++)
+        for (int k = 1; k <= totalAmountOfCases; k++)
         {
             caseListBtn.add(caseList.get(k - 1));
         }
@@ -164,62 +159,62 @@ public class View extends JFrame implements Observer, Runnable
     
     public void createLoginPanel()
     {
-        bp = new PanelPackage.BackgroundPanel();
-        lp = new PanelPackage.LoginPanel();
-        bp.add(lp);
-        add(bp);
+        backgroundPanel = new PanelPackage.BackgroundPanel();
+        loginPanel = new PanelPackage.LoginPanel();
+        backgroundPanel.add(loginPanel);
+        add(backgroundPanel);
     }
     
     public void selectCasePanel(ArrayList<Case> caseList)
     {
-        bp.remove(lp);
-        scp = new PanelPackage.SelectCasePanel(caseList);
+        backgroundPanel.remove(loginPanel);
+        selectCasePanel = new PanelPackage.SelectCasePanel(caseList);
         JLabel selectLbl = new JLabel("Select A Case!");
         selectLbl.setFont(new Font("Verdana", Font.BOLD, 40));
         selectLbl.setForeground(Color.YELLOW);
         selectLbl.setBounds(450, 30, 400, 40);
-        bp.add(selectLbl);
-        bp.add(scp);
-        bp.revalidate();
-        bp.repaint();
+        backgroundPanel.add(selectLbl);
+        backgroundPanel.add(selectCasePanel);
+        backgroundPanel.revalidate();
+        backgroundPanel.repaint();
     }
     
     public void displayMainGame()
     {
         this.getContentPane().removeAll();
         createMainGamePanel();
-        getContentPane().add(mgp);       
+        getContentPane().add(mainGamePanel);       
         this.revalidate();
         this.repaint();
     }
        
     public void createMainGamePanel()
     {
-        mgp = new PanelPackage.MainGamePanel(frameDimension);
-        mgp.add(ghp, BorderLayout.NORTH);
-        mgp.add(mp.getLeftPanel(), BorderLayout.WEST);
-        mgp.add(mp.getRightPanel(), BorderLayout.EAST);
-        mgp.add(cp, BorderLayout.CENTER);
+        mainGamePanel = new PanelPackage.MainGamePanel(frameDimension);
+        mainGamePanel.add(gameHeaderPanel, BorderLayout.NORTH);
+        mainGamePanel.add(moneyPanels.getLeftPanel(), BorderLayout.WEST);
+        mainGamePanel.add(moneyPanels.getRightPanel(), BorderLayout.EAST);
+        mainGamePanel.add(casePanel, BorderLayout.CENTER);
     }
     
     public void createTopPanel(int casesToOpen, ArrayList<FlashButton> flashBtn)
     {
-        ghp = new PanelPackage.GameHeaderPanel(casesToOpen, flashBtn);  
+        gameHeaderPanel = new PanelPackage.GameHeaderPanel(casesToOpen, flashBtn);  
     }
     
     public void createMoneyPanels(LinkedHashMap<Integer, GradientLabel> valueLbls)
     {
-        mp = new PanelPackage.MoneyPanel(valueLbls);
+        moneyPanels = new PanelPackage.MoneyPanel(valueLbls);
     }
     
     public void createCasePanel(ArrayList<Case> caseList)
     {
-        cp = new PanelPackage.CasePanel(caseList);
+        casePanel = new PanelPackage.CasePanel(caseList);
     }
         
     public void setController(ActionListener controller)
     {
-        lp.setButtonListener(controller);
+        loginPanel.setButtonListener(controller);
         timer.addActionListener(controller);
     }
     
@@ -233,6 +228,6 @@ public class View extends JFrame implements Observer, Runnable
     
     public void setItemController(ItemListener controller)
     {
-        tb.addItemListener(controller);
+        toggle.addItemListener(controller);
     }
 }
