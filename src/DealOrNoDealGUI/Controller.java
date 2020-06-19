@@ -65,8 +65,12 @@ public class Controller implements ActionListener, ItemListener
             {
                 String password = String.valueOf(pw);
                 model.checkLogin(un, password);
-                //cases aren't created upon the controllers instantiation so I have to set their controllers later
+                //cases aren't created upon the controllers instantiation so I have to set their controllers later (here)
                 view.setCaseController(this);
+            }
+            else
+            {
+                model.blankFlag();
             }
         }
         else if (cmp.equals("Quit Game")) //Quit game

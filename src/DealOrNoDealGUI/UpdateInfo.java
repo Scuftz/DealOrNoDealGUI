@@ -22,6 +22,7 @@ public class UpdateInfo
     private boolean dealAcceptedFlag;
     private boolean endOfGameFlag;
     private boolean quitGameFlag;
+    private boolean blankLogin;
     
     /**
      * Variables
@@ -62,6 +63,7 @@ public class UpdateInfo
         dealAcceptedFlag = false;
         endOfGameFlag = false;
         quitGameFlag = false;
+        blankLogin = false;
     
         //variables
         totalCasesLeft = 26;
@@ -81,7 +83,7 @@ public class UpdateInfo
         moneyLabels = new LinkedHashMap<>();
         flashBtn = new ArrayList<>();
     }
-    
+        
     /**
      * This method will get the player's username
      * @return   The player's username
@@ -323,6 +325,22 @@ public class UpdateInfo
     }
     
     /**
+     * This method gets the blankLogin flag
+     * @return   Boolean value of the blankLogin flag
+     */
+    public boolean getBlankFlag() {
+        return this.blankLogin;
+    }
+    
+    /**
+     * This method sets the blankLogin flag
+     * @param flag   Boolean value to be set to flag
+     */
+    public void setBlankFlag(boolean flag) {
+        this.blankLogin = flag;
+    }
+    
+    /**
      * This method gets the login flag
      * @return   Boolean value of the endOfGame flag
      */
@@ -404,7 +422,7 @@ public class UpdateInfo
     
     /**
      * This method sets up the duplicate case values for the Update class
-     * @param duplicates   An ArrayList 
+     * @param duplicates   An ArrayList of the duplicate case values
      */
     public void setDuplicateCaseValues(ArrayList<Integer> duplicates) {
         this.duplicateCaseValues = duplicates;

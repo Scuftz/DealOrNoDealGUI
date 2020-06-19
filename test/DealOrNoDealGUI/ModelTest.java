@@ -1,21 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package DealOrNoDealGUI;
-
 import java.util.ArrayList;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the Model Testing Class, testing the methods from the Model
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
 public class ModelTest {
     
@@ -24,21 +16,9 @@ public class ModelTest {
     public ModelTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
     @Before
     public void setUp() {
         model = new Model();
-    }
-    
-    @After
-    public void tearDown() {
     }
 
     /**

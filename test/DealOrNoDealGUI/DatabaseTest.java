@@ -1,39 +1,26 @@
 package DealOrNoDealGUI;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the Database Testing Class, used to test methods from the DB
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
-public class DatabaseTest {
-    
+public class DatabaseTest
+{    
     private Database databaseTest;
     
     public DatabaseTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
     }
     
     @Before
     public void setUp() {
         databaseTest = new Database();
     }
-    
-    @After
-    public void tearDown() {
-    }
-    
+
     /**
      * Test of checkLogin method, of class Database.
      * Checks a successful login of a player who already exists in the database

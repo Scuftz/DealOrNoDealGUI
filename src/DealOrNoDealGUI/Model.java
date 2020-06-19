@@ -74,6 +74,13 @@ public class Model extends Observable
         notifyObservers(update);
     }
     
+    public void blankFlag()
+    {
+        update.setBlankFlag(true);
+        setChanged();
+        notifyObservers(update);
+    }
+    
     /**
      * This method checks a player's high score after they finish a game
      * If they're previous high score is less than the value they just won,

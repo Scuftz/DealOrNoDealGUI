@@ -42,7 +42,8 @@ public class GradientLabel extends JLabel
         {
             if(this.mvt == MoneyValueType.BLUE)
             {
-                c1 = Color.CYAN;
+//                c1 = Color.CYAN;
+                c1 = new Color(0,204,255);
                 c2 = Color.BLUE;
             }
             else if (this.mvt == MoneyValueType.RED)
