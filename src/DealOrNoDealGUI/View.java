@@ -75,7 +75,6 @@ public class View extends JFrame implements Observer, Runnable
         else if (!update.getCaseSelectedFlag())
         {
             System.out.println("User Case Selected");
-//            update.caseSelected = true;
             update.setCaseSelectedFlag(true);
             createTopPanel(update.getCasesRemainingThisRound(), update.getFlashBtns());
             createMoneyPanels(update.getMoneyLabels());
@@ -86,11 +85,10 @@ public class View extends JFrame implements Observer, Runnable
         {
             System.out.println("End of Game");
             this.getContentPane().removeAll();
-            this.displayEndOfGame(update.getDealAcceptedFlag(), update.getPlayerCaseValue(), update.getBankOffer(), update.getPlayerHighScore(), update.getAllTimeScore());
+            this.displayEndOfGame(update.getDealAcceptedFlag(), update.getPlayerCase().getCaseValue(), update.getBankOffer(), update.getPlayerHighScore(), update.getAllTimeScore());
         }
         else if(update.getEndOfRoundFlag())
         {
-//            update.endOfRound = false;
             update.setEndOfRoundFlag(false);
             System.out.println("End of Round");
             this.updateCaseToOpen(update.getCasesRemainingThisRound());
@@ -140,7 +138,6 @@ public class View extends JFrame implements Observer, Runnable
     public void displayEndOfGame(boolean dealAccepted, int userCaseValue, int bankOffer, int userHighScore, int allTimeScore)
     {
         backgroundPanel.removeAll();
-//        endPanel = new PanelPackage.EndOfGamePanel(dealAccepted, userCaseValue, bankOffer, userHighScore, allTimeScore);
         endPanel.updatePanel(dealAccepted, userCaseValue, bankOffer, userHighScore, allTimeScore);
         backgroundPanel.add(endPanel);
         add(backgroundPanel);

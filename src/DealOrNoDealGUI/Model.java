@@ -91,9 +91,9 @@ public class Model extends Observable
         }
         else
         {
-            if (highscore < update.getPlayerCaseValue())
+            if (highscore < update.getPlayerCase().getCaseValue())
             {
-                playerDB.updateScore(update.getPlayerName(), update.getPlayerCaseValue());
+                playerDB.updateScore(update.getPlayerName(), update.getPlayerCase().getCaseValue());
             }
         }
         //Setting high score in update class to display at end of game panel
@@ -133,8 +133,8 @@ public class Model extends Observable
     {
         if (!update.getCaseSelectedFlag()) //If the player hasn't chosen their case yet
         {
+            update.setPlayerCase(c);
             update.getCaseList().get(c.getCaseNumber()-1).setPlayerCase(true);
-            update.setPlayerCaseValue(c.getCaseValue());
         }
         else //Opening cases
         {
