@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PanelPackage;
-
 import SpecialClassPackage.GradientLabel;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,15 +13,24 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the MoneyPanel Class, used to display the money values in the game
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
 public class MoneyPanel
 {
+    /**
+     * Variables
+     */
     private JPanel leftMoneyPanel;
     private JPanel rightMoneyPanel;
     private LinkedHashMap<Integer, GradientLabel> moneyLabels;
     
+    /**
+     * Constructor
+     * @param moneyLbls   All of the value labels to be displayed
+     */
     public MoneyPanel(LinkedHashMap<Integer, GradientLabel> moneyLbls)
     {
         this.leftMoneyPanel = new JPanel();
@@ -36,6 +39,9 @@ public class MoneyPanel
         createMoneyPanels();
     }
     
+    /**
+     * This method will create both the left and right money panels
+     */
     public void createMoneyPanels()
     {
         this.leftMoneyPanel.setLayout(new BoxLayout(this.leftMoneyPanel, BoxLayout.Y_AXIS));
@@ -74,11 +80,19 @@ public class MoneyPanel
         }
     }
     
+    /**
+     * This method will get the left money panel
+     * @return   The left money panel
+     */
     public JPanel getLeftPanel()
     {
         return this.leftMoneyPanel;
     }
     
+    /**
+     * This method will get the right money panel
+     * @return   The right money panel
+     */
     public JPanel getRightPanel()
     {
         return this.rightMoneyPanel;

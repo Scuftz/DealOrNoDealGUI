@@ -7,14 +7,24 @@ import java.awt.RenderingHints;
 import javax.swing.JLabel;
 
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the GradientLabel Class
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
 public class GradientLabel extends JLabel
 {
+    /**
+     * Variables
+     */
     protected MoneyValueType mvt;
     protected boolean open;
     
+    /**
+     * Constructor
+     * @param text   The text for the label
+     * @param mvt    It's assigned colour
+     */
     public GradientLabel(String text, MoneyValueType mvt)
     {
         super(text);
@@ -22,11 +32,18 @@ public class GradientLabel extends JLabel
         this.open = false;
     }
         
+    /**
+     * Set the label value to be opened (will now turn gray)
+     */
     public void setOpen()
     {
         this.open = true;
     }
     
+    /**
+     * This is the overridden paintComponent used to paint the labels
+     * @param g   The Graphics g used to paint the component
+     */
     @Override
     protected void paintComponent(Graphics g)
     {
@@ -42,8 +59,7 @@ public class GradientLabel extends JLabel
         {
             if(this.mvt == MoneyValueType.BLUE)
             {
-//                c1 = Color.CYAN;
-                c1 = new Color(0,204,255);
+                c1 = new Color(0,248,248);
                 c2 = Color.BLUE;
             }
             else if (this.mvt == MoneyValueType.RED)
@@ -53,7 +69,7 @@ public class GradientLabel extends JLabel
             }
             else
             {
-                c1 = new Color(0, 153, 51);
+                c1 = new Color(0,153,51);
                 c2 = new Color(26,240,26);
             }            
         }

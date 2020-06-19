@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Fri Jun 19 18:13:33 NZST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0172-cb36-00bb-00000c87d318 
+Fri Jun 19 18:55:53 NZST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0172-cb5c-c1af-00000c87cf38 
 on database directory C:\Users\shivn\OneDrive\Documents\AUT\Second Year\Semester 1\Program Design and Construction\DealOrNoDealGUI\DealOrNoDealDB with class loader sun.misc.Launcher$AppClassLoader@30f39991 
 Loaded from file:/C:/Users/shivn/OneDrive/Documents/AUT/Second%20Year/Semester%201/Program%20Design%20and%20Construction/DealOrNoDealGUI/lib/derby.jar
 java.vendor=Oracle Corporation

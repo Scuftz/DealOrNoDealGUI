@@ -1,30 +1,32 @@
 package SpecialClassPackage;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.TimerTask;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the FlashButtons Class
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
 public class FlashButton extends JButton
 {
+    /**
+     * Variables
+     */
     private Border border = BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.BLACK);
     private MoneyValueType mvt;
     private Boolean changeOfPaint = false;
  
+    /**
+     * Constructor
+     * @param xLoc   The x coordinate of the button
+     * @param yLoc   The y coordinate of the button
+     * @param mvt    It's assigned colour
+     */
     public FlashButton(int xLoc, int yLoc, MoneyValueType mvt)
     {
         this.setLocation(xLoc, yLoc);
@@ -33,6 +35,9 @@ public class FlashButton extends JButton
         this.setBorder(border);    
     }
     
+    /**
+     * This method will make the button change its colour
+     */
     public void invert()
     {
         this.changeOfPaint = (!changeOfPaint);
@@ -40,6 +45,10 @@ public class FlashButton extends JButton
         this.repaint();
     }
     
+    /**
+     * This is the overridden paintComponent used to paint the buttons
+     * @param g   The Graphics g used to paint the component
+     */
     @Override
     protected void paintComponent(Graphics g)
     {

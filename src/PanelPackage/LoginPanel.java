@@ -1,6 +1,5 @@
 package PanelPackage;
 import SpecialClassPackage.RestrictInputLength;
-import DealOrNoDealGUI.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -11,17 +10,25 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the LoginPanel Class
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
 public class LoginPanel extends CurvedJPanel
 {
+    /**
+     * Variables
+     */
     private JLabel loginLbl, usernameLbl, passwordLbl;
     private JTextField usernameTxt;
     private JPasswordField passwordTxt;
     public JButton loginBtn;
     private Font fontOne, fontTwo;
     
+    /**
+     * Constructor
+     */
     public LoginPanel()
     {
         fontOne = new Font("Arial", Font.PLAIN, 10);
@@ -51,25 +58,44 @@ public class LoginPanel extends CurvedJPanel
         add(loginBtn);
     }
     
+    /**
+     * This method will set an ActionListener (the Controller) for the login button
+     * @param controller 
+     */
     public void setButtonListener(ActionListener controller)
     {
         loginBtn.addActionListener(controller);
     }
     
+    /**
+     * This method will set the password field blank
+     */
     public void setPasswordBlank()
     {
         passwordTxt.setText("");
     }
     
+    /**
+     * This method will get the password entered by the player
+     * @return   The player's password that they entered
+     */
     public char[] getPassword()
     {
         return passwordTxt.getPassword();
     }
+    
+    /**
+     * This method will return the username entered by the player
+     * @return   The player's username that they entered
+     */
     public String getUsername()
     {
         return usernameTxt.getText();
     }
     
+    /**
+     * This method will create the login label
+     */
     public void createLoginLbl()
     {
         loginLbl = new JLabel("Login");
@@ -79,6 +105,9 @@ public class LoginPanel extends CurvedJPanel
         loginLbl.setSize(80, 30);
     }
     
+    /**
+     * This method will create the username label
+     */
     public void createUsernameLbl()
     {
         usernameLbl = new JLabel("Username");
@@ -88,6 +117,9 @@ public class LoginPanel extends CurvedJPanel
         usernameLbl.setSize(50, 10);
     }
     
+    /**
+     * This method will create the text field for the player's username
+     */
     public void createUsernameTxt()
     {
         usernameTxt = new JTextField();
@@ -98,6 +130,9 @@ public class LoginPanel extends CurvedJPanel
         usernameTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
     }
         
+    /**
+     * This method will create the password label
+     */
     public void createPasswordLbl()
     {
         passwordLbl = new JLabel("Password");
@@ -107,6 +142,9 @@ public class LoginPanel extends CurvedJPanel
         passwordLbl.setSize(50, 10);
     }
         
+    /**
+     * This method will create the text field for the player's password
+     */
     public void createPasswordField()
     {
         passwordTxt = new JPasswordField();
@@ -117,7 +155,10 @@ public class LoginPanel extends CurvedJPanel
         passwordTxt.setSize(255, 30);
         passwordTxt.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
     }
-        
+     
+    /**
+     * This method will create the login button 
+     */
     public void createLoginButton()
     {
         loginBtn = new JButton("LOGIN");

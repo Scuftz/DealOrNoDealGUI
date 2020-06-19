@@ -9,17 +9,32 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the ImagePanel Class, used to create a panel with a background image in it, or a gradient background
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
 public abstract class ImagePanel extends JPanel
 {
+    /**
+     * Variables
+     */
     Image img;
+    
+    /**
+     * This method will set the background image of the panel
+     * @param image 
+     */
     public void setBackground(Image image)
     {
         this.img = image;
     }
     
+    /**
+     * This is the overridden paintComponent used to paint the panel
+     * If it has an image, it will paint the image as the background, else the gradient created
+     * @param g   The Graphics g used to paint the component
+     */
     @Override
     protected void paintComponent(Graphics g)
     {

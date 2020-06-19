@@ -6,13 +6,22 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the CasePanel Class, used to display all the cases in the main game that don't belong to the player
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
 public class CasePanel extends JPanel
 {
+    /**
+     * Variables
+     */
     private ArrayList<Case> caseListBtn;
     
+    /**
+     * Constructor
+     * @param caseListBtn   The list of cases to be displayed
+     */
     public CasePanel(ArrayList<Case> caseListBtn)
     {
         setBackground(Color.black);
@@ -21,6 +30,9 @@ public class CasePanel extends JPanel
         createCaseLocations();
     }
     
+    /**
+     * This method is used to add the cases to the panel
+     */
     public void createCaseLocations()
     {
         Point location = new Point(25, 432);

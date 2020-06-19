@@ -1,11 +1,9 @@
 package PanelPackage;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import static java.awt.GridBagConstraints.CENTER;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import javax.swing.BorderFactory;
@@ -15,11 +13,16 @@ import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the EndOfGamePanel Class, used as the panel to display the end game details
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
 public class EndOfGamePanel extends CurvedJPanel
 {
+    /**
+     * Variables
+     */
     private boolean dealAccepted;
     private JLabel dealNoDealLbl, bankedOffer, caseValueLbl, yourCaseLbl, messageLbl, highScoreLbl, highScoreValueLbl, topScoreLbl, topScoreValueLbl;
     private JButton quitBtn;
@@ -30,6 +33,9 @@ public class EndOfGamePanel extends CurvedJPanel
     private int userCaseValue, bankOffer, userHighScore, allTimeHighScore;
     private NumberFormat nf = NumberFormat.getNumberInstance();
 
+    /**
+     * Constructor
+     */
     public EndOfGamePanel()
     {
         setLayout(new GridBagLayout());
@@ -40,11 +46,23 @@ public class EndOfGamePanel extends CurvedJPanel
         quitBtn = new JButton("Quit Game");
     }
     
+    /**
+     * This method will set an ActionListener (the Controller) for the quit button
+     * @param controller   The controller
+     */
     public void setButtonListener(ActionListener controller)
     {
         quitBtn.addActionListener(controller);
     }
     
+    /**
+     * This method create the actual end game panel using the parameters its been passed
+     * @param dealAccepted   Whether the player accepted an offer
+     * @param userCaseValue  The value of the player's case
+     * @param bankOffer      The highest bank offer the player received
+     * @param userHighScore  The individual player's high score
+     * @param allTimeScore   The all-time high score
+     */
     public void updatePanel(boolean dealAccepted, int userCaseValue, int bankOffer, int userHighScore, int allTimeScore)
     {
         this.userCaseValue = userCaseValue;
@@ -63,6 +81,15 @@ public class EndOfGamePanel extends CurvedJPanel
         }
     }
     
+    /**
+     * This method is used to add components to the GridBagLayout of the EndOfGamePanel
+     * @param cmp     The JComponent to be added
+     * @param f       It's font
+     * @param gridx   It's gridx location in the grid bag layout
+     * @param gridy   It's gridy location in the grid bag layout
+     * @param gridwidth   It's grid width in the grid bag layout
+     * @param fill    It's fill for the grid bag layout
+     */
     public void addComponent(JComponent cmp, Font f, int gridx, int gridy, int gridwidth, int fill)
     {
         cmp.setForeground(Color.BLACK);
@@ -74,6 +101,9 @@ public class EndOfGamePanel extends CurvedJPanel
         add(cmp, gbc);
     }
     
+    /**
+     * This method will build the panel, add the components to it using the addComponent() method
+     */
     public void buildEndScreen()
     {
         gbc.anchor = CENTER;
@@ -113,6 +143,9 @@ public class EndOfGamePanel extends CurvedJPanel
         addComponent(quitBtn, f3, 0, 5, 2, 2);
     }
     
+    /**
+     * If a deal was accepted, this customised end panel will be used
+     */
     public void dealEndScreen()
     {
         dealNoDealLbl.setText("YOU TOOK A DEAL WORTH:");
@@ -129,6 +162,10 @@ public class EndOfGamePanel extends CurvedJPanel
             caseValueLbl.setForeground(new Color(0,153,51));
         }
     }
+    
+    /**
+     * If no deal was ever taken, this customied end panel will be used
+     */
     public void noDealEndScreen()
     {
         dealNoDealLbl.setText("YOU DECLINED AN OFFER OF:");

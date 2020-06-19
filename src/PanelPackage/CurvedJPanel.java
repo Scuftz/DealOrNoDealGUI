@@ -7,11 +7,17 @@ import java.awt.RenderingHints;
 import javax.swing.JPanel;
 
 /**
- *
- * @author shivn
+ * PDC Assignment 2
+ * This is the CurvedJPanel Class, used to create a panel with a curved edges
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
  */
 public abstract class CurvedJPanel extends JPanel
 {
+    /**
+     * This is the overridden paintComponent used to create the curved edge panel
+     * @param g   The Graphics g used to paint the component
+     */
     @Override
     protected void paintComponent(Graphics g)
     {
