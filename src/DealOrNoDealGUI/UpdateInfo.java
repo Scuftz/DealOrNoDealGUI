@@ -35,6 +35,7 @@ public class UpdateInfo
     private int roundNumber;
     private int playerCaseValue;
     private int bankOffer;
+    private int highestBankOffer;
     private int allTimeHighScore;
     private String playerUsername;
     private int playerHighScore;
@@ -71,6 +72,7 @@ public class UpdateInfo
         casesRemainingThisRound = 6; //decrements after each case opened, end of round, value reassigned to totalCasesToOpen value
         roundNumber = 0;
         bankOffer = 0;
+        highestBankOffer = 0;
         playerCaseValue = 0;
         playerHighScore = 0;
         allTimeHighScore = 0;
@@ -84,6 +86,15 @@ public class UpdateInfo
         flashBtn = new ArrayList<>();
     }
         
+    public int getHighestBankOffer() {
+        return this.highestBankOffer;
+    }
+    
+    public void setHighestBankOffer(int highest) {
+        this.highestBankOffer = highest;
+    }
+    
+    
     /**
      * This method will get the player's username
      * @return   The player's username

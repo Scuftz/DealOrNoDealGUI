@@ -108,7 +108,7 @@ public class View extends JFrame implements Observer, Runnable
         {
             System.out.println("End of Game");
             this.getContentPane().removeAll();
-            this.displayEndOfGame(update.getDealAcceptedFlag(), update.getPlayerCase().getCaseValue(), update.getBankOffer(), update.getPlayerHighScore(), update.getAllTimeScore());
+            this.displayEndOfGame(update.getDealAcceptedFlag(), update.getPlayerCase().getCaseValue(), update.getBankOffer(), update.getHighestBankOffer(), update.getPlayerHighScore(), update.getAllTimeScore());
         }
         else if(update.getEndOfRoundFlag()) //If the round has ended
         {
@@ -174,10 +174,10 @@ public class View extends JFrame implements Observer, Runnable
      * @param userHighScore  The player's current high score
      * @param allTimeScore   The all time high score across all players
      */
-    public void displayEndOfGame(boolean dealAccepted, int userCaseValue, int bankOffer, int userHighScore, int allTimeScore)
+    public void displayEndOfGame(boolean dealAccepted, int userCaseValue, int bankOffer, int highestBankOffer, int userHighScore, int allTimeScore)
     {
         backgroundPanel.removeAll();
-        endPanel.updatePanel(dealAccepted, userCaseValue, bankOffer, userHighScore, allTimeScore);
+        endPanel.updatePanel(dealAccepted, userCaseValue, bankOffer, highestBankOffer, userHighScore, allTimeScore);
         backgroundPanel.add(endPanel);
         add(backgroundPanel);
     }

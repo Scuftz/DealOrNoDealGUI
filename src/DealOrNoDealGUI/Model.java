@@ -227,7 +227,11 @@ public class Model extends Observable
         float bankOffer = (sum / totalCasesLeft) * update.getPercentageDeductions()[roundNumber];
         System.out.println("BANK OFFER...\n" + nf.format((int)bankOffer));
         update.setBankOffer((int)bankOffer);
-        return (int)bankOffer;
+        if (update.getBankOffer() > update.getHighestBankOffer())
+        {
+            update.setHighestBankOffer(update.getBankOffer());
+        }
+        return update.getBankOffer();
     }
     
     /**

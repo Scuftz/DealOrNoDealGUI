@@ -84,8 +84,8 @@ public class GameHeaderPanel extends ImagePanel
     }
     
     /**
-     * This method
-     * @return 
+     * This method returns the flashing buttons list
+     * @return   The flashing buttons list
      */
     public ArrayList<FlashButton> getButtons()
     {

@@ -59,18 +59,24 @@ public class EndOfGamePanel extends CurvedJPanel
      * This method create the actual end game panel using the parameters its been passed
      * @param dealAccepted   Whether the player accepted an offer
      * @param userCaseValue  The value of the player's case
-     * @param bankOffer      The highest bank offer the player received
+     * @param bankOffer      The latest bank offer the player received
+     * @param highestBankOffer The highest bank offer the player received
      * @param userHighScore  The individual player's high score
      * @param allTimeScore   The all-time high score
      */
-    public void updatePanel(boolean dealAccepted, int userCaseValue, int bankOffer, int userHighScore, int allTimeScore)
+    public void updatePanel(boolean dealAccepted, int userCaseValue, int bankOffer, int highestBankOffer, int userHighScore, int allTimeScore)
     {
+        this.dealAccepted = dealAccepted;
         this.userCaseValue = userCaseValue;
-        this.bankOffer = bankOffer;
+        if(dealAccepted) {
+            this.bankOffer = bankOffer;
+        }
+        else {
+            this.bankOffer = highestBankOffer;
+        }
         this.userHighScore = userHighScore;
         this.allTimeHighScore = allTimeScore;
         this.buildEndScreen();
-        this.dealAccepted = dealAccepted;
         if(dealAccepted)
         {
             dealEndScreen();
@@ -168,7 +174,7 @@ public class EndOfGamePanel extends CurvedJPanel
      */
     public void noDealEndScreen()
     {
-        dealNoDealLbl.setText("YOU DECLINED AN OFFER OF:");
+        dealNoDealLbl.setText("YOU HAD ONCE DECLINED:");
         if(this.bankOffer < this.userCaseValue)
         {
             messageLbl.setText("Congrats! You made the right call...");
