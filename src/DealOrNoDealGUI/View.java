@@ -216,9 +216,9 @@ public class View extends JFrame implements Observer, Runnable
         gameHeaderPanel = new PanelPackage.GameHeaderPanel(casesToOpen, flashBtn);  
     }
     
-    public void createMoneyPanels(LinkedHashMap<Integer, GradientLabel> valueLbls)
+    public void createMoneyPanels(LinkedHashMap<Integer, GradientLabel> moneyLabels)
     {
-        moneyPanels = new PanelPackage.MoneyPanel(valueLbls);
+        moneyPanels = new PanelPackage.MoneyPanel(moneyLabels);
     }
     
     public void createCasePanel(ArrayList<Case> caseList)

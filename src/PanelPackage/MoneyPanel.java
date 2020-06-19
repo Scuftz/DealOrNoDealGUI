@@ -26,13 +26,13 @@ public class MoneyPanel
 {
     private JPanel leftMoneyPanel;
     private JPanel rightMoneyPanel;
-    private LinkedHashMap<Integer, GradientLabel> valueLbls;
+    private LinkedHashMap<Integer, GradientLabel> moneyLabels;
     
-    public MoneyPanel(LinkedHashMap<Integer, GradientLabel> valueLbls)
+    public MoneyPanel(LinkedHashMap<Integer, GradientLabel> moneyLbls)
     {
         this.leftMoneyPanel = new JPanel();
         this.rightMoneyPanel = new JPanel();
-        this.valueLbls = valueLbls;
+        this.moneyLabels = moneyLbls;
         createMoneyPanels();
     }
     
@@ -43,8 +43,9 @@ public class MoneyPanel
         int width = 250;
         int height = 40;
                 
-        for(Map.Entry<Integer, GradientLabel> entry  : valueLbls.entrySet())
+        for(Map.Entry<Integer, GradientLabel> entry  : moneyLabels.entrySet())
         {
+            System.out.println("!!!!!!!!!!!!!!!mls: " + moneyLabels.size());
             GradientLabel lbl = entry.getValue();
             lbl.setOpaque(false);
             lbl.setFont(new Font("Arial", Font.BOLD, 20));

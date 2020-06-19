@@ -215,6 +215,7 @@ public class Model extends Observable
     
     public void setUpCases()
     {
+        int multiplier = 1;
         try
         {
             input = new Scanner(new FileReader(file));
@@ -232,14 +233,14 @@ public class Model extends Observable
                 }
                 catch (NoSuchElementException e) //There are not enough values to meet the total amount of cases (missing values)
                 {
-                    System.err.println("There is a value missing from the caseValues file. A default $1000 will replace the missing value.");
-                    update.getMoneyValueForCases().add(1000);
+                    int substituteValue = 360 * multiplier;
+                    System.err.println("There is a value missing from the caseValues file. A random default value of $" + substituteValue + " will replace the missing value.");
+                    update.getMoneyValueForCases().add(substituteValue);
+                    multiplier++;
                     caseCounter++;
                 }
             }
             input.close();
-            
-//            update.duplicateCaseValues = (ArrayList<Integer>)update.getMoneyValueForCases().clone();
             update.setDuplicateCaseValues((ArrayList<Integer>)update.getMoneyValueForCases().clone());
             Collections.sort(update.getDuplicateCaseValues());
             
@@ -255,10 +256,19 @@ public class Model extends Observable
             System.err.println("File for the case values was not found (caseValues.txt). The proper game values are unable to be used.");
             System.err.println("Case values have been defaulted to $1000 multiplied by a random integer between 1-100 as opposed to proper game values.");
             System.err.println("For the proper values to be used, the case values files must be in the right file location with the right name.");
+            ArrayList<Integer> newValueList = new ArrayList();
             for (int x = 1; x <= update.getTotalAmountOfCases(); x++)
             {
-                update.getCaseList().add(new Case(x, (1000 * (rand.nextInt(100) + 1))));
+                int value;
+                do
+                {
+                    value = (rand.nextInt(100) + 1) * 1000;
+                } while (newValueList.contains(value));
+                newValueList.add(value);
+                update.getCaseList().add(new Case(x, value));
             }
+            update.setDuplicateCaseValues(newValueList);
+            Collections.sort(update.getDuplicateCaseValues());
         }
         this.setUpValues();
     }
@@ -266,8 +276,7 @@ public class Model extends Observable
     public void setUpValues()
     {
         for (int k = 1; k <= update.getTotalAmountOfCases(); k++)
-        {                                
-                //this is for labels...??
+        {
             int num = update.getDuplicateCaseValues().get(k - 1);
             if (k <= 13)
             {
