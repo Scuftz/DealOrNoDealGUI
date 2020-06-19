@@ -15,7 +15,6 @@ public class View extends JFrame implements Observer, Runnable
     private int result; //reset
     private NumberFormat nf = NumberFormat.getNumberInstance();
     public JToggleButton dealAcceptedToggle = new JToggleButton("Deal"); //has to reset
-    public JToggleButton restartToggle = new JToggleButton("Restart");
     private Dimension screenDimension, frameDimension;
 
     protected Timer timer;
@@ -45,7 +44,6 @@ public class View extends JFrame implements Observer, Runnable
         frameDimension = this.getSize();
         setLocation((screenDimension.width-frameDimension.width)/2, (screenDimension.height-frameDimension.height)/2);
         dealAcceptedToggle.setName("Deal");
-        restartToggle.setName("Restart");
         createLoginPanel();
         timer = new Timer(250, null);
     }
@@ -58,13 +56,6 @@ public class View extends JFrame implements Observer, Runnable
     public void update(Observable obs, Object obj) {
         UpdateInfo update = (UpdateInfo) obj;
         
-//        if (update.restarting)
-//        {
-//            update.restarting = false;
-//            this.getContentPane().removeAll();
-//            restartToggle.setSelected(true);
-//            createLoginPanel();
-//        }
         if (update.getQuitGameFlag())
         {
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -77,8 +68,6 @@ public class View extends JFrame implements Observer, Runnable
         }
         else if(!update.getGameStartedFlag())
         {
-//            update.loginFlag = true;
-//            update.gameStarted = true;
             update.setGameStartedFlag(true);
             this.createCasesForController(update.getCaseList(), update.getTotalAmountOfCases());
             this.selectCasePanel(update.getCaseList());
@@ -244,6 +233,5 @@ public class View extends JFrame implements Observer, Runnable
     public void setItemController(ItemListener controller)
     {
         dealAcceptedToggle.addItemListener(controller);
-        restartToggle.addItemListener(controller);
     }
 }

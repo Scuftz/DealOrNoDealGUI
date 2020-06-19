@@ -6,6 +6,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.BevelBorder;
 
+/**
+ * PDC Assignment 2
+ * This is the Case Class
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
+ */
 public class Case extends JButton
 {
     /**
@@ -15,9 +21,10 @@ public class Case extends JButton
     private int caseValue;
     private boolean openStatus;
     private boolean playerCase;
+    
     /**
      * This is the constructor for the Case class
-     * @param caseNum   An integer to store the cases' number
+     * @param caseNum   An integer to store the cases number
      * @param caseVal   An integer to store the value of the case
      */
     public Case(int caseNum, int caseVal)
@@ -31,6 +38,10 @@ public class Case extends JButton
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));      
     }
     
+    /**
+     * This method will paint the cases background
+     * @param g   Graphic g for painting
+     */
     @Override
     public void paintComponent(Graphics g)
     {
@@ -48,36 +59,9 @@ public class Case extends JButton
         }
         super.paintComponent(g);
     }
-    
-    /**
-     * This method will create a String output that will be displayed in the game board output
-     * If the case has been opened, it will show the cases' value else it will show the number of the case
-     * @return  A String outputting a cases' number or value
-     */
-    @Override
-    public String toString()
-    {      
-        if (this.getOpenStatus())
-        {
-            if (this.caseValue < 1000)
-            {
-                return String.format("%1$-10s", "[$" + this.caseValue + "]");
-            }
-            if (this.caseValue == 1000000)
-            {
-                return String.format("%1$-10s", "[$1MIL]");
-            }
-            int shortValue = this.caseValue / 1000;
-            return String.format("%1$-10s", "[$" + shortValue + "k]");
-        }
-        else
-        {
-            return String.format("%1$-10s", "[" + this.caseNumber + "]");
-        }
-    }
       
     /**
-     * This method will get the cases' number
+     * This method will get the cases number
      * @return  An integer for the case number
      */
     public int getCaseNumber()
@@ -86,7 +70,7 @@ public class Case extends JButton
     }
 
     /**
-     * This method sets the cases' number
+     * This method sets the cases number
      * @param caseNumber    An integer containing the value the case will store
      */
     public void setCaseNumber(int caseNumber)
@@ -95,7 +79,7 @@ public class Case extends JButton
     }
     
     /**
-     * This method will get the cases' value
+     * This method will get the cases value
      * @return  An integer for the case value
      */
     public int getCaseValue()
@@ -104,7 +88,7 @@ public class Case extends JButton
     }
     
     /**
-     * This method sets the cases' value
+     * This method sets the cases value
      * @param caseValue     An integer containing the value the case will store
      */
     public void setCaseValue(int caseValue)

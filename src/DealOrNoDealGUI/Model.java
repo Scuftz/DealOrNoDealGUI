@@ -12,25 +12,34 @@ import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
 
+/**
+ * PDC Assignment 2
+ * This is the Model Class, part of the MVC
+ * @author Shivneel Singh (18021394)
+ * @since 11/06/2020
+ */
 public class Model extends Observable
 {
+    /**
+     * Variables
+     */
     private static NumberFormat nf = NumberFormat.getNumberInstance();
-    UpdateInfo update;
-    protected int caseCounter; //reset
+    protected int caseCounter;
     protected Scanner input;
     protected String file;
     protected Random rand = new Random();
     protected Database playerDB;
     protected String username, password;
-    public boolean caseSelected; //reset
+    public boolean caseSelected;
+    UpdateInfo update;
     
+    /**
+     * Constructor
+     */
     public Model()
     {
-        file = "caseValues.txt";
+        file = "caseValues.txt"; //file that contains case values
         caseCounter = 0;
         caseSelected = false;
         update = new UpdateInfo();
@@ -39,43 +48,40 @@ public class Model extends Observable
         this.setUpFlashes();
     }
     
+    /**
+     * This method is called when the user quits the game
+     * It will close the database and then from view, close the JFrame window
+     */
     public void quitGame()
     {
         playerDB.closeDatabase();
-//        update.quitGame = true;
         update.setQuitGameFlag(true);
         setChanged();
         notifyObservers(update);
     }
-    public void restartGame()
-    {
-        update = new UpdateInfo();
-        update.restarting = true;
-        caseCounter = 0;
-        caseSelected = false;
-        this.setUpCases();
-        this.setUpFlashes();
-        setChanged();
-        notifyObservers(update);
-    }
     
+    /**
+     * This method checks the login of a player by calling the checkLogin method from the DB class
+     * @param un   Username player entered
+     * @param pw   Password player entered
+     */
     public void checkLogin(String un, String pw)
     {
         boolean loginStatus = playerDB.checkLogin(un, pw);
         update.setLoginFlag(loginStatus);
-//        update.loginFlag = loginStatus;
-        update.setPlayerName(un);// = un;
+        update.setPlayerName(un);
         setChanged();
         notifyObservers(update);
     }
     
+    /**
+     * This method checks a player's high score after they finish a game
+     * If they're previous high score is less than the value they just won,
+     * It will update the player's high score in the DB
+     */
     public void checkHighScore()
     {
-        int highscore = playerDB.getPlayerHighScore(update.getPlayerName());
-        System.out.println("PLAYER CURRENT HIGH SCORE: " + highscore);
-        System.out.println("MOST RECENT BANK OFFER: " + update.getBankOffer());
-        System.out.println("USER CASE VALUE: " + update.getPlayerCaseValue());
-        
+        int highscore = playerDB.getPlayerHighScore(update.getPlayerName());        
         if(update.getDealAcceptedFlag())
         {
             if (highscore < update.getBankOffer())
@@ -90,22 +96,27 @@ public class Model extends Observable
                 playerDB.updateScore(update.getPlayerName(), update.getPlayerCaseValue());
             }
         }
+        //Setting high score in update class to display at end of game panel
         highscore = playerDB.getPlayerHighScore(update.getPlayerName());
         update.setPlayerHighScore(highscore);
-//        update.userHighScore = highscore;
-        System.out.println("PLAYER CURRENT HIGH SCORE: " + highscore);
     }
     
+    /**
+     * This method gets the highest score across all players
+     * It calls the getAllTimeHighScore() method from the DB class
+     */
     public void getAllTimeScore()
     {
         int topScore = playerDB.getAllTimeHighScore();
         update.setAllTimeScore(topScore);
-//        update.allTimeHighScore = topScore;
     }
     
+    /**
+     * This method signals the end of the game
+     * Either there are no more cases to be open or the player accepted a deal
+     */
     public void endGame()
     {
-//        update.endOfGame = true;
         update.setEndOfGameFlag(true);
         this.checkHighScore();
         this.getAllTimeScore();
@@ -113,31 +124,30 @@ public class Model extends Observable
         notifyObservers(update);
     }
     
-    //will change the value of case opened to its case value
+    /**
+     * This method can will set the case the player has chosen to be their own
+     * It will also open cases the player opens in the game
+     * @param c   Case to be opened/set
+     */
     public void openOrSetCase(Case c)
     {
-        if (!update.getCaseSelectedFlag())
+        if (!update.getCaseSelectedFlag()) //If the player hasn't chosen their case yet
         {
-//            update.caseList.get(c.getCaseNumber()-1).setPlayerCase(true);
             update.getCaseList().get(c.getCaseNumber()-1).setPlayerCase(true);
-//            update.userCaseValue = c.getCaseValue();
             update.setPlayerCaseValue(c.getCaseValue());
         }
-        else
+        else //Opening cases
         {
             update.getCaseList().get(c.getCaseNumber() - 1).setOpenStatus(true);
             update.getMoneyLabels().get(c.getCaseValue()).setOpen();
             update.setTotalCasesLeft(update.getTotalCasesLeft() - 1);
-//            update.totalCasesLeft--;
-//            update.casesRemainingThisRound--;
             update.setCasesRemainingThisRound(update.getCasesRemainingThisRound() - 1);
             if(update.getCasesRemainingThisRound() == 0)
             {
                 if(update.getRoundNumber() != update.getMaxRounds())
                 {
-                    this.calculateBankOffer(update.getRoundNumber(), update.getCaseList());
+                    this.calculateBankOffer(update.getRoundNumber(), update.getTotalCasesLeft(), update.getCaseList());
                     this.setUpNewRound();
-//                    update.endOfRound = true;
                     update.setEndOfRoundFlag(true);
                 }
                 else
@@ -150,6 +160,9 @@ public class Model extends Observable
         notifyObservers(update);
     }
     
+    /**
+     * This method sets up the flashing buttons in the game
+     */
     public void setUpFlashes()
     {
         int[] xLocations = new int[]{70, 110, 150, 1025, 1065, 1105};
@@ -174,6 +187,10 @@ public class Model extends Observable
         }
     }
     
+    /**
+     * This method will be called when the buttons are flashing
+     * This will change the buttons colour, switching them between the two colours they are assigned
+     */
     public void invert()
     {
         for(FlashButton fb : update.getFlashBtns())
@@ -182,7 +199,15 @@ public class Model extends Observable
         }
     }
     
-    public void calculateBankOffer(int roundNumber, ArrayList<Case> cases)
+    /**
+     * This method will calculate the bank offer
+     * It does this by calculating the sum of the unopened cases, divide by the amount of cases left, multiplied by the deductor
+     * @param roundNumber   The round the game is on
+     * @param totalCasesLeft   The amount of cases that aren't opened
+     * @param cases   The list of cases
+     * @return   The bank offer (this was added for the testing methods in the Test Package, as the bank offer is stored in the Update class)
+     */
+    public int calculateBankOffer(int roundNumber, int totalCasesLeft, ArrayList<Case> cases)
     {
         int sum = 0;
         for(Case c : cases)
@@ -192,27 +217,30 @@ public class Model extends Observable
                 sum += c.getCaseValue();
             }
         }
-        //calculate the sum of the unopenned cases, divide by the amount of cases left, multiply by the deductor
-        float bankOffer = (sum / update.getTotalCasesLeft()) * update.getPercentageDeductions()[update.getRoundNumber()];
+        float bankOffer = (sum / totalCasesLeft) * update.getPercentageDeductions()[roundNumber];
         System.out.println("BANK OFFER...\n" + nf.format((int)bankOffer));
-//        update.bankOffer = (int)bankOffer;
         update.setBankOffer((int)bankOffer);
+        return (int)bankOffer;
     }
     
+    /**
+     * This method will set up a new round in the game once one round has been completed
+     */
     public void setUpNewRound()
     {
         if(update.getTotalCasesToOpen() > 1)
         {
-//            update.totalCasesToOpen--;
             update.setTotalCasesToOpen(update.getTotalCasesToOpen() - 1);
         }
-//        update.casesRemainingThisRound = update.getTotalCasesToOpen();
         update.setCasesRemainingThisRound(update.getTotalCasesToOpen());
-//        update.roundNumber++;
         update.setRoundNumber(update.getRoundNumber() + 1);
-        System.out.println("Round Number" + update.getRoundNumber());
     }
     
+    /**
+     * This method will set up the cases at the start of the game
+     * It will read case values from a file and use those values to create cases
+     * If there is an error with the file, appropriate error handling is in place to resolve any issues
+     */
     public void setUpCases()
     {
         int multiplier = 1;
@@ -223,7 +251,7 @@ public class Model extends Observable
             {
                 try
                 {
-                    update.getMoneyValueForCases().add(input.nextInt());
+                    update.getMoneyValueForCases().add(input.nextInt()); //Read next value
                     caseCounter++;
                 }
                 catch (InputMismatchException e)  //Non-integer value in file
@@ -263,7 +291,7 @@ public class Model extends Observable
                 do
                 {
                     value = (rand.nextInt(100) + 1) * 1000;
-                } while (newValueList.contains(value));
+                } while (newValueList.contains(value)); //Cannot have duplicate values
                 newValueList.add(value);
                 update.getCaseList().add(new Case(x, value));
             }
@@ -273,6 +301,9 @@ public class Model extends Observable
         this.setUpValues();
     }
     
+    /**
+     * This method will set up the value labels in the game that exist on the side
+     */
     public void setUpValues()
     {
         for (int k = 1; k <= update.getTotalAmountOfCases(); k++)

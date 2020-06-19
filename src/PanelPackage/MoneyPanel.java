@@ -45,7 +45,6 @@ public class MoneyPanel
                 
         for(Map.Entry<Integer, GradientLabel> entry  : moneyLabels.entrySet())
         {
-            System.out.println("!!!!!!!!!!!!!!!mls: " + moneyLabels.size());
             GradientLabel lbl = entry.getValue();
             lbl.setOpaque(false);
             lbl.setFont(new Font("Arial", Font.BOLD, 20));
